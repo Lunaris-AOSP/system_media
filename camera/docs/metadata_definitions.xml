@@ -935,9 +935,14 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
           scene brightness and required final capture flash power, when
           the flash is enabled.
 
-          Normally, this entry should be set to START for only a
-          single request, and the application should wait until the
-          sequence completes before starting a new one.
+          Flash is enabled during precapture sequence when:
+
+          * AE mode is ON_ALWAYS_FLASH
+          * AE mode is ON_AUTO_FLASH and the scene is deemed too dark without flash, or
+          * AE mode is ON and flash mode is TORCH or SINGLE
+
+          Normally, this entry should be set to START for only single request, and the
+          application should wait until the sequence completes before starting a new one.
 
           When a precapture metering sequence is finished, the camera device
           may lock the auto-exposure routine internally to be able to accurately expose the
@@ -3952,9 +3957,6 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
             This state indicates when low light boost is 'ACTIVE' and applied. Similarly, it can
             indicate when it is not being applied by returning 'INACTIVE'.
 
-            This key will be absent from the CaptureResult if AE mode is not set to
-            'ON_LOW_LIGHT_BOOST_BRIGHTNESS_PRIORITY.
-
             The default value will always be 'INACTIVE'.
           </details>
         </entry>
@@ -4305,6 +4307,14 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
             in android.flash.singleStrengthDefaultLevel.
             If android.control.aeMode is set to any of `ON_AUTO_FLASH`, `ON_ALWAYS_FLASH`,
             `ON_AUTO_FLASH_REDEYE`, `ON_EXTERNAL_FLASH` values, then the strengthLevel will be ignored.
+
+            When AE mode is ON and flash mode is TORCH or SINGLE, the application should make sure
+            the AE mode, flash mode, and flash strength level remain the same between precapture
+            trigger request and final capture request. The flash strength level being set during
+            precapture sequence is used by the camera device as a reference. The actual strength
+            may be less, and the auto-exposure routine makes sure proper conversions of sensor
+            exposure time and sensitivities between precapture and final capture for the specified
+            strength level.
           </details>
         </entry>
       </controls>

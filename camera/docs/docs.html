@@ -3233,9 +3233,14 @@ high-quality still capture for final metering decisions to
 be made,<wbr/> and for firing pre-capture flash pulses to estimate
 scene brightness and required final capture flash power,<wbr/> when
 the flash is enabled.<wbr/></p>
-<p>Normally,<wbr/> this entry should be set to START for only a
-single request,<wbr/> and the application should wait until the
-sequence completes before starting a new one.<wbr/></p>
+<p>Flash is enabled during precapture sequence when:</p>
+<ul>
+<li>AE mode is ON_<wbr/>ALWAYS_<wbr/>FLASH</li>
+<li>AE mode is ON_<wbr/>AUTO_<wbr/>FLASH and the scene is deemed too dark without flash,<wbr/> or</li>
+<li>AE mode is ON and flash mode is TORCH or SINGLE</li>
+</ul>
+<p>Normally,<wbr/> this entry should be set to START for only single request,<wbr/> and the
+application should wait until the sequence completes before starting a new one.<wbr/></p>
 <p>When a precapture metering sequence is finished,<wbr/> the camera device
 may lock the auto-exposure routine internally to be able to accurately expose the
 subsequent still capture image (<code><a href="#controls_android.control.captureIntent">android.<wbr/>control.<wbr/>capture<wbr/>Intent</a> == STILL_<wbr/>CAPTURE</code>).<wbr/>
@@ -8611,9 +8616,14 @@ high-quality still capture for final metering decisions to
 be made,<wbr/> and for firing pre-capture flash pulses to estimate
 scene brightness and required final capture flash power,<wbr/> when
 the flash is enabled.<wbr/></p>
-<p>Normally,<wbr/> this entry should be set to START for only a
-single request,<wbr/> and the application should wait until the
-sequence completes before starting a new one.<wbr/></p>
+<p>Flash is enabled during precapture sequence when:</p>
+<ul>
+<li>AE mode is ON_<wbr/>ALWAYS_<wbr/>FLASH</li>
+<li>AE mode is ON_<wbr/>AUTO_<wbr/>FLASH and the scene is deemed too dark without flash,<wbr/> or</li>
+<li>AE mode is ON and flash mode is TORCH or SINGLE</li>
+</ul>
+<p>Normally,<wbr/> this entry should be set to START for only single request,<wbr/> and the
+application should wait until the sequence completes before starting a new one.<wbr/></p>
 <p>When a precapture metering sequence is finished,<wbr/> the camera device
 may lock the auto-exposure routine internally to be able to accurately expose the
 subsequent still capture image (<code><a href="#controls_android.control.captureIntent">android.<wbr/>control.<wbr/>capture<wbr/>Intent</a> == STILL_<wbr/>CAPTURE</code>).<wbr/>
@@ -12257,8 +12267,6 @@ state will be CONVERGED.<wbr/></li>
 boost when the light level threshold is exceeded.<wbr/></p>
 <p>This state indicates when low light boost is 'ACTIVE' and applied.<wbr/> Similarly,<wbr/> it can
 indicate when it is not being applied by returning 'INACTIVE'.<wbr/></p>
-<p>This key will be absent from the CaptureResult if AE mode is not set to
-'ON_<wbr/>LOW_<wbr/>LIGHT_<wbr/>BOOST_<wbr/>BRIGHTNESS_<wbr/>PRIORITY.<wbr/></p>
 <p>The default value will always be 'INACTIVE'.<wbr/></p>
             </td>
           </tr>
@@ -13105,6 +13113,13 @@ then the flash will be fired at the default level set by HAL
 in <a href="#static_android.flash.singleStrengthDefaultLevel">android.<wbr/>flash.<wbr/>single<wbr/>Strength<wbr/>Default<wbr/>Level</a>.<wbr/>
 If <a href="#controls_android.control.aeMode">android.<wbr/>control.<wbr/>ae<wbr/>Mode</a> is set to any of <code>ON_<wbr/>AUTO_<wbr/>FLASH</code>,<wbr/> <code>ON_<wbr/>ALWAYS_<wbr/>FLASH</code>,<wbr/>
 <code>ON_<wbr/>AUTO_<wbr/>FLASH_<wbr/>REDEYE</code>,<wbr/> <code>ON_<wbr/>EXTERNAL_<wbr/>FLASH</code> values,<wbr/> then the strengthLevel will be ignored.<wbr/></p>
+<p>When AE mode is ON and flash mode is TORCH or SINGLE,<wbr/> the application should make sure
+the AE mode,<wbr/> flash mode,<wbr/> and flash strength level remain the same between precapture
+trigger request and final capture request.<wbr/> The flash strength level being set during
+precapture sequence is used by the camera device as a reference.<wbr/> The actual strength
+may be less,<wbr/> and the auto-exposure routine makes sure proper conversions of sensor
+exposure time and sensitivities between precapture and final capture for the specified
+strength level.<wbr/></p>
             </td>
           </tr>
 
@@ -14071,6 +14086,13 @@ then the flash will be fired at the default level set by HAL
 in <a href="#static_android.flash.singleStrengthDefaultLevel">android.<wbr/>flash.<wbr/>single<wbr/>Strength<wbr/>Default<wbr/>Level</a>.<wbr/>
 If <a href="#controls_android.control.aeMode">android.<wbr/>control.<wbr/>ae<wbr/>Mode</a> is set to any of <code>ON_<wbr/>AUTO_<wbr/>FLASH</code>,<wbr/> <code>ON_<wbr/>ALWAYS_<wbr/>FLASH</code>,<wbr/>
 <code>ON_<wbr/>AUTO_<wbr/>FLASH_<wbr/>REDEYE</code>,<wbr/> <code>ON_<wbr/>EXTERNAL_<wbr/>FLASH</code> values,<wbr/> then the strengthLevel will be ignored.<wbr/></p>
+<p>When AE mode is ON and flash mode is TORCH or SINGLE,<wbr/> the application should make sure
+the AE mode,<wbr/> flash mode,<wbr/> and flash strength level remain the same between precapture
+trigger request and final capture request.<wbr/> The flash strength level being set during
+precapture sequence is used by the camera device as a reference.<wbr/> The actual strength
+may be less,<wbr/> and the auto-exposure routine makes sure proper conversions of sensor
+exposure time and sensitivities between precapture and final capture for the specified
+strength level.<wbr/></p>
             </td>
           </tr>
 
