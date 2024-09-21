@@ -83,9 +83,6 @@ cc_library {
     ],
 
     whole_static_libs: [
-        // if libaudioutils is added as a static lib AND flags are used in the utils object,
-        // then add server_configurable_flags as a shared lib.
-        "com.android.media.audioserver-aconfig-cc",
         "libaudioutils_fastmath",
     ],
 
@@ -96,13 +93,23 @@ cc_library {
                 "echo_reference.c",
                 "resampler.c",
             ],
-            whole_static_libs: ["libaudioutils_fixedfft"],
+            whole_static_libs: [
+                "libaudioutils_fixedfft",
+                // if libaudioutils is added as a static lib AND flags are used in the utils object,
+                // then add server_configurable_flags as a shared lib.
+                "com.android.media.audioserver-aconfig-cc",
+            ],
             shared_libs: [
                 "libspeexresampler",
             ],
         },
         host: {
             cflags: ["-D__unused=__attribute__((unused))"],
+            whole_static_libs: [
+                // if libaudioutils is added as a static lib AND flags are used in the utils object,
+                // then add server_configurable_flags as a shared lib.
+                "com.android.media.audioserver-aconfig-cc-ro",
+            ],
         },
     },
     min_sdk_version: "29",
