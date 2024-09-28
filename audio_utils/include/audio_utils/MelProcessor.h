@@ -113,7 +113,8 @@ public:
     audio_port_handle_t getDeviceId();
 
     /** Update the format to use for the input frames to process. */
-    void updateAudioFormat(uint32_t sampleRate, uint32_t channelCount, audio_format_t newFormat);
+    void updateAudioFormat(uint32_t sampleRate, uint32_t channelCount, audio_format_t newFormat)
+            EXCLUDES(mLock);
 
     /**
      * \brief Computes the MEL values for the given buffer and triggers a
@@ -136,6 +137,13 @@ public:
 
     /** Resumes the processing of MEL values. */
     void resume();
+
+    /** Signals to drain the remaining mel data.  Does not wait. */
+    void drain();
+
+    /** Signals to drain the remaining mel data and waits for completion.
+     * If more data is being delivered, wait time may be long. */
+    void drainAndWait();
 
     /**
      * Sets the given attenuation for the MEL calculation. This can be used when
@@ -170,31 +178,51 @@ private:
               mThreadName(std::move(threadName)),
               mCallbackRingBuffer(kRingBufferSize) {};
 
-        void run();
+        void run() EXCLUDES(mCondVarMutex);
 
         // blocks until the MelWorker thread is stopped
-        void stop();
+        void stop() EXCLUDES(mCondVarMutex);
 
-        // callback methods for new MEL values
+        // Signals the MelWorker to wake up to process
+        // any remaining queued data.  Like notify() but with lock held.
+        void drain() EXCLUDES(mCondVarMutex);
+
+       // callback methods for new MEL values
         void momentaryExposure(float mel, audio_port_handle_t port);
         void newMelValues(const std::vector<float>& mels,
                           size_t melsSize,
                           audio_port_handle_t port);
 
-        static void incRingBufferIndex(std::atomic_size_t& idx);
+        std::string getThreadName() const { return mThreadName; }
+
+        void notify() { mCondVar.notify_one(); }
+
+        bool ringBufferIsEmpty() const {  return mRbReadPtr == mRbWritePtr; }
+
+    private:
+        static size_t nextRingBufferIndex(size_t idx) {
+            return idx >= kRingBufferSize - 1 ? 0 : idx + 1;
+        }
         bool ringBufferIsFull() const;
 
         const wp<MelCallback> mCallback;
         const std::string mThreadName;
-        std::vector<MelCallbackData> mCallbackRingBuffer GUARDED_BY(mCondVarMutex);
+        std::mutex mCondVarMutex;
+        std::condition_variable mCondVar;
 
+        // mRbReadPtr, mRbWritePtr, mCallbackRingBuffer form a lock free queue.
+        std::vector<MelCallbackData> mCallbackRingBuffer;  // reader / writer on different indices
+
+        // reader updated only, aligned to cache line.
+        alignas(64 /* std::hardware_destructive_interference_size */)
         std::atomic_size_t mRbReadPtr = 0;
+
+        // writer updated only, aligned to cache line.
+        alignas(64 /* std::hardware_destructive_interference_size */)
         std::atomic_size_t mRbWritePtr = 0;
 
-        std::thread mThread;
-        std::condition_variable mCondVar;
-        std::mutex mCondVarMutex;
         bool mStopRequested GUARDED_BY(mCondVarMutex) = false;
+        std::thread mThread;
     };
 
     std::string pointerString() const;
@@ -220,6 +248,8 @@ private:
     uint32_t mChannelCount GUARDED_BY(mLock);
     // audio data format
     audio_format_t mFormat GUARDED_BY(mLock);
+    // number of samples in the energy
+    size_t mCurrentSamples GUARDED_BY(mLock) = 0;
     // contains the A-weighted input samples to be processed
     std::vector<float> mAWeightSamples GUARDED_BY(mLock);
     // contains the input samples converted to float
@@ -229,7 +259,7 @@ private:
     // accumulated MEL values
     std::vector<float> mMelValues GUARDED_BY(mLock);
     // current index to store the MEL values
-    uint32_t mCurrentIndex GUARDED_BY(mLock);
+    uint32_t mCurrentIndex GUARDED_BY(mLock) = 0;
     using DefaultBiquadFilter = BiquadFilter<float, true, details::DefaultBiquadConstOptions>;
     // Biquads used for the A-weighting
     std::array<std::unique_ptr<DefaultBiquadFilter>, kCascadeBiquadNumber>
@@ -240,9 +270,8 @@ private:
     std::atomic<audio_port_handle_t> mDeviceId;
     // Value used for momentary exposure
     std::atomic<float> mRs2UpperBound;
-    // number of samples in the energy
-    std::atomic_size_t mCurrentSamples;
-    std::atomic_bool mPaused;
+    // Skip processing data.
+    std::atomic_bool mPaused = false;
 };
 
 }  // namespace android::audio_utils

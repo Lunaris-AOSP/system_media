@@ -22,7 +22,7 @@ package {
 
 cc_defaults {
     name: "libalsautils_defaults",
-    vendor: true,
+    vendor_available: true,
     srcs: [
         "alsa_device_profile.c",
         "alsa_device_proxy.c",
@@ -48,7 +48,7 @@ cc_defaults {
     ],
 }
 
-cc_library_shared {
+cc_library {
     name: "libalsautils",
     defaults: ["libalsautils_defaults"],
     shared_libs: [
@@ -56,7 +56,7 @@ cc_library_shared {
     ],
 }
 
-cc_library_shared {
+cc_library {
     name: "libalsautilsv2",
     defaults: ["libalsautils_defaults"],
     shared_libs: [

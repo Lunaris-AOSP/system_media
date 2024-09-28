@@ -499,7 +499,7 @@ static void BM_StdMutexBlockingConditionVariable(benchmark::State &state) {
 BENCHMARK(BM_StdMutexBlockingConditionVariable)->Threads(THREADS);
 
 MutexBlockingConditionVariable<AudioMutex,
-        android::audio_utils::unique_lock,
+        android::audio_utils::unique_lock<AudioMutex>,
         android::audio_utils::condition_variable> CvAu;
 
 static void BM_AudioUtilsMutexBlockingConditionVariable(benchmark::State &state) {
@@ -509,7 +509,7 @@ static void BM_AudioUtilsMutexBlockingConditionVariable(benchmark::State &state)
 BENCHMARK(BM_AudioUtilsMutexBlockingConditionVariable)->Threads(THREADS);
 
 MutexBlockingConditionVariable<AudioPIMutex,
-        android::audio_utils::unique_lock,
+        android::audio_utils::unique_lock<AudioPIMutex>,
         android::audio_utils::condition_variable> CvAuPI;
 
 static void BM_AudioUtilsPIMutexBlockingConditionVariable(benchmark::State &state) {

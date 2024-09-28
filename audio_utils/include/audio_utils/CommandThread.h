@@ -19,7 +19,7 @@
 #include <deque>
 #include <mutex>
 #include <thread>
-#include <utils/Mutex.h> // has thread safety annotations
+#include <audio_utils/mutex.h>
 
 namespace android::audio_utils {
 
@@ -96,8 +96,8 @@ private:
     std::deque<std::pair<std::string, std::function<void()>>> mCommands GUARDED_BY(mMutex);
     bool mQuit GUARDED_BY(mMutex) = false;
 
-    void threadLoop() NO_THREAD_SAFETY_ANALYSIS {
-        std::unique_lock ul(mMutex);
+    void threadLoop() {
+        audio_utils::unique_lock ul(mMutex);
         while (!mQuit) {
             if (!mCommands.empty()) {
                 auto name = std::move(mCommands.front().first);

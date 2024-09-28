@@ -52,9 +52,6 @@ const std::unordered_map<int32_t, float> kAWeightFResponse =
 // attenuation of 1kHz this will result to approx. kFilterAccuracy/2 percent accuracy
 constexpr float kFilterAccuracy = 2.f;
 
-// TODO(b/276849537): should replace this with proper synchornization
-constexpr size_t kCallbackTimeoutInMs = 20;
-
 class MelCallbackMock : public MelProcessor::MelCallback {
 public:
     MOCK_METHOD(void, onNewMelValues, (const std::vector<float>&, size_t, size_t,
@@ -125,7 +122,7 @@ TEST_P(MelProcessorFixtureTest, CheckNumberOfCallbacks) {
                 onNewMelValues(_, _, Le(size_t{2}), Eq(mDeviceId), Eq(true))).Times(1);
 
     EXPECT_GT(mProcessor->process(mBuffer.data(), mBuffer.size() * sizeof(float)), 0);
-    std::this_thread::sleep_for(std::chrono::milliseconds(kCallbackTimeoutInMs));
+    mProcessor->drainAndWait();
 }
 
 TEST_P(MelProcessorFixtureTest, CheckAWeightingFrequency) {
@@ -151,7 +148,7 @@ TEST_P(MelProcessorFixtureTest, CheckAWeightingFrequency) {
         });
 
     EXPECT_GT(mProcessor->process(mBuffer.data(), mBuffer.size() * sizeof(float)), 0);
-    std::this_thread::sleep_for(std::chrono::milliseconds(kCallbackTimeoutInMs));
+    mProcessor->drainAndWait();
 }
 
 TEST_P(MelProcessorFixtureTest, AttenuationCheck) {
@@ -188,7 +185,8 @@ TEST_P(MelProcessorFixtureTest, AttenuationCheck) {
                                   mSampleRate * mMaxMelsCallback * sizeof(float)), 0);
     EXPECT_GT(processorAttenuation->process(bufferAttenuation.data(),
                                             mSampleRate * mMaxMelsCallback * sizeof(float)), 0);
-    std::this_thread::sleep_for(std::chrono::milliseconds(kCallbackTimeoutInMs));
+    mProcessor->drainAndWait();
+    processorAttenuation->drainAndWait();
     // with attenuation for some frequencies the MEL callback does not exceed the RS1 threshold
     if (melAttenuation > 0.f) {
         EXPECT_EQ(melNoAttenuation - melAttenuation, attenuationDB);

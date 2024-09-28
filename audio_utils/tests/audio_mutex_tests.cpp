@@ -372,6 +372,72 @@ TEST(audio_mutex_tests, OrderDetection) {
     EXPECT_EQ(0, nil2.second.load());
 }
 
+
+TEST(audio_mutex_tests, StdTimedLock) {
+    using ConditionVariable = std::condition_variable;
+    using Mutex = std::mutex;
+    using UniqueLock = android::audio_utils::unique_lock<Mutex>;
+
+    Mutex m, m1;
+    ConditionVariable cv;
+    bool quit = false;  // GUARDED_BY(m)
+
+    std::atomic<pid_t> tid1{};
+
+    // launch thread.
+    std::thread t1([&]() {
+        UniqueLock ul1(m1);
+        UniqueLock ul(m);
+        tid1 = android::audio_utils::gettid_wrapper();
+        while (!quit) {
+            cv.wait(ul, [&]{ return quit; });
+            if (quit) break;
+        }
+    });
+
+    // ensure thread tid1 has acquired all locks.
+    while (tid1 == 0) { usleep(1000); }
+
+    // try lock for 500ms.
+    // (don't make this too large otherwise the successful timeout will take > 500ms).
+    constexpr int64_t kTimeoutNs = 500'000'000;
+    {
+        //  verify timed out state.
+        const int64_t beginNs = systemTime();
+        const bool success = audio_utils::std_mutex_timed_lock(m1, kTimeoutNs);
+        const int64_t endNs = systemTime();
+        const int64_t diffNs = endNs - beginNs;
+
+        if (success) m1.unlock();
+        EXPECT_GT(diffNs, kTimeoutNs);
+        EXPECT_FALSE(success);
+    }
+
+    // exit the thread
+    {
+        UniqueLock ul(m);
+
+        quit = true;
+        cv.notify_one();
+    }
+
+    t1.join();
+
+    {
+        // verify success state.
+        const int64_t beginNs = systemTime();
+        const bool success = audio_utils::std_mutex_timed_lock(m1, kTimeoutNs);
+        const int64_t endNs = systemTime();
+        const int64_t diffNs = endNs - beginNs;
+
+        if (success) m1.unlock();
+
+        // we're expecting to lock within 250ms (should be efficient).
+        constexpr int64_t kSuccessLockNs = 250'000'000;
+        EXPECT_LT(diffNs, kSuccessLockNs);
+        EXPECT_TRUE(success);
+    }
+}
 // The following tests are evaluated for the android::audio_utils::mutex
 // Non-Priority Inheritance and Priority Inheritance cases.
 
@@ -440,7 +506,7 @@ NO_THREAD_SAFETY_ANALYSIS {
 TEST_P(MutexTestSuite, TimedLock) {
     using ConditionVariable = android::audio_utils::condition_variable;
     using Mutex = android::audio_utils::mutex;
-    using UniqueLock = android::audio_utils::unique_lock;
+    using UniqueLock = android::audio_utils::unique_lock<Mutex>;
     const bool priority_inheritance = GetParam();
 
     Mutex m{priority_inheritance}, m1{priority_inheritance};
@@ -506,7 +572,7 @@ TEST_P(MutexTestSuite, TimedLock) {
 
 TEST_P(MutexTestSuite, DeadlockDetection) {
     using Mutex = android::audio_utils::mutex;
-    using UniqueLock = android::audio_utils::unique_lock;
+    using UniqueLock = android::audio_utils::unique_lock<Mutex>;
     using ConditionVariable = android::audio_utils::condition_variable;
     const bool priority_inheritance = GetParam();
 
@@ -611,7 +677,7 @@ TEST_P(MutexTestSuite, DeadlockDetection) {
 
 TEST_P(MutexTestSuite, DeadlockConditionVariableDetection) {
     using Mutex = android::audio_utils::mutex;
-    using UniqueLock = android::audio_utils::unique_lock;
+    using UniqueLock = android::audio_utils::unique_lock<Mutex>;
     using ConditionVariable = android::audio_utils::condition_variable;
     const bool priority_inheritance = GetParam();
 
@@ -739,7 +805,7 @@ TEST_P(MutexTestSuite, DeadlockConditionVariableDetection) {
 
 TEST_P(MutexTestSuite, DeadlockJoinDetection) {
     using Mutex = android::audio_utils::mutex;
-    using UniqueLock = android::audio_utils::unique_lock;
+    using UniqueLock = android::audio_utils::unique_lock<Mutex>;
     using ConditionVariable = android::audio_utils::condition_variable;
     const bool priority_inheritance = GetParam();
 

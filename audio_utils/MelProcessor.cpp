@@ -26,7 +26,9 @@
 #include <audio_utils/MelProcessor.h>
 
 #include <audio_utils/format.h>
+#include <audio_utils/mutex.h>
 #include <audio_utils/power.h>
+#include <chrono>
 #include <log/log.h>
 #include <sstream>
 #include <unordered_map>
@@ -126,10 +128,8 @@ MelProcessor::MelProcessor(uint32_t sampleRate,
       mFloatSamples(mFramesPerMelValue * mChannelCount),
       mCurrentChannelEnergy(channelCount, 0.0f),
       mMelValues(maxMelsCallback),
-      mCurrentIndex(0),
       mDeviceId(deviceId),
-      mRs2UpperBound(rs2Value),
-      mCurrentSamples(0)
+      mRs2UpperBound(rs2Value)
 {
     createBiquads_l();
 
@@ -210,6 +210,20 @@ void MelProcessor::resume()
 {
     ALOGV("%s", __func__);
     mPaused = false;
+}
+
+void MelProcessor::drain()
+{
+    ALOGV("%s", __func__);
+    mMelWorker.drain();
+}
+
+void MelProcessor::drainAndWait() {
+    constexpr size_t kPollMs = 8;
+    while (!mMelWorker.ringBufferIsEmpty()) {
+        drain();
+        std::this_thread::sleep_for(std::chrono::milliseconds(kPollMs));
+    }
 }
 
 void MelProcessor::updateAudioFormat(uint32_t sampleRate,
@@ -298,7 +312,7 @@ void MelProcessor::addMelValue_l(float mel) {
     }
 
     if (notifyWorker) {
-        mMelWorker.mCondVar.notify_one();
+        mMelWorker.notify();
     }
 }
 
@@ -363,7 +377,7 @@ void MelProcessor::setAttenuation(float attenuationDB) {
 
 void MelProcessor::onLastStrongRef(const void* id __attribute__((unused))) {
    mMelWorker.stop();
-   ALOGV("%s: Stopped thread: %s for device %d", __func__, mMelWorker.mThreadName.c_str(),
+   ALOGV("%s: Stopped thread: %s for device %d", __func__, mMelWorker.getThreadName().c_str(),
          mDeviceId.load());
 }
 
@@ -380,35 +394,38 @@ void MelProcessor::MelWorker::run() {
         androidSetThreadName(mThreadName.c_str());
         ALOGV("%s::run(): Started thread", mThreadName.c_str());
 
+        audio_utils::unique_lock l(mCondVarMutex);
         while (true) {
-            std::unique_lock l(mCondVarMutex);
             if (mStopRequested) {
                 return;
             }
-            mCondVar.wait(l, [&] { return (mRbReadPtr != mRbWritePtr) || mStopRequested; });
-
-            while (mRbReadPtr != mRbWritePtr && !mStopRequested) {
+            mCondVar.wait(l);
+            while (mRbReadPtr != mRbWritePtr && !mStopRequested) { // load-acquire mRbWritePtr
                 ALOGV("%s::run(): new callbacks, rb idx read=%zu, write=%zu",
                       mThreadName.c_str(),
                       mRbReadPtr.load(),
                       mRbWritePtr.load());
-                auto callback = mCallback.promote();
+                const auto callback = mCallback.promote();
                 if (callback == nullptr) {
                     ALOGW("%s::run(): MelCallback is null, quitting MelWorker",
                           mThreadName.c_str());
                     return;
                 }
 
-                MelCallbackData data = mCallbackRingBuffer[mRbReadPtr];
+                const MelCallbackData& data = mCallbackRingBuffer[mRbReadPtr];
                 if (data.mMel != 0.f) {
+                    l.unlock();
                     callback->onMomentaryExposure(data.mMel, data.mPort);
+                    l.lock();
                 } else if (data.mMelsSize != 0) {
+                    l.unlock();
                     callback->onNewMelValues(data.mMels, 0, data.mMelsSize,
                                              data.mPort, /*attenuated=*/true);
+                    l.lock();
                 } else {
                     ALOGE("%s::run(): Invalid MEL data. Skipping callback", mThreadName.c_str());
                 }
-                incRingBufferIndex(mRbReadPtr);
+                mRbReadPtr = nextRingBufferIndex(mRbReadPtr);  // single reader updates this.
             }
         }
     });
@@ -427,6 +444,11 @@ void MelProcessor::MelWorker::stop() {
     }
 }
 
+void MelProcessor::MelWorker::drain() {
+    std::lock_guard l(mCondVarMutex);
+    mCondVar.notify_one();
+}
+
 void MelProcessor::MelWorker::momentaryExposure(float mel, audio_port_handle_t port) {
     ALOGV("%s", __func__);
 
@@ -442,7 +464,7 @@ void MelProcessor::MelWorker::momentaryExposure(float mel, audio_port_handle_t p
     mCallbackRingBuffer[mRbWritePtr].mMelsSize = 0;
     mCallbackRingBuffer[mRbWritePtr].mPort = port;
 
-    incRingBufferIndex(mRbWritePtr);
+    mRbWritePtr = nextRingBufferIndex(mRbWritePtr);  // single writer, store-release.
 }
 
 void MelProcessor::MelWorker::newMelValues(const std::vector<float>& mels,
@@ -463,23 +485,11 @@ void MelProcessor::MelWorker::newMelValues(const std::vector<float>& mels,
     mCallbackRingBuffer[mRbWritePtr].mMel = 0.f;
     mCallbackRingBuffer[mRbWritePtr].mPort = port;
 
-    incRingBufferIndex(mRbWritePtr);
+    mRbWritePtr = nextRingBufferIndex(mRbWritePtr);  // single writer, store-release.
 }
 
 bool MelProcessor::MelWorker::ringBufferIsFull() const {
-    size_t curIdx = mRbWritePtr.load();
-    size_t nextIdx = curIdx >= kRingBufferSize - 1 ? 0 : curIdx + 1;
-
-    return nextIdx == mRbReadPtr;
-}
-
-void MelProcessor::MelWorker::incRingBufferIndex(std::atomic_size_t& idx) {
-    size_t nextIdx;
-    size_t expected;
-    do {
-        expected = idx.load();
-        nextIdx = expected >= kRingBufferSize - 1 ? 0 : expected + 1;
-    } while (!idx.compare_exchange_strong(expected, nextIdx));
+    return nextRingBufferIndex(mRbWritePtr) == mRbReadPtr;
 }
 
 }   // namespace android
