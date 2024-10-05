@@ -839,6 +839,7 @@ enum class other_wait_reason_t {
     none = 0,
     cv = 1,
     join = 2,
+    queue = 3,
 };
 
 inline constexpr const char* reason_to_string(other_wait_reason_t reason) {
@@ -846,6 +847,7 @@ inline constexpr const char* reason_to_string(other_wait_reason_t reason) {
         case other_wait_reason_t::none: return "none";
         case other_wait_reason_t::cv: return "cv";
         case other_wait_reason_t::join: return "join";
+        case other_wait_reason_t::queue: return "queue";
         default: return "invalid";
     }
 }
@@ -898,6 +900,9 @@ public:
                     break;
                 case other_wait_reason_t::join:
                     s.append("join_tid: ").append(std::to_string(tid));
+                    break;
+                case other_wait_reason_t::queue:
+                    s.append("queue_tid: ").append(std::to_string(tid));
                     break;
                 }
             }
@@ -972,6 +977,16 @@ public:
     }
 
     void remove_wait_join() {
+        other_wait_info_.tid_ = kInvalidTid;
+    }
+
+    // Add waiting state for queue.
+    void add_wait_queue(pid_t waiting_tid) {
+        other_wait_info_.reason_ = other_wait_reason_t::queue;
+        other_wait_info_.tid_ = waiting_tid;
+    }
+
+    void remove_wait_queue() {
         other_wait_info_.tid_ = kInvalidTid;
     }
 
@@ -1259,7 +1274,8 @@ public:
             deadlock_info.chain.emplace_back(tid2,
                     reason == other_wait_reason_t::cv
                             ? std::string("cv-").append(name).c_str()
-                    : reason == other_wait_reason_t::join ? "join" : name);
+                    : reason == other_wait_reason_t::join ? "join"
+                    : reason == other_wait_reason_t::queue ? "queue" : name);
 
             // cycle detected
             if (visited.count(tid2)) {
@@ -1270,6 +1286,10 @@ public:
 
             // if tid not waiting return (could be blocked on binder).
             const auto tinfo = tid_to_info(registry_map, tid2);
+            if (tinfo == nullptr) {
+                // thread may have disappeared.
+                return deadlock_info;
+            }
             m = tinfo->mutex_wait_.load();
             other_wait_tid = tinfo->other_wait_info_.tid_.load();
             other_wait_reason = tinfo->other_wait_info_.reason_.load();
@@ -1570,6 +1590,29 @@ public:
         }
         ~scoped_join_wait_check() {
            get_thread_mutex_info()->remove_wait_join();
+        }
+    };
+
+    // A RAII class that implements queue wait detection
+    // for the deadlock check.
+    //
+    // During the lifetime of this class object, the current thread
+    // is assumed blocked on the thread tid due to a
+    // cross-thread communication via a queue.
+    //
+    // {
+    //   scoped_queue_wait_check sjw(tid_of_thread);
+    //   queue.add(...);
+    // }
+    //
+
+    class [[nodiscard]] scoped_queue_wait_check {
+    public:
+        explicit scoped_queue_wait_check(pid_t tid) {
+            get_thread_mutex_info()->add_wait_queue(tid);
+        }
+        ~scoped_queue_wait_check() {
+            get_thread_mutex_info()->remove_wait_queue();
         }
     };
 

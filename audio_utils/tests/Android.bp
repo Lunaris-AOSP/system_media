@@ -543,6 +543,27 @@ cc_test {
 }
 
 cc_test {
+    name: "run_remote_tests",
+    host_supported: true,
+
+    shared_libs: [
+        "libcutils",
+        "liblog",
+    ],
+
+    static_libs: [
+        "libaudioutils",
+    ],
+
+    srcs: ["run_remote_tests.cpp"],
+    cflags: [
+        "-Wall",
+        "-Werror",
+        "-Wextra",
+    ],
+}
+
+cc_test {
     name: "errorlog_tests",
     host_supported: true,
 
