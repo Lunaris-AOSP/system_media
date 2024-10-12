@@ -1900,7 +1900,16 @@ static inline bool audio_is_valid_format(audio_format_t format)
     case AUDIO_FORMAT_SBC:
     case AUDIO_FORMAT_APTX:
     case AUDIO_FORMAT_APTX_HD:
+        return true;
     case AUDIO_FORMAT_AC4:
+        switch (format) {
+        case AUDIO_FORMAT_AC4:
+        case AUDIO_FORMAT_AC4_L4:
+            return true;
+        default:
+            return false;
+        }
+        /* not reached */
     case AUDIO_FORMAT_LDAC:
         return true;
     case AUDIO_FORMAT_MAT:
@@ -1960,6 +1969,7 @@ static inline bool audio_is_iec61937_compatible(audio_format_t format)
     switch (format) {
     case AUDIO_FORMAT_AC3:         // IEC 61937-3:2017
     case AUDIO_FORMAT_AC4:         // IEC 61937-14:2017
+    case AUDIO_FORMAT_AC4_L4:      // IEC 61937-14:2017
     case AUDIO_FORMAT_E_AC3:       // IEC 61937-3:2017
     case AUDIO_FORMAT_E_AC3_JOC:   // IEC 61937-3:2017
     case AUDIO_FORMAT_MAT:         // IEC 61937-9:2017

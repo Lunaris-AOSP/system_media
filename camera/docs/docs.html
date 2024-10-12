@@ -2750,7 +2750,14 @@ with no flash control.<wbr/></p>
 <a href="#controls_android.sensor.sensitivity">android.<wbr/>sensor.<wbr/>sensitivity</a>,<wbr/> and
 <a href="#controls_android.sensor.frameDuration">android.<wbr/>sensor.<wbr/>frame<wbr/>Duration</a> are ignored.<wbr/> The
 application has control over the various
-android.<wbr/>flash.<wbr/>* fields.<wbr/></p></span>
+android.<wbr/>flash.<wbr/>* fields.<wbr/></p>
+<p>If the device supports manual flash strength control,<wbr/> i.<wbr/>e.,<wbr/>
+if <a href="#static_android.flash.singleStrengthMaxLevel">android.<wbr/>flash.<wbr/>single<wbr/>Strength<wbr/>Max<wbr/>Level</a> and
+<a href="#static_android.flash.torchStrengthMaxLevel">android.<wbr/>flash.<wbr/>torch<wbr/>Strength<wbr/>Max<wbr/>Level</a> are greater than 1,<wbr/> then
+the auto-exposure (AE) precapture metering sequence should be
+triggered for the configured flash mode and strength to avoid
+the image being incorrectly exposed at different
+<a href="#controls_android.flash.strengthLevel">android.<wbr/>flash.<wbr/>strength<wbr/>Level</a>.<wbr/></p></span>
                   </li>
                   <li>
                     <span class="entry_type_enum_name">ON_AUTO_FLASH (v3.2)</span>
@@ -2877,6 +2884,13 @@ ON or OFF,<wbr/> and <a href="#controls_android.flash.mode">android.<wbr/>flash.
 camera device auto-exposure routine for the overridden
 fields for a given capture will be available in its
 CaptureResult.<wbr/></p>
+<p>When <a href="#controls_android.control.aeMode">android.<wbr/>control.<wbr/>ae<wbr/>Mode</a> is AE_<wbr/>MODE_<wbr/>ON and if the device
+supports manual flash strength control,<wbr/> i.<wbr/>e.,<wbr/>
+if <a href="#static_android.flash.singleStrengthMaxLevel">android.<wbr/>flash.<wbr/>single<wbr/>Strength<wbr/>Max<wbr/>Level</a> and
+<a href="#static_android.flash.torchStrengthMaxLevel">android.<wbr/>flash.<wbr/>torch<wbr/>Strength<wbr/>Max<wbr/>Level</a> are greater than 1,<wbr/> then
+the auto-exposure (AE) precapture metering sequence should be
+triggered to avoid the image being incorrectly exposed at
+different <a href="#controls_android.flash.strengthLevel">android.<wbr/>flash.<wbr/>strength<wbr/>Level</a>.<wbr/></p>
             </td>
           </tr>
 
@@ -8133,7 +8147,14 @@ with no flash control.<wbr/></p>
 <a href="#controls_android.sensor.sensitivity">android.<wbr/>sensor.<wbr/>sensitivity</a>,<wbr/> and
 <a href="#controls_android.sensor.frameDuration">android.<wbr/>sensor.<wbr/>frame<wbr/>Duration</a> are ignored.<wbr/> The
 application has control over the various
-android.<wbr/>flash.<wbr/>* fields.<wbr/></p></span>
+android.<wbr/>flash.<wbr/>* fields.<wbr/></p>
+<p>If the device supports manual flash strength control,<wbr/> i.<wbr/>e.,<wbr/>
+if <a href="#static_android.flash.singleStrengthMaxLevel">android.<wbr/>flash.<wbr/>single<wbr/>Strength<wbr/>Max<wbr/>Level</a> and
+<a href="#static_android.flash.torchStrengthMaxLevel">android.<wbr/>flash.<wbr/>torch<wbr/>Strength<wbr/>Max<wbr/>Level</a> are greater than 1,<wbr/> then
+the auto-exposure (AE) precapture metering sequence should be
+triggered for the configured flash mode and strength to avoid
+the image being incorrectly exposed at different
+<a href="#controls_android.flash.strengthLevel">android.<wbr/>flash.<wbr/>strength<wbr/>Level</a>.<wbr/></p></span>
                   </li>
                   <li>
                     <span class="entry_type_enum_name">ON_AUTO_FLASH (v3.2)</span>
@@ -8260,6 +8281,13 @@ ON or OFF,<wbr/> and <a href="#controls_android.flash.mode">android.<wbr/>flash.
 camera device auto-exposure routine for the overridden
 fields for a given capture will be available in its
 CaptureResult.<wbr/></p>
+<p>When <a href="#controls_android.control.aeMode">android.<wbr/>control.<wbr/>ae<wbr/>Mode</a> is AE_<wbr/>MODE_<wbr/>ON and if the device
+supports manual flash strength control,<wbr/> i.<wbr/>e.,<wbr/>
+if <a href="#static_android.flash.singleStrengthMaxLevel">android.<wbr/>flash.<wbr/>single<wbr/>Strength<wbr/>Max<wbr/>Level</a> and
+<a href="#static_android.flash.torchStrengthMaxLevel">android.<wbr/>flash.<wbr/>torch<wbr/>Strength<wbr/>Max<wbr/>Level</a> are greater than 1,<wbr/> then
+the auto-exposure (AE) precapture metering sequence should be
+triggered to avoid the image being incorrectly exposed at
+different <a href="#controls_android.flash.strengthLevel">android.<wbr/>flash.<wbr/>strength<wbr/>Level</a>.<wbr/></p>
             </td>
           </tr>
 

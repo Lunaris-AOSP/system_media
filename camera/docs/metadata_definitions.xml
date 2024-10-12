@@ -632,6 +632,14 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
                 android.sensor.frameDuration are ignored. The
                 application has control over the various
                 android.flash.* fields.
+
+                If the device supports manual flash strength control, i.e.,
+                if android.flash.singleStrengthMaxLevel and
+                android.flash.torchStrengthMaxLevel are greater than 1, then
+                the auto-exposure (AE) precapture metering sequence should be
+                triggered for the configured flash mode and strength to avoid
+                the image being incorrectly exposed at different
+                android.flash.strengthLevel.
               </notes>
             </value>
             <value>ON_AUTO_FLASH
@@ -754,6 +762,14 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
             camera device auto-exposure routine for the overridden
             fields for a given capture will be available in its
             CaptureResult.
+
+            When android.control.aeMode is AE_MODE_ON and if the device
+            supports manual flash strength control, i.e.,
+            if android.flash.singleStrengthMaxLevel and
+            android.flash.torchStrengthMaxLevel are greater than 1, then
+            the auto-exposure (AE) precapture metering sequence should be
+            triggered to avoid the image being incorrectly exposed at
+            different android.flash.strengthLevel.
           </details>
           <tag id="BC" />
         </entry>
