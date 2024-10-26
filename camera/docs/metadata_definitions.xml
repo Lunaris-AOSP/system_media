@@ -858,7 +858,7 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
               {@link android.hardware.camera2.CameraMetadata#REQUEST_AVAILABLE_CAPABILITIES_ULTRA_HIGH_RESOLUTION_SENSOR}
               capability or devices where
               {@link CameraCharacteristics#getAvailableCaptureRequestKeys}
-              lists {@link CaptureRequest#SENSOR_PIXEL_MODE android.sensor.pixelMode}
+              lists android.sensor.pixelMode,
               android.sensor.info.activeArraySizeMaximumResolution /
               android.sensor.info.preCorrectionActiveArraySizeMaximumResolution must be used as the
               coordinate system for requests where android.sensor.pixelMode is set to
@@ -1215,7 +1215,7 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
               {@link android.hardware.camera2.CameraMetadata#REQUEST_AVAILABLE_CAPABILITIES_ULTRA_HIGH_RESOLUTION_SENSOR}
               capability or devices where
               {@link CameraCharacteristics#getAvailableCaptureRequestKeys}
-              lists {@link CaptureRequest#SENSOR_PIXEL_MODE android.sensor.pixelMode},
+              lists android.sensor.pixelMode,
               android.sensor.info.activeArraySizeMaximumResolution /
               android.sensor.info.preCorrectionActiveArraySizeMaximumResolution must be used as the
               coordinate system for requests where android.sensor.pixelMode is set to
@@ -1575,7 +1575,7 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
               {@link android.hardware.camera2.CameraMetadata#REQUEST_AVAILABLE_CAPABILITIES_ULTRA_HIGH_RESOLUTION_SENSOR}
               capability or devices where
               {@link CameraCharacteristics#getAvailableCaptureRequestKeys}
-              lists {@link CaptureRequest#SENSOR_PIXEL_MODE android.sensor.pixelMode},
+              lists android.sensor.pixelMode,
               android.sensor.info.activeArraySizeMaximumResolution /
               android.sensor.info.preCorrectionActiveArraySizeMaximumResolution must be used as the
               coordinate system for requests where android.sensor.pixelMode is set to
@@ -7641,8 +7641,7 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
             For camera devices with the
             {@link android.hardware.camera2.CameraMetadata#REQUEST_AVAILABLE_CAPABILITIES_ULTRA_HIGH_RESOLUTION_SENSOR}
             capability or devices where {@link CameraCharacteristics#getAvailableCaptureRequestKeys}
-            lists {@link CaptureRequest#SENSOR_PIXEL_MODE android.sensor.pixelMode}
-
+            lists android.sensor.pixelMode,
             android.sensor.info.activeArraySizeMaximumResolution /
             android.sensor.info.preCorrectionActiveArraySizeMaximumResolution must be used as the
             coordinate system for requests where android.sensor.pixelMode is set to
@@ -10106,7 +10105,7 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
             This key will only be present for devices which advertise the
             {@link android.hardware.camera2.CameraMetadata#REQUEST_AVAILABLE_CAPABILITIES_ULTRA_HIGH_RESOLUTION_SENSOR}
             capability or devices where {@link CameraCharacteristics#getAvailableCaptureRequestKeys}
-            lists {@link CaptureRequest#SENSOR_PIXEL_MODE android.sensor.pixelMode}
+            lists android.sensor.pixelMode.
             </details>
             <ndk_details>
             The data representation is `int[4]`, which maps to `(left, top, width, height)`.
@@ -10139,7 +10138,7 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
             This key will only be present for devices which advertise the
             {@link android.hardware.camera2.CameraMetadata#REQUEST_AVAILABLE_CAPABILITIES_ULTRA_HIGH_RESOLUTION_SENSOR}
             capability or devices where {@link CameraCharacteristics#getAvailableCaptureRequestKeys}
-            lists {@link CaptureRequest#SENSOR_PIXEL_MODE android.sensor.pixelMode}
+            lists android.sensor.pixelMode.
             </details>
             <tag id="RAW" />
           </entry>
@@ -10164,7 +10163,7 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
             This key will only be present for devices which advertise the
             {@link android.hardware.camera2.CameraMetadata#REQUEST_AVAILABLE_CAPABILITIES_ULTRA_HIGH_RESOLUTION_SENSOR}
             capability or devices where {@link CameraCharacteristics#getAvailableCaptureRequestKeys}
-            lists {@link CaptureRequest#SENSOR_PIXEL_MODE android.sensor.pixelMode}
+            lists android.sensor.pixelMode.
             </details>
             <ndk_details>
             The data representation is `int[4]`, which maps to `(left, top, width, height)`.
@@ -10208,7 +10207,7 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
 
             * This key will be present if
               {@link CameraCharacteristics#getAvailableCaptureRequestKeys}
-              lists {@link CaptureRequest#SENSOR_PIXEL_MODE android.sensor.pixelMode}, since RAW
+              lists android.sensor.pixelMode, since RAW
               images may not necessarily have a regular bayer pattern when
               {@link CaptureRequest#SENSOR_PIXEL_MODE android.sensor.pixelMode} is set to
               {@link android.hardware.camera2.CameraMetadata#SENSOR_PIXEL_MODE_MAXIMUM_RESOLUTION}.
@@ -12140,6 +12139,15 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
           height dimensions are given in android.sensor.info.pixelArraySize.
           This may include hot pixels that lie outside of the active array
           bounds given by android.sensor.info.activeArraySize.
+
+          For camera devices with the
+          {@link android.hardware.camera2.CameraMetadata#REQUEST_AVAILABLE_CAPABILITIES_ULTRA_HIGH_RESOLUTION_SENSOR}
+          capability or devices where
+          {@link CameraCharacteristics#getAvailableCaptureRequestKeys}
+          lists android.sensor.pixelMode,
+          android.sensor.info.pixelArraySizeMaximumResolution will be used as the
+          pixel array size if the corresponding request sets android.sensor.pixelMode to
+          {@link android.hardware.camera2.CameraMetadata#SENSOR_PIXEL_MODE_MAXIMUM_RESOLUTION}.
           </details>
           <hal_details>
           A hotpixel map contains the coordinates of pixels on the camera
@@ -14015,8 +14023,8 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
           For camera devices with the
           {@link android.hardware.camera2.CameraMetadata#REQUEST_AVAILABLE_CAPABILITIES_ULTRA_HIGH_RESOLUTION_SENSOR}
           capability or devices where {@link CameraCharacteristics#getAvailableCaptureRequestKeys}
-          lists {@link CaptureRequest#SENSOR_PIXEL_MODE android.sensor.pixelMode}
-          , the current active physical device
+          lists android.sensor.pixelMode,
+          the current active physical device
           android.sensor.info.activeArraySizeMaximumResolution /
           android.sensor.info.preCorrectionActiveArraySizeMaximumResolution must be used as the
           coordinate system for requests where android.sensor.pixelMode is set to
