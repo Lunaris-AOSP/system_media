@@ -134,6 +134,10 @@ typedef enum camera_metadata_tag {
     ANDROID_COLOR_CORRECTION_ABERRATION_MODE,         // enum         | public       | HIDL v3.2
     ANDROID_COLOR_CORRECTION_AVAILABLE_ABERRATION_MODES,
                                                       // byte[]       | public       | HIDL v3.2
+    ANDROID_COLOR_CORRECTION_COLOR_TEMPERATURE,       // int32        | public       | HIDL v3.11
+    ANDROID_COLOR_CORRECTION_COLOR_TINT,              // int32        | public       | HIDL v3.11
+    ANDROID_COLOR_CORRECTION_COLOR_TEMPERATURE_RANGE, // int32[]      | public       | HIDL v3.11
+    ANDROID_COLOR_CORRECTION_AVAILABLE_MODES,         // byte[]       | public       | HIDL v3.11
     ANDROID_COLOR_CORRECTION_END,
 
     ANDROID_CONTROL_AE_ANTIBANDING_MODE =             // enum         | public       | HIDL v3.2
@@ -612,6 +616,7 @@ typedef enum camera_metadata_enum_android_color_correction_mode {
     ANDROID_COLOR_CORRECTION_MODE_TRANSFORM_MATRIX                  , // HIDL v3.2
     ANDROID_COLOR_CORRECTION_MODE_FAST                              , // HIDL v3.2
     ANDROID_COLOR_CORRECTION_MODE_HIGH_QUALITY                      , // HIDL v3.2
+    ANDROID_COLOR_CORRECTION_MODE_CCT                               , // HIDL v3.11
 } camera_metadata_enum_android_color_correction_mode_t;
 
 // ANDROID_COLOR_CORRECTION_ABERRATION_MODE

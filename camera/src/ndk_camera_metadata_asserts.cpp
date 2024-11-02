@@ -180,6 +180,18 @@ static_assert(static_cast<int>(ANDROID_COLOR_CORRECTION_ABERRATION_MODE)
 static_assert(static_cast<int>(ANDROID_COLOR_CORRECTION_AVAILABLE_ABERRATION_MODES)
         == static_cast<int>(ACAMERA_COLOR_CORRECTION_AVAILABLE_ABERRATION_MODES));
 
+static_assert(static_cast<int>(ANDROID_COLOR_CORRECTION_COLOR_TEMPERATURE)
+        == static_cast<int>(ACAMERA_COLOR_CORRECTION_COLOR_TEMPERATURE));
+
+static_assert(static_cast<int>(ANDROID_COLOR_CORRECTION_COLOR_TINT)
+        == static_cast<int>(ACAMERA_COLOR_CORRECTION_COLOR_TINT));
+
+static_assert(static_cast<int>(ANDROID_COLOR_CORRECTION_COLOR_TEMPERATURE_RANGE)
+        == static_cast<int>(ACAMERA_COLOR_CORRECTION_COLOR_TEMPERATURE_RANGE));
+
+static_assert(static_cast<int>(ANDROID_COLOR_CORRECTION_AVAILABLE_MODES)
+        == static_cast<int>(ACAMERA_COLOR_CORRECTION_AVAILABLE_MODES));
+
 static_assert(static_cast<int>(ANDROID_CONTROL_AE_ANTIBANDING_MODE)
         == static_cast<int>(ACAMERA_CONTROL_AE_ANTIBANDING_MODE));
 
@@ -912,6 +924,8 @@ static_assert(static_cast<int32_t>(ANDROID_COLOR_CORRECTION_MODE_FAST)
         == static_cast<int32_t>(ACAMERA_COLOR_CORRECTION_MODE_FAST));
 static_assert(static_cast<int32_t>(ANDROID_COLOR_CORRECTION_MODE_HIGH_QUALITY)
         == static_cast<int32_t>(ACAMERA_COLOR_CORRECTION_MODE_HIGH_QUALITY));
+static_assert(static_cast<int32_t>(ANDROID_COLOR_CORRECTION_MODE_CCT)
+        == static_cast<int32_t>(ACAMERA_COLOR_CORRECTION_MODE_CCT));
 static_assert(static_cast<int32_t>(ANDROID_COLOR_CORRECTION_ABERRATION_MODE_OFF)
         == static_cast<int32_t>(ACAMERA_COLOR_CORRECTION_ABERRATION_MODE_OFF));
 static_assert(static_cast<int32_t>(ANDROID_COLOR_CORRECTION_ABERRATION_MODE_FAST)

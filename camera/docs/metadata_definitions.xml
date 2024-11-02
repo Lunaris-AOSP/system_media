@@ -211,12 +211,26 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
               (or defaults if AWB has never been run).
             </notes>
             </value>
+            <value hal_version="3.11" aconfig_flag="color_temperature">CCT
+              <notes>Use
+                android.colorCorrection.colorTemperature and
+                android.colorCorrection.colorTint to adjust the white balance based
+                on correlated color temperature.
+
+                If AWB is enabled with `android.control.awbMode != OFF`, then
+                CCT is ignored.
+              </notes>
+            </value>
           </enum>
 
           <description>
           The mode control selects how the image data is converted from the
           sensor's native color into linear sRGB color.
           </description>
+          <range>Starting from API level 36, android.colorCorrection.availableModes
+          can be used to check the list of supported values. Prior to API level 36,
+          TRANSFORM_MATRIX, HIGH_QUALITY, and FAST are guaranteed to be available
+          as valid modes on devices that support this key.</range>
           <details>
           When auto-white balance (AWB) is enabled with android.control.awbMode, this
           control is overridden by the AWB routine. When AWB is disabled, the
@@ -416,6 +430,99 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
             capture rate, then FAST and HIGH_QUALITY will generate the same output.
           </hal_details>
           <tag id="V1" />
+        </entry>
+      </static>
+      <controls>
+        <entry name="colorTemperature" type="int32" visibility="public" optional="true"
+          aconfig_flag="color_temperature" hal_version="3.11">
+          <description>
+            Specifies the color temperature for CCT mode in Kelvin
+            to adjust the white balance of the image.
+          </description>
+          <units>Kelvin</units>
+          <range>android.colorCorrection.colorTemperatureRange</range>
+          <details>
+            Sets the color temperature in Kelvin units for when
+            android.colorCorrection.mode is CCT to adjust the
+            white balance of the image.
+
+            If CCT mode is enabled without a requested color temperature,
+            a default value will be set by the camera device. The default value can be
+            retrieved by checking the corresponding capture result. Color temperatures
+            requested outside the advertised android.colorCorrection.colorTemperatureRange
+            will be clamped.
+          </details>
+        </entry>
+        <entry name="colorTint" type="int32" visibility="public" optional="true"
+          aconfig_flag="color_temperature" hal_version="3.11">
+          <description>
+            Specifies the color tint for CCT mode to adjust the white
+            balance of the image.
+          </description>
+          <units>D_uv defined as the distance from the Planckian locus on the CIE 1931 xy
+          chromaticity diagram, with the range ±50 mapping to ±0.01 D_uv</units>
+          <range>The supported range, -50 to +50, corresponds to a D_uv distance
+          of ±0.01 below and above the Planckian locus. Some camera devices may have
+          limitations to achieving the full ±0.01 D_uv range at some color temperatures
+          (e.g., below 1500K). In these cases, the applied D_uv value may be clamped and
+          the actual color tint will be reported in the android.colorCorrection.colorTint
+          result.</range>
+          <details>
+            Sets the color tint for when android.colorCorrection.mode
+            is CCT to adjust the white balance of the image.
+
+            If CCT mode is enabled without a requested color tint,
+            a default value will be set by the camera device. The default value can be
+            retrieved by checking the corresponding capture result. Color tints requested
+            outside the supported range will be clamped to the nearest limit (-50 or +50).
+          </details>
+        </entry>
+      </controls>
+      <dynamic>
+        <clone entry="android.colorCorrection.colorTemperature" kind="controls">
+        </clone>
+        <clone entry="android.colorCorrection.colorTint" kind="controls">
+        </clone>
+      </dynamic>
+      <static>
+        <entry name="colorTemperatureRange" type="int32" visibility="public"
+               optional="true" container="array" typedef="rangeInt"
+               aconfig_flag="color_temperature" hal_version="3.11">
+          <array>
+            <size>2</size>
+          </array>
+          <description>The range of supported color temperature values for
+            android.colorCorrection.colorTemperature.</description>
+          <range>
+            The minimum supported range will be [2856K,6500K]. The maximum supported
+            range will be [1000K,40000K].
+          </range>
+          <details>
+            This key lists the valid range of color temperature values for
+            android.colorCorrection.colorTemperature supported by this camera device.
+
+            This key will be null on devices that do not support CCT mode for
+            android.colorCorrection.mode.
+          </details>
+        </entry>
+        <entry name="availableModes" type="byte" visibility="public"
+        optional="true" type_notes="list of enums" container="array" typedef="enumList"
+        aconfig_flag="color_temperature" hal_version="3.11">
+          <array>
+            <size>n</size>
+          </array>
+          <description>
+            List of color correction modes for android.colorCorrection.mode that are
+            supported by this camera device.
+          </description>
+          <range>Any value listed in android.colorCorrection.mode</range>
+          <details>
+            This key lists the valid modes for android.colorCorrection.mode. If no
+            color correction modes are available for a device, this key will be null.
+
+            Camera devices that have a FULL hardware level will always include at least
+            FAST, HIGH_QUALITY, and TRANSFORM_MATRIX modes.
+          </details>
         </entry>
       </static>
     </section>

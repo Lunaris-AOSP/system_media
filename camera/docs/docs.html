@@ -123,6 +123,10 @@
             ><a href="#controls_android.colorCorrection.gains">android.colorCorrection.gains</a></li>
             <li
             ><a href="#controls_android.colorCorrection.aberrationMode">android.colorCorrection.aberrationMode</a></li>
+            <li
+            ><a href="#controls_android.colorCorrection.colorTemperature">android.colorCorrection.colorTemperature</a></li>
+            <li
+            ><a href="#controls_android.colorCorrection.colorTint">android.colorCorrection.colorTint</a></li>
           </ul>
         </li>
         <li>
@@ -136,6 +140,10 @@
             ><a href="#dynamic_android.colorCorrection.gains">android.colorCorrection.gains</a></li>
             <li
             ><a href="#dynamic_android.colorCorrection.aberrationMode">android.colorCorrection.aberrationMode</a></li>
+            <li
+            ><a href="#dynamic_android.colorCorrection.colorTemperature">android.colorCorrection.colorTemperature</a></li>
+            <li
+            ><a href="#dynamic_android.colorCorrection.colorTint">android.colorCorrection.colorTint</a></li>
           </ul>
         </li>
         <li>
@@ -143,6 +151,10 @@
           <ul class="toc_section">
             <li
             ><a href="#static_android.colorCorrection.availableAberrationModes">android.colorCorrection.availableAberrationModes</a></li>
+            <li
+            ><a href="#static_android.colorCorrection.colorTemperatureRange">android.colorCorrection.colorTemperatureRange</a></li>
+            <li
+            ><a href="#static_android.colorCorrection.availableModes">android.colorCorrection.availableModes</a></li>
           </ul>
         </li>
       </ul> <!-- toc_section -->
@@ -1577,6 +1589,15 @@ the specified white balance pipeline may be applied.<wbr/></p>
 the camera device uses the last frame's AWB values
 (or defaults if AWB has never been run).<wbr/></p></span>
                   </li>
+                  <li>
+                    <span class="entry_type_enum_name">CCT (v3.11)</span>
+                    <span class="entry_type_enum_notes"><p>Use
+<a href="#controls_android.colorCorrection.colorTemperature">android.<wbr/>color<wbr/>Correction.<wbr/>color<wbr/>Temperature</a> and
+<a href="#controls_android.colorCorrection.colorTint">android.<wbr/>color<wbr/>Correction.<wbr/>color<wbr/>Tint</a> to adjust the white balance based
+on correlated color temperature.<wbr/></p>
+<p>If AWB is enabled with <code><a href="#controls_android.control.awbMode">android.<wbr/>control.<wbr/>awb<wbr/>Mode</a> != OFF</code>,<wbr/> then
+CCT is ignored.<wbr/></p></span>
+                  </li>
                 </ul>
 
             </td> <!-- entry_type -->
@@ -1590,6 +1611,10 @@ sensor's native color into linear sRGB color.<wbr/></p>
             </td>
 
             <td class="entry_range">
+              <p>Starting from API level 36,<wbr/> <a href="#static_android.colorCorrection.availableModes">android.<wbr/>color<wbr/>Correction.<wbr/>available<wbr/>Modes</a>
+can be used to check the list of supported values.<wbr/> Prior to API level 36,<wbr/>
+TRANSFORM_<wbr/>MATRIX,<wbr/> HIGH_<wbr/>QUALITY,<wbr/> and FAST are guaranteed to be available
+as valid modes on devices that support this key.<wbr/></p>
             </td>
 
             <td class="entry_hal_version">
@@ -1886,6 +1911,128 @@ applying aberration correction.<wbr/></p>
           <tr class="entry_spacer"><td class="entry_spacer" colspan="7"></td></tr>
            <!-- end of entry -->
         
+                
+          <tr class="entry" id="controls_android.colorCorrection.colorTemperature">
+            <td class="entry_name
+             " rowspan="3">
+              android.<wbr/>color<wbr/>Correction.<wbr/>color<wbr/>Temperature
+            </td>
+            <td class="entry_type">
+                <span class="entry_type_name">int32</span>
+
+              <span class="entry_type_visibility"> [public]</span>
+
+
+
+
+
+
+            </td> <!-- entry_type -->
+
+            <td class="entry_description">
+              <p>Specifies the color temperature for CCT mode in Kelvin
+to adjust the white balance of the image.<wbr/></p>
+            </td>
+
+            <td class="entry_units">
+              Kelvin
+            </td>
+
+            <td class="entry_range">
+              <p><a href="#static_android.colorCorrection.colorTemperatureRange">android.<wbr/>color<wbr/>Correction.<wbr/>color<wbr/>Temperature<wbr/>Range</a></p>
+            </td>
+
+            <td class="entry_hal_version">
+              <p>3.<wbr/>11</p>
+            </td>
+
+            <td class="entry_tags">
+            </td>
+
+          </tr>
+          <tr class="entries_header">
+            <th class="th_details" colspan="6">Details</th>
+          </tr>
+          <tr class="entry_cont">
+            <td class="entry_details" colspan="6">
+              <p>Sets the color temperature in Kelvin units for when
+<a href="#controls_android.colorCorrection.mode">android.<wbr/>color<wbr/>Correction.<wbr/>mode</a> is CCT to adjust the
+white balance of the image.<wbr/></p>
+<p>If CCT mode is enabled without a requested color temperature,<wbr/>
+a default value will be set by the camera device.<wbr/> The default value can be
+retrieved by checking the corresponding capture result.<wbr/> Color temperatures
+requested outside the advertised <a href="#static_android.colorCorrection.colorTemperatureRange">android.<wbr/>color<wbr/>Correction.<wbr/>color<wbr/>Temperature<wbr/>Range</a>
+will be clamped.<wbr/></p>
+            </td>
+          </tr>
+
+
+          <tr class="entry_spacer"><td class="entry_spacer" colspan="7"></td></tr>
+           <!-- end of entry -->
+        
+                
+          <tr class="entry" id="controls_android.colorCorrection.colorTint">
+            <td class="entry_name
+             " rowspan="3">
+              android.<wbr/>color<wbr/>Correction.<wbr/>color<wbr/>Tint
+            </td>
+            <td class="entry_type">
+                <span class="entry_type_name">int32</span>
+
+              <span class="entry_type_visibility"> [public]</span>
+
+
+
+
+
+
+            </td> <!-- entry_type -->
+
+            <td class="entry_description">
+              <p>Specifies the color tint for CCT mode to adjust the white
+balance of the image.<wbr/></p>
+            </td>
+
+            <td class="entry_units">
+              D_<wbr/>uv defined as the distance from the Planckian locus on the CIE 1931 xy
+          chromaticity diagram,<wbr/> with the range ±50 mapping to ±0.<wbr/>01 D_<wbr/>uv
+            </td>
+
+            <td class="entry_range">
+              <p>The supported range,<wbr/> -50 to +50,<wbr/> corresponds to a D_<wbr/>uv distance
+of ±0.<wbr/>01 below and above the Planckian locus.<wbr/> Some camera devices may have
+limitations to achieving the full ±0.<wbr/>01 D_<wbr/>uv range at some color temperatures
+(e.<wbr/>g.,<wbr/> below 1500K).<wbr/> In these cases,<wbr/> the applied D_<wbr/>uv value may be clamped and
+the actual color tint will be reported in the <a href="#controls_android.colorCorrection.colorTint">android.<wbr/>color<wbr/>Correction.<wbr/>color<wbr/>Tint</a>
+result.<wbr/></p>
+            </td>
+
+            <td class="entry_hal_version">
+              <p>3.<wbr/>11</p>
+            </td>
+
+            <td class="entry_tags">
+            </td>
+
+          </tr>
+          <tr class="entries_header">
+            <th class="th_details" colspan="6">Details</th>
+          </tr>
+          <tr class="entry_cont">
+            <td class="entry_details" colspan="6">
+              <p>Sets the color tint for when <a href="#controls_android.colorCorrection.mode">android.<wbr/>color<wbr/>Correction.<wbr/>mode</a>
+is CCT to adjust the white balance of the image.<wbr/></p>
+<p>If CCT mode is enabled without a requested color tint,<wbr/>
+a default value will be set by the camera device.<wbr/> The default value can be
+retrieved by checking the corresponding capture result.<wbr/> Color tints requested
+outside the supported range will be clamped to the nearest limit (-50 or +50).<wbr/></p>
+            </td>
+          </tr>
+
+
+          <tr class="entry_spacer"><td class="entry_spacer" colspan="7"></td></tr>
+           <!-- end of entry -->
+        
         
 
       <!-- end of kind -->
@@ -1962,6 +2109,15 @@ the specified white balance pipeline may be applied.<wbr/></p>
 the camera device uses the last frame's AWB values
 (or defaults if AWB has never been run).<wbr/></p></span>
                   </li>
+                  <li>
+                    <span class="entry_type_enum_name">CCT (v3.11)</span>
+                    <span class="entry_type_enum_notes"><p>Use
+<a href="#controls_android.colorCorrection.colorTemperature">android.<wbr/>color<wbr/>Correction.<wbr/>color<wbr/>Temperature</a> and
+<a href="#controls_android.colorCorrection.colorTint">android.<wbr/>color<wbr/>Correction.<wbr/>color<wbr/>Tint</a> to adjust the white balance based
+on correlated color temperature.<wbr/></p>
+<p>If AWB is enabled with <code><a href="#controls_android.control.awbMode">android.<wbr/>control.<wbr/>awb<wbr/>Mode</a> != OFF</code>,<wbr/> then
+CCT is ignored.<wbr/></p></span>
+                  </li>
                 </ul>
 
             </td> <!-- entry_type -->
@@ -1975,6 +2131,10 @@ sensor's native color into linear sRGB color.<wbr/></p>
             </td>
 
             <td class="entry_range">
+              <p>Starting from API level 36,<wbr/> <a href="#static_android.colorCorrection.availableModes">android.<wbr/>color<wbr/>Correction.<wbr/>available<wbr/>Modes</a>
+can be used to check the list of supported values.<wbr/> Prior to API level 36,<wbr/>
+TRANSFORM_<wbr/>MATRIX,<wbr/> HIGH_<wbr/>QUALITY,<wbr/> and FAST are guaranteed to be available
+as valid modes on devices that support this key.<wbr/></p>
             </td>
 
             <td class="entry_hal_version">
@@ -2271,6 +2431,128 @@ applying aberration correction.<wbr/></p>
           <tr class="entry_spacer"><td class="entry_spacer" colspan="7"></td></tr>
            <!-- end of entry -->
         
+                
+          <tr class="entry" id="dynamic_android.colorCorrection.colorTemperature">
+            <td class="entry_name
+             " rowspan="3">
+              android.<wbr/>color<wbr/>Correction.<wbr/>color<wbr/>Temperature
+            </td>
+            <td class="entry_type">
+                <span class="entry_type_name">int32</span>
+
+              <span class="entry_type_visibility"> [public]</span>
+
+
+
+
+
+
+            </td> <!-- entry_type -->
+
+            <td class="entry_description">
+              <p>Specifies the color temperature for CCT mode in Kelvin
+to adjust the white balance of the image.<wbr/></p>
+            </td>
+
+            <td class="entry_units">
+              Kelvin
+            </td>
+
+            <td class="entry_range">
+              <p><a href="#static_android.colorCorrection.colorTemperatureRange">android.<wbr/>color<wbr/>Correction.<wbr/>color<wbr/>Temperature<wbr/>Range</a></p>
+            </td>
+
+            <td class="entry_hal_version">
+              <p>3.<wbr/>11</p>
+            </td>
+
+            <td class="entry_tags">
+            </td>
+
+          </tr>
+          <tr class="entries_header">
+            <th class="th_details" colspan="6">Details</th>
+          </tr>
+          <tr class="entry_cont">
+            <td class="entry_details" colspan="6">
+              <p>Sets the color temperature in Kelvin units for when
+<a href="#controls_android.colorCorrection.mode">android.<wbr/>color<wbr/>Correction.<wbr/>mode</a> is CCT to adjust the
+white balance of the image.<wbr/></p>
+<p>If CCT mode is enabled without a requested color temperature,<wbr/>
+a default value will be set by the camera device.<wbr/> The default value can be
+retrieved by checking the corresponding capture result.<wbr/> Color temperatures
+requested outside the advertised <a href="#static_android.colorCorrection.colorTemperatureRange">android.<wbr/>color<wbr/>Correction.<wbr/>color<wbr/>Temperature<wbr/>Range</a>
+will be clamped.<wbr/></p>
+            </td>
+          </tr>
+
+
+          <tr class="entry_spacer"><td class="entry_spacer" colspan="7"></td></tr>
+           <!-- end of entry -->
+        
+                
+          <tr class="entry" id="dynamic_android.colorCorrection.colorTint">
+            <td class="entry_name
+             " rowspan="3">
+              android.<wbr/>color<wbr/>Correction.<wbr/>color<wbr/>Tint
+            </td>
+            <td class="entry_type">
+                <span class="entry_type_name">int32</span>
+
+              <span class="entry_type_visibility"> [public]</span>
+
+
+
+
+
+
+            </td> <!-- entry_type -->
+
+            <td class="entry_description">
+              <p>Specifies the color tint for CCT mode to adjust the white
+balance of the image.<wbr/></p>
+            </td>
+
+            <td class="entry_units">
+              D_<wbr/>uv defined as the distance from the Planckian locus on the CIE 1931 xy
+          chromaticity diagram,<wbr/> with the range ±50 mapping to ±0.<wbr/>01 D_<wbr/>uv
+            </td>
+
+            <td class="entry_range">
+              <p>The supported range,<wbr/> -50 to +50,<wbr/> corresponds to a D_<wbr/>uv distance
+of ±0.<wbr/>01 below and above the Planckian locus.<wbr/> Some camera devices may have
+limitations to achieving the full ±0.<wbr/>01 D_<wbr/>uv range at some color temperatures
+(e.<wbr/>g.,<wbr/> below 1500K).<wbr/> In these cases,<wbr/> the applied D_<wbr/>uv value may be clamped and
+the actual color tint will be reported in the <a href="#controls_android.colorCorrection.colorTint">android.<wbr/>color<wbr/>Correction.<wbr/>color<wbr/>Tint</a>
+result.<wbr/></p>
+            </td>
+
+            <td class="entry_hal_version">
+              <p>3.<wbr/>11</p>
+            </td>
+
+            <td class="entry_tags">
+            </td>
+
+          </tr>
+          <tr class="entries_header">
+            <th class="th_details" colspan="6">Details</th>
+          </tr>
+          <tr class="entry_cont">
+            <td class="entry_details" colspan="6">
+              <p>Sets the color tint for when <a href="#controls_android.colorCorrection.mode">android.<wbr/>color<wbr/>Correction.<wbr/>mode</a>
+is CCT to adjust the white balance of the image.<wbr/></p>
+<p>If CCT mode is enabled without a requested color tint,<wbr/>
+a default value will be set by the camera device.<wbr/> The default value can be
+retrieved by checking the corresponding capture result.<wbr/> Color tints requested
+outside the supported range will be clamped to the nearest limit (-50 or +50).<wbr/></p>
+            </td>
+          </tr>
+
+
+          <tr class="entry_spacer"><td class="entry_spacer" colspan="7"></td></tr>
+           <!-- end of entry -->
+        
         
 
       <!-- end of kind -->
@@ -2371,6 +2653,124 @@ That is,<wbr/> if the highest quality implementation on the camera device does n
 capture rate,<wbr/> then FAST and HIGH_<wbr/>QUALITY will generate the same output.<wbr/></p>
             </td>
           </tr>
+
+          <tr class="entry_spacer"><td class="entry_spacer" colspan="7"></td></tr>
+           <!-- end of entry -->
+        
+                
+          <tr class="entry" id="static_android.colorCorrection.colorTemperatureRange">
+            <td class="entry_name
+             " rowspan="3">
+              android.<wbr/>color<wbr/>Correction.<wbr/>color<wbr/>Temperature<wbr/>Range
+            </td>
+            <td class="entry_type">
+                <span class="entry_type_name">int32</span>
+                <span class="entry_type_container">x</span>
+
+                <span class="entry_type_array">
+                  2
+                </span>
+              <span class="entry_type_visibility"> [public as rangeInt]</span>
+
+
+
+
+
+
+            </td> <!-- entry_type -->
+
+            <td class="entry_description">
+              <p>The range of supported color temperature values for
+<a href="#controls_android.colorCorrection.colorTemperature">android.<wbr/>color<wbr/>Correction.<wbr/>color<wbr/>Temperature</a>.<wbr/></p>
+            </td>
+
+            <td class="entry_units">
+            </td>
+
+            <td class="entry_range">
+              <p>The minimum supported range will be [2856K,<wbr/>6500K].<wbr/> The maximum supported
+range will be [1000K,<wbr/>40000K].<wbr/></p>
+            </td>
+
+            <td class="entry_hal_version">
+              <p>3.<wbr/>11</p>
+            </td>
+
+            <td class="entry_tags">
+            </td>
+
+          </tr>
+          <tr class="entries_header">
+            <th class="th_details" colspan="6">Details</th>
+          </tr>
+          <tr class="entry_cont">
+            <td class="entry_details" colspan="6">
+              <p>This key lists the valid range of color temperature values for
+<a href="#controls_android.colorCorrection.colorTemperature">android.<wbr/>color<wbr/>Correction.<wbr/>color<wbr/>Temperature</a> supported by this camera device.<wbr/></p>
+<p>This key will be null on devices that do not support CCT mode for
+<a href="#controls_android.colorCorrection.mode">android.<wbr/>color<wbr/>Correction.<wbr/>mode</a>.<wbr/></p>
+            </td>
+          </tr>
+
+
+          <tr class="entry_spacer"><td class="entry_spacer" colspan="7"></td></tr>
+           <!-- end of entry -->
+        
+                
+          <tr class="entry" id="static_android.colorCorrection.availableModes">
+            <td class="entry_name
+             " rowspan="3">
+              android.<wbr/>color<wbr/>Correction.<wbr/>available<wbr/>Modes
+            </td>
+            <td class="entry_type">
+                <span class="entry_type_name">byte</span>
+                <span class="entry_type_container">x</span>
+
+                <span class="entry_type_array">
+                  n
+                </span>
+              <span class="entry_type_visibility"> [public as enumList]</span>
+
+
+
+
+                <div class="entry_type_notes">list of enums</div>
+
+
+            </td> <!-- entry_type -->
+
+            <td class="entry_description">
+              <p>List of color correction modes for <a href="#controls_android.colorCorrection.mode">android.<wbr/>color<wbr/>Correction.<wbr/>mode</a> that are
+supported by this camera device.<wbr/></p>
+            </td>
+
+            <td class="entry_units">
+            </td>
+
+            <td class="entry_range">
+              <p>Any value listed in <a href="#controls_android.colorCorrection.mode">android.<wbr/>color<wbr/>Correction.<wbr/>mode</a></p>
+            </td>
+
+            <td class="entry_hal_version">
+              <p>3.<wbr/>11</p>
+            </td>
+
+            <td class="entry_tags">
+            </td>
+
+          </tr>
+          <tr class="entries_header">
+            <th class="th_details" colspan="6">Details</th>
+          </tr>
+          <tr class="entry_cont">
+            <td class="entry_details" colspan="6">
+              <p>This key lists the valid modes for <a href="#controls_android.colorCorrection.mode">android.<wbr/>color<wbr/>Correction.<wbr/>mode</a>.<wbr/> If no
+color correction modes are available for a device,<wbr/> this key will be null.<wbr/></p>
+<p>Camera devices that have a FULL hardware level will always include at least
+FAST,<wbr/> HIGH_<wbr/>QUALITY,<wbr/> and TRANSFORM_<wbr/>MATRIX modes.<wbr/></p>
+            </td>
+          </tr>
+
 
           <tr class="entry_spacer"><td class="entry_spacer" colspan="7"></td></tr>
            <!-- end of entry -->

@@ -77,6 +77,7 @@ enum {
                                 AUDIO_DEVICE_OUT_AUX_LINE |
                                 AUDIO_DEVICE_OUT_SPEAKER_SAFE |
                                 AUDIO_DEVICE_OUT_IP |
+                                AUDIO_DEVICE_OUT_MULTICHANNEL_GROUP |
                                 AUDIO_DEVICE_OUT_BUS |
                                 AUDIO_DEVICE_OUT_PROXY |
                                 AUDIO_DEVICE_OUT_USB_HEADSET |
@@ -178,6 +179,7 @@ static CONST_ARRAY audio_devices_t AUDIO_DEVICE_OUT_ALL_ARRAY[] = {
     AUDIO_DEVICE_OUT_AUX_LINE,                  // 0x00200000u
     AUDIO_DEVICE_OUT_SPEAKER_SAFE,              // 0x00400000u
     AUDIO_DEVICE_OUT_IP,                        // 0x00800000u
+    AUDIO_DEVICE_OUT_MULTICHANNEL_GROUP,        // 0x00800001u
     AUDIO_DEVICE_OUT_BUS,                       // 0x01000000u
     AUDIO_DEVICE_OUT_PROXY,                     // 0x02000000u
     AUDIO_DEVICE_OUT_USB_HEADSET,               // 0x04000000u
@@ -220,6 +222,7 @@ static CONST_ARRAY audio_devices_t AUDIO_DEVICE_OUT_ALL_DIGITAL_ARRAY[] = {
     AUDIO_DEVICE_OUT_HDMI_EARC,                 // 0x00040001u
     AUDIO_DEVICE_OUT_SPDIF,                     // 0x00080000u
     AUDIO_DEVICE_OUT_IP,                        // 0x00800000u
+    AUDIO_DEVICE_OUT_MULTICHANNEL_GROUP,        // 0x00800001u
     AUDIO_DEVICE_OUT_BUS,                       // 0x01000000u
     AUDIO_DEVICE_OUT_USB_HEADSET,               // 0x04000000u
 };

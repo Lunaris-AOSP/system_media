@@ -120,6 +120,8 @@ message CameraDeviceInfo {
 
     // Start of codegen fields
     repeated int32 android_colorCorrection_availableAberrationModes = 65536;
+    optional RangeInt android_colorCorrection_colorTemperatureRange = 65537;
+    repeated int32 android_colorCorrection_availableModes = 65538;
     repeated int32 android_control_aeAvailableAntibandingModes = 131072;
     repeated int32 android_control_aeAvailableModes = 131073;
     repeated RangeInt android_control_aeAvailableTargetFpsRanges = 131074;

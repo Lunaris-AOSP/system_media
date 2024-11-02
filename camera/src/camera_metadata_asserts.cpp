@@ -272,6 +272,14 @@ static_assert(static_cast<int>(ANDROID_COLOR_CORRECTION_ABERRATION_MODE)
         == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_COLOR_CORRECTION_ABERRATION_MODE));
 static_assert(static_cast<int>(ANDROID_COLOR_CORRECTION_AVAILABLE_ABERRATION_MODES)
         == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_COLOR_CORRECTION_AVAILABLE_ABERRATION_MODES));
+static_assert(static_cast<int>(ANDROID_COLOR_CORRECTION_COLOR_TEMPERATURE)
+        == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_COLOR_CORRECTION_COLOR_TEMPERATURE));
+static_assert(static_cast<int>(ANDROID_COLOR_CORRECTION_COLOR_TINT)
+        == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_COLOR_CORRECTION_COLOR_TINT));
+static_assert(static_cast<int>(ANDROID_COLOR_CORRECTION_COLOR_TEMPERATURE_RANGE)
+        == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_COLOR_CORRECTION_COLOR_TEMPERATURE_RANGE));
+static_assert(static_cast<int>(ANDROID_COLOR_CORRECTION_AVAILABLE_MODES)
+        == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_COLOR_CORRECTION_AVAILABLE_MODES));
 static_assert(static_cast<int>(ANDROID_CONTROL_AE_ANTIBANDING_MODE)
         == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_CONTROL_AE_ANTIBANDING_MODE));
 static_assert(static_cast<int>(ANDROID_CONTROL_AE_EXPOSURE_COMPENSATION)
@@ -899,6 +907,8 @@ static_assert(static_cast<int32_t>(ANDROID_COLOR_CORRECTION_MODE_FAST)
         == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::ColorCorrectionMode::ANDROID_COLOR_CORRECTION_MODE_FAST));
 static_assert(static_cast<int32_t>(ANDROID_COLOR_CORRECTION_MODE_HIGH_QUALITY)
         == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::ColorCorrectionMode::ANDROID_COLOR_CORRECTION_MODE_HIGH_QUALITY));
+static_assert(static_cast<int32_t>(ANDROID_COLOR_CORRECTION_MODE_CCT)
+        == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::ColorCorrectionMode::ANDROID_COLOR_CORRECTION_MODE_CCT));
 
 static_assert(static_cast<int32_t>(ANDROID_COLOR_CORRECTION_ABERRATION_MODE_OFF)
         == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::ColorCorrectionAberrationMode::ANDROID_COLOR_CORRECTION_ABERRATION_MODE_OFF));

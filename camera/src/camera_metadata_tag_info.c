@@ -153,6 +153,14 @@ static tag_info_t android_color_correction[ANDROID_COLOR_CORRECTION_END -
     { "aberrationMode",                TYPE_BYTE   },
     [ ANDROID_COLOR_CORRECTION_AVAILABLE_ABERRATION_MODES - ANDROID_COLOR_CORRECTION_START ] =
     { "availableAberrationModes",      TYPE_BYTE   },
+    [ ANDROID_COLOR_CORRECTION_COLOR_TEMPERATURE - ANDROID_COLOR_CORRECTION_START ] =
+    { "colorTemperature",              TYPE_INT32  },
+    [ ANDROID_COLOR_CORRECTION_COLOR_TINT - ANDROID_COLOR_CORRECTION_START ] =
+    { "colorTint",                     TYPE_INT32  },
+    [ ANDROID_COLOR_CORRECTION_COLOR_TEMPERATURE_RANGE - ANDROID_COLOR_CORRECTION_START ] =
+    { "colorTemperatureRange",         TYPE_INT32  },
+    [ ANDROID_COLOR_CORRECTION_AVAILABLE_MODES - ANDROID_COLOR_CORRECTION_START ] =
+    { "availableModes",                TYPE_BYTE   },
 };
 
 static tag_info_t android_control[ANDROID_CONTROL_END -
@@ -1065,6 +1073,10 @@ int camera_metadata_enum_snprint(uint32_t tag,
                     msg = "HIGH_QUALITY";
                     ret = 0;
                     break;
+                case ANDROID_COLOR_CORRECTION_MODE_CCT:
+                    msg = "CCT";
+                    ret = 0;
+                    break;
                 default:
                     msg = "error: enum value out of range";
             }
@@ -1096,6 +1108,18 @@ int camera_metadata_enum_snprint(uint32_t tag,
             break;
         }
         case ANDROID_COLOR_CORRECTION_AVAILABLE_ABERRATION_MODES: {
+            break;
+        }
+        case ANDROID_COLOR_CORRECTION_COLOR_TEMPERATURE: {
+            break;
+        }
+        case ANDROID_COLOR_CORRECTION_COLOR_TINT: {
+            break;
+        }
+        case ANDROID_COLOR_CORRECTION_COLOR_TEMPERATURE_RANGE: {
+            break;
+        }
+        case ANDROID_COLOR_CORRECTION_AVAILABLE_MODES: {
             break;
         }
 
@@ -4101,6 +4125,12 @@ int camera_metadata_enum_value(uint32_t tag,
                     ret = 0;
                     break;
                 }
+                enumName = "CCT";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_COLOR_CORRECTION_MODE_CCT;
+                    ret = 0;
+                    break;
+                }
             break;
         }
         case ANDROID_COLOR_CORRECTION_TRANSFORM: {
@@ -4131,6 +4161,18 @@ int camera_metadata_enum_value(uint32_t tag,
             break;
         }
         case ANDROID_COLOR_CORRECTION_AVAILABLE_ABERRATION_MODES: {
+            break;
+        }
+        case ANDROID_COLOR_CORRECTION_COLOR_TEMPERATURE: {
+            break;
+        }
+        case ANDROID_COLOR_CORRECTION_COLOR_TINT: {
+            break;
+        }
+        case ANDROID_COLOR_CORRECTION_COLOR_TEMPERATURE_RANGE: {
+            break;
+        }
+        case ANDROID_COLOR_CORRECTION_AVAILABLE_MODES: {
             break;
         }
 
