@@ -15,12 +15,13 @@
  */
 
 #pragma once
-#include <optional>
-
 #include <aidl/android/hardware/audio/effect/AcousticEchoCanceler.h>
 #include <aidl/android/hardware/audio/effect/DynamicsProcessing.h>
 #include <aidl/android/hardware/audio/effect/Parameter.h>
 #include <aidl/android/hardware/audio/effect/Range.h>
+#include <audio_utils/elementwise_op.h>
+
+#include <optional>
 
 namespace aidl::android::hardware::audio::effect {
 
@@ -118,6 +119,63 @@ static inline bool isRangeValid(const T& paramTag, const Capability& cap) {
     return isRangeValid(paramTag, ranges);
   }
   return true;
+}
+
+/**
+ * @brief Clamps a parameter to its valid range with
+ *        `android::audio_utils::clampInRange`.
+ *
+ * @tparam RangeTag, `Range::dynamicsProcessing` for example.
+ * @tparam T Parameter type, `DynamicsProcessing` for example.
+ * @tparam FieldTag `DynamicsProcessing::inputGain` for example.
+ * @tparam SpecificTag The effect specific tag in Parameter,
+ *         `Parameter::Specific::dynamicsProcessing` for example.
+ * @param param The parameter to clamp, `DynamicsProcessing dp` for example.
+ * @param desc The descriptor containing capability information.
+ * @return std::optional<Parameter> An optional `Parameter` containing the
+ *         clamped parameter if a valid range is defined; otherwise,
+ *         `std::nullopt`.
+ */
+template <typename Range::Tag RangeTag, typename T, typename T::Tag FieldTag,
+          typename Parameter::Specific::Tag SpecificTag>
+std::optional<Parameter> clampParameter(const T& param,
+                                        const Descriptor& desc) {
+  // field tag must matching to continue
+  if (param.getTag() != FieldTag) return std::nullopt;
+
+  const Range& range = desc.capability.range;
+  // no need to clamp if the range capability not defined
+  if (range.getTag() != RangeTag) {
+    return Parameter::make<Parameter::specific>(
+        Parameter::Specific::make<SpecificTag>(param));
+  }
+
+  T clamped = param;
+  const auto& ranges = range.template get<RangeTag>();
+  for (const auto& r : ranges) {
+    // only clamp when there is a pair of [min, max] range defined
+    if (FieldTag != r.min.getTag() || FieldTag != r.max.getTag()) continue;
+
+    // A range with max <= min indicates this parameter is get-only
+    if (r.max <= r.min) return std::nullopt;
+
+    const auto target = param.template get<FieldTag>();
+    const auto min = r.min.template get<FieldTag>();
+    const auto max = r.max.template get<FieldTag>();
+    const auto clampedField =
+        ::android::audio_utils::elementwise_clamp(target, min, max);
+    if (!clampedField) return std::nullopt;
+
+    clamped.template set<FieldTag>(*clampedField);
+    if (param != clamped) {
+      ALOGI("%s from \"%s\" to \"%s\"", __func__, param.toString().c_str(),
+            clamped.toString().c_str());
+    }
+    break;
+  }
+
+  return Parameter::make<Parameter::specific>(
+      Parameter::Specific::make<SpecificTag>(clamped));
 }
 
 }  // namespace aidl::android::hardware::audio::effect

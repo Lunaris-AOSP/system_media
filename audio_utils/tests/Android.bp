@@ -288,6 +288,23 @@ cc_test {
 }
 
 cc_test {
+    name: "elementwise_op_tests",
+    host_supported: true,
+
+    shared_libs: [
+        "libaudioutils",
+        "libcutils",
+        "liblog",
+    ],
+    srcs: ["elementwise_op_tests.cpp"],
+    cflags: [
+        "-Wall",
+        "-Werror",
+        "-Wextra",
+    ],
+}
+
+cc_test {
     name: "mel_aggregator_tests",
     host_supported: true,
 

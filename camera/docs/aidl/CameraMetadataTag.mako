@@ -57,7 +57,11 @@ enum CameraMetadataTag {
 <% gap = False %>\
 % for sec_idx,sec in enumerate(find_all_sections_filtered(metadata, ('extension'))):
   % for idx,entry in enumerate(remove_synthetic(find_unique_entries(sec))):
-    % if entry.visibility in ('fwk_only', 'fwk_java_public'):
+    % if idx == 0:
+<% gap = False %>\
+<% curIdx = sec_idx << 16 %>\
+    % endif
+    % if entry.visibility in ('fwk_only', 'fwk_java_public', 'fwk_public'):
 <% gap = True %>\
 <% curIdx += 1 %>\
 <% continue %>\
@@ -70,17 +74,14 @@ ${entry.description | hidldoc(metadata)}\
     % endif
      */
     % if idx == 0:
-<% gap = False %>\
-<% curIdx = sec_idx << 16 %>\
     ${entry.name + " =" | csym} CameraMetadataSectionStart.${path_name(find_parent_section(entry)) | csym}_START,
     % elif gap:
 <% gap = False %>\
-<% curIdx += 1 %>\
     ${entry.name | csym} = ${curIdx},
     % else:
-<% curIdx += 1 %>\
     ${entry.name + "," | csym}
     % endif
+<% curIdx += 1 %>\
   % endfor
 %endfor
 }

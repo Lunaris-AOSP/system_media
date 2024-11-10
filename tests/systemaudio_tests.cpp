@@ -368,7 +368,7 @@ protected:
         case AUDIO_PORT_TYPE_DEVICE:
             port->ext.device.hw_module = mHwModule;
             port->ext.device.type = port->role == AUDIO_PORT_ROLE_SINK ? mOutputDeviceType
-                                                                       : mInputDeviceType;
+                                        : mInputDeviceType;
             strncpy(port->ext.device.address, mAddress.c_str(), AUDIO_DEVICE_MAX_ADDRESS_LEN);
 #ifndef AUDIO_NO_SYSTEM_DECLARATIONS
             port->ext.device.encapsulation_modes = AUDIO_ENCAPSULATION_MODE_ELEMENTARY_STREAM;
@@ -501,12 +501,15 @@ void SystemAudioPortTest::fillFakeAudioPortConfigInfo(struct audio_port_config* 
     } else {
         config->flags.output = mOutputFlag;
     }
+    const bool outputDevice = config->role == AUDIO_PORT_ROLE_SINK;
     switch (config->type) {
     case AUDIO_PORT_TYPE_DEVICE:
         config->ext.device.hw_module = mHwModule;
         config->ext.device.type =
-                config->role == AUDIO_PORT_ROLE_SINK ? mOutputDeviceType : mInputDeviceType;
+            outputDevice ? mOutputDeviceType : mInputDeviceType;
         strncpy(config->ext.device.address, mAddress.c_str(), AUDIO_DEVICE_MAX_ADDRESS_LEN);
+        config->ext.device.speaker_layout_channel_mask =
+            outputDevice ? AUDIO_CHANNEL_OUT_5POINT1 : AUDIO_CHANNEL_NONE;
         break;
     case AUDIO_PORT_TYPE_MIX:
         config->ext.mix.hw_module = mHwModule;
@@ -696,6 +699,13 @@ TEST_P(SystemAudioPortTest, AudioPortConfigEquivalentTest) {
             lhs.ext.mix.usecase.stream = rhs.ext.mix.usecase.stream;
             ASSERT_TRUE(audio_port_configs_are_equal(&lhs, &rhs));
         }
+    }
+    if (lhs.type == AUDIO_PORT_TYPE_DEVICE) {
+      lhs.ext.device.speaker_layout_channel_mask = AUDIO_CHANNEL_OUT_MONO;
+      ASSERT_FALSE(audio_port_configs_are_equal(&lhs, &rhs));
+      lhs.ext.device.speaker_layout_channel_mask =
+          rhs.ext.device.speaker_layout_channel_mask;
+      ASSERT_TRUE(audio_port_configs_are_equal(&lhs, &rhs));
     }
 }
 

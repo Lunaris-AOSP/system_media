@@ -631,6 +631,7 @@ struct audio_port_config_device_ext {
     audio_module_handle_t hw_module;                /* module the device is attached to */
     audio_devices_t       type;                     /* device type (e.g AUDIO_DEVICE_OUT_SPEAKER) */
     char                  address[AUDIO_DEVICE_MAX_ADDRESS_LEN]; /* device address. "" if N/A */
+    audio_channel_mask_t  speaker_layout_channel_mask; /* represents physical speaker layout. */
 };
 
 /* extension for audio port configuration structure when the audio port is a
@@ -956,6 +957,8 @@ static inline bool audio_port_configs_are_equal(
     case AUDIO_PORT_TYPE_DEVICE:
         if (lhs->ext.device.hw_module != rhs->ext.device.hw_module ||
                 lhs->ext.device.type != rhs->ext.device.type ||
+                lhs->ext.device.speaker_layout_channel_mask !=
+                        rhs->ext.device.speaker_layout_channel_mask ||
                 strncmp(lhs->ext.device.address, rhs->ext.device.address,
                         AUDIO_DEVICE_MAX_ADDRESS_LEN) != 0) {
             return false;

@@ -23,6 +23,8 @@
 
 #ifdef __cplusplus
 
+#include "template_utils.h"
+
 #include <algorithm>
 #include <any>
 #include <map>
@@ -89,40 +91,8 @@
 
 namespace android::audio_utils::metadata {
 
-// Determine if a type is a specialization of a templated type
-// Example: is_specialization_v<T, std::vector>
-// https://stackoverflow.com/questions/16337610/how-to-know-if-a-type-is-a-specialization-of-stdvector
-
-template <typename Test, template <typename...> class Ref>
-struct is_specialization : std::false_type {};
-
-template <template <typename...> class Ref, typename... Args>
-struct is_specialization<Ref<Args...>, Ref>: std::true_type {};
-
-template <typename Test, template <typename...> class Ref>
-inline constexpr bool is_specialization_v = is_specialization<Test, Ref>::value;
-
-// For static assert(false) we need a template version to avoid early failure.
-// See: https://stackoverflow.com/questions/51523965/template-dependent-false
-template <typename T>
-inline constexpr bool dependent_false_v = false;
-
-// Determine the number of arguments required for structured binding.
-// See the discussion here and follow the links:
-// https://isocpp.org/blog/2016/08/cpp17-structured-bindings-convert-struct-to-a-tuple-simple-reflection
-struct any_type {
-  template<class T>
-  constexpr operator T(); // non explicit
-};
-
-template <typename T, typename... TArgs>
-decltype(void(T{std::declval<TArgs>()...}), std::true_type{}) test_is_braces_constructible(int);
-
-template <typename, typename...>
-std::false_type test_is_braces_constructible(...);
-
-template <typename T, typename... TArgs>
-using is_braces_constructible = decltype(test_is_braces_constructible<T, TArgs...>(0));
+using android::audio_utils::is_specialization_v;
+using android::audio_utils::is_braces_constructible;
 
 // Set up type comparison system
 // see std::variant for the how the type_index() may be used.

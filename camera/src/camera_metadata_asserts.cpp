@@ -112,9 +112,12 @@
 #include <aidl/android/hardware/camera/metadata/DistortionCorrectionMode.h>
 #include <aidl/android/hardware/camera/metadata/HeicAvailableHeicStreamConfigurations.h>
 #include <aidl/android/hardware/camera/metadata/HeicAvailableHeicStreamConfigurationsMaximumResolution.h>
+#include <aidl/android/hardware/camera/metadata/HeicAvailableHeicUltraHdrStreamConfigurations.h>
+#include <aidl/android/hardware/camera/metadata/HeicAvailableHeicUltraHdrStreamConfigurationsMaximumResolution.h>
 #include <aidl/android/hardware/camera/metadata/HeicInfoSupported.h>
 #include <aidl/android/hardware/camera/metadata/AutomotiveLocation.h>
 #include <aidl/android/hardware/camera/metadata/AutomotiveLensFacing.h>
+#include <aidl/android/hardware/camera/metadata/ExtensionNightModeIndicator.h>
 #include <aidl/android/hardware/camera/metadata/JpegrAvailableJpegRStreamConfigurations.h>
 #include <aidl/android/hardware/camera/metadata/JpegrAvailableJpegRStreamConfigurationsMaximumResolution.h>
 
@@ -880,6 +883,18 @@ static_assert(static_cast<int>(ANDROID_HEIC_AVAILABLE_HEIC_MIN_FRAME_DURATIONS_M
         == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_HEIC_AVAILABLE_HEIC_MIN_FRAME_DURATIONS_MAXIMUM_RESOLUTION));
 static_assert(static_cast<int>(ANDROID_HEIC_AVAILABLE_HEIC_STALL_DURATIONS_MAXIMUM_RESOLUTION)
         == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_HEIC_AVAILABLE_HEIC_STALL_DURATIONS_MAXIMUM_RESOLUTION));
+static_assert(static_cast<int>(ANDROID_HEIC_AVAILABLE_HEIC_ULTRA_HDR_STREAM_CONFIGURATIONS)
+        == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_HEIC_AVAILABLE_HEIC_ULTRA_HDR_STREAM_CONFIGURATIONS));
+static_assert(static_cast<int>(ANDROID_HEIC_AVAILABLE_HEIC_ULTRA_HDR_MIN_FRAME_DURATIONS)
+        == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_HEIC_AVAILABLE_HEIC_ULTRA_HDR_MIN_FRAME_DURATIONS));
+static_assert(static_cast<int>(ANDROID_HEIC_AVAILABLE_HEIC_ULTRA_HDR_STALL_DURATIONS)
+        == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_HEIC_AVAILABLE_HEIC_ULTRA_HDR_STALL_DURATIONS));
+static_assert(static_cast<int>(ANDROID_HEIC_AVAILABLE_HEIC_ULTRA_HDR_STREAM_CONFIGURATIONS_MAXIMUM_RESOLUTION)
+        == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_HEIC_AVAILABLE_HEIC_ULTRA_HDR_STREAM_CONFIGURATIONS_MAXIMUM_RESOLUTION));
+static_assert(static_cast<int>(ANDROID_HEIC_AVAILABLE_HEIC_ULTRA_HDR_MIN_FRAME_DURATIONS_MAXIMUM_RESOLUTION)
+        == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_HEIC_AVAILABLE_HEIC_ULTRA_HDR_MIN_FRAME_DURATIONS_MAXIMUM_RESOLUTION));
+static_assert(static_cast<int>(ANDROID_HEIC_AVAILABLE_HEIC_ULTRA_HDR_STALL_DURATIONS_MAXIMUM_RESOLUTION)
+        == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_HEIC_AVAILABLE_HEIC_ULTRA_HDR_STALL_DURATIONS_MAXIMUM_RESOLUTION));
 static_assert(static_cast<int>(ANDROID_HEIC_INFO_SUPPORTED)
         == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_HEIC_INFO_SUPPORTED));
 static_assert(static_cast<int>(ANDROID_HEIC_INFO_MAX_JPEG_APP_SEGMENTS_COUNT)
@@ -888,6 +903,8 @@ static_assert(static_cast<int>(ANDROID_AUTOMOTIVE_LOCATION)
         == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_AUTOMOTIVE_LOCATION));
 static_assert(static_cast<int>(ANDROID_AUTOMOTIVE_LENS_FACING)
         == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_AUTOMOTIVE_LENS_FACING));
+static_assert(static_cast<int>(ANDROID_EXTENSION_NIGHT_MODE_INDICATOR)
+        == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_EXTENSION_NIGHT_MODE_INDICATOR));
 static_assert(static_cast<int>(ANDROID_JPEGR_AVAILABLE_JPEG_R_STREAM_CONFIGURATIONS)
         == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_JPEGR_AVAILABLE_JPEG_R_STREAM_CONFIGURATIONS));
 static_assert(static_cast<int>(ANDROID_JPEGR_AVAILABLE_JPEG_R_MIN_FRAME_DURATIONS)
@@ -1710,6 +1727,16 @@ static_assert(static_cast<int32_t>(ANDROID_HEIC_AVAILABLE_HEIC_STREAM_CONFIGURAT
 static_assert(static_cast<int32_t>(ANDROID_HEIC_AVAILABLE_HEIC_STREAM_CONFIGURATIONS_MAXIMUM_RESOLUTION_INPUT)
         == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::HeicAvailableHeicStreamConfigurationsMaximumResolution::ANDROID_HEIC_AVAILABLE_HEIC_STREAM_CONFIGURATIONS_MAXIMUM_RESOLUTION_INPUT));
 
+static_assert(static_cast<int32_t>(ANDROID_HEIC_AVAILABLE_HEIC_ULTRA_HDR_STREAM_CONFIGURATIONS_OUTPUT)
+        == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::HeicAvailableHeicUltraHdrStreamConfigurations::ANDROID_HEIC_AVAILABLE_HEIC_ULTRA_HDR_STREAM_CONFIGURATIONS_OUTPUT));
+static_assert(static_cast<int32_t>(ANDROID_HEIC_AVAILABLE_HEIC_ULTRA_HDR_STREAM_CONFIGURATIONS_INPUT)
+        == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::HeicAvailableHeicUltraHdrStreamConfigurations::ANDROID_HEIC_AVAILABLE_HEIC_ULTRA_HDR_STREAM_CONFIGURATIONS_INPUT));
+
+static_assert(static_cast<int32_t>(ANDROID_HEIC_AVAILABLE_HEIC_ULTRA_HDR_STREAM_CONFIGURATIONS_MAXIMUM_RESOLUTION_OUTPUT)
+        == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::HeicAvailableHeicUltraHdrStreamConfigurationsMaximumResolution::ANDROID_HEIC_AVAILABLE_HEIC_ULTRA_HDR_STREAM_CONFIGURATIONS_MAXIMUM_RESOLUTION_OUTPUT));
+static_assert(static_cast<int32_t>(ANDROID_HEIC_AVAILABLE_HEIC_ULTRA_HDR_STREAM_CONFIGURATIONS_MAXIMUM_RESOLUTION_INPUT)
+        == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::HeicAvailableHeicUltraHdrStreamConfigurationsMaximumResolution::ANDROID_HEIC_AVAILABLE_HEIC_ULTRA_HDR_STREAM_CONFIGURATIONS_MAXIMUM_RESOLUTION_INPUT));
+
 static_assert(static_cast<int32_t>(ANDROID_HEIC_INFO_SUPPORTED_FALSE)
         == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::HeicInfoSupported::ANDROID_HEIC_INFO_SUPPORTED_FALSE));
 static_assert(static_cast<int32_t>(ANDROID_HEIC_INFO_SUPPORTED_TRUE)
@@ -1768,6 +1795,13 @@ static_assert(static_cast<int32_t>(ANDROID_AUTOMOTIVE_LENS_FACING_INTERIOR_SEAT_
         == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::AutomotiveLensFacing::ANDROID_AUTOMOTIVE_LENS_FACING_INTERIOR_SEAT_ROW_3_CENTER));
 static_assert(static_cast<int32_t>(ANDROID_AUTOMOTIVE_LENS_FACING_INTERIOR_SEAT_ROW_3_RIGHT)
         == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::AutomotiveLensFacing::ANDROID_AUTOMOTIVE_LENS_FACING_INTERIOR_SEAT_ROW_3_RIGHT));
+
+static_assert(static_cast<int32_t>(ANDROID_EXTENSION_NIGHT_MODE_INDICATOR_UNKNOWN)
+        == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::ExtensionNightModeIndicator::ANDROID_EXTENSION_NIGHT_MODE_INDICATOR_UNKNOWN));
+static_assert(static_cast<int32_t>(ANDROID_EXTENSION_NIGHT_MODE_INDICATOR_OFF)
+        == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::ExtensionNightModeIndicator::ANDROID_EXTENSION_NIGHT_MODE_INDICATOR_OFF));
+static_assert(static_cast<int32_t>(ANDROID_EXTENSION_NIGHT_MODE_INDICATOR_ON)
+        == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::ExtensionNightModeIndicator::ANDROID_EXTENSION_NIGHT_MODE_INDICATOR_ON));
 
 static_assert(static_cast<int32_t>(ANDROID_JPEGR_AVAILABLE_JPEG_R_STREAM_CONFIGURATIONS_OUTPUT)
         == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::JpegrAvailableJpegRStreamConfigurations::ANDROID_JPEGR_AVAILABLE_JPEG_R_STREAM_CONFIGURATIONS_OUTPUT));

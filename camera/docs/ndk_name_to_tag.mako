@@ -43,7 +43,7 @@
 
     std::map<const char*, acamera_metadata_tag_t> ndk_metadata_name_to_tag {
 % for sec in find_all_sections(metadata):
-  % for entry in remove_hal_non_visible(find_unique_entries(sec)):
+  % for entry in remove_ndk_non_visible(find_unique_entries(sec)):
     % if entry.applied_ndk_visible == "true":
       {"${entry.name}", ${csym(ndk(entry.name))}},
     % endif
