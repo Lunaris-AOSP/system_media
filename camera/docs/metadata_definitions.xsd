@@ -200,15 +200,17 @@
         <attribute name="visibility">
             <simpleType>
                 <restriction base="string">
-                    <enumeration value="system" /> <!-- do not expose to java/NDK API -->
-                    <enumeration value="java_public" /> <!-- java as public SDK. Not included in NDK -->
-                    <enumeration value="ndk_public" /> <!-- public in NDK. @hide in java -->
-                    <enumeration value="hidden" /> <!-- java as @hide. Not included in NDK -->
-                    <enumeration value="extension" /> <!-- java as @hide. Included as a public key in the extensions. -->
-                    <enumeration value="public" /> <!-- public to both java and NDK -->
+                    <enumeration value="system" /> <!-- do not expose to java/NDK API, visible to HAL -->
+                    <enumeration value="java_public" /> <!-- java as public SDK. Not included in NDK, visible to HAL -->
+                    <enumeration value="ndk_public" /> <!-- public in NDK. @hide in java, visible to HAL -->
+                    <enumeration value="hidden" /> <!-- java as @hide. Not included in NDK, visible to HAL -->
+                    <enumeration value="extension" /> <!-- java as @hide. Included as a public key in the extensions, visible to HAL -->
+                    <enumeration value="public" /> <!-- public to both java and NDK, visible to HAL -->
                     <enumeration value="fwk_only" /> <!-- java as @hide. Not included in NDK. Not included in hal interfaces. -->
                     <enumeration value="fwk_java_public" /> <!-- public to java. Not included in NDK. Not included in hal interfaces. -->
+                    <enumeration value="fwk_system_public" /> <!-- system API in java. Not included in NDK. Not included in hal interfaces -->
                     <enumeration value="fwk_public" /> <!-- public to both java and NDK. Not included in hal interfaces. -->
+                    <enumeration value="fwk_ndk_public" /> <!-- public to NDK. Not included in java or hal interfaces. -->
                 </restriction>
             </simpleType>
         </attribute>

@@ -16,8 +16,6 @@
 
 #pragma once
 
-#include "template_utils.h"
-
 #ifdef __cplusplus
 
 #include <algorithm>
@@ -25,15 +23,69 @@
 #include <type_traits>
 #include <vector>
 
+#include <audio_utils/template_utils.h>
+#include <android/binder_enums.h>
+
 namespace android::audio_utils {
+
+using android::audio_utils::has_tag_and_get_tag_v;
+using android::audio_utils::is_specialization_v;
+using android::audio_utils::op_aggregate;
+
+/**
+ * Type of elements needs custom comparison for the elementwise ops.
+ * When `CustomOpElementTypes` evaluated to true, custom comparison is implemented in this header.
+ * When `CustomOpElementTypes` evaluated to false, fallback to std implementation.
+ */
+template <typename T>
+concept CustomOpElementTypes =
+    (std::is_class_v<T> && std::is_aggregate_v<T>) ||
+    is_specialization_v<T, std::vector> || has_tag_and_get_tag_v<T>;
+
+/**
+ * Find the underlying value of AIDL union objects, and run an `op` with the underlying values
+ */
+template <typename Op, typename T, std::size_t... Is, typename... Ts>
+void aidl_union_op_helper(Op&& op, std::index_sequence<Is...>, const T& first, const Ts&... rest) {
+  (([&]() -> bool {
+     const typename T::Tag TAG = static_cast<typename T::Tag>(Is);
+     if (((first.getTag() == TAG) && ... && (rest.getTag() == TAG))) {
+       // handle the case of a sub union class inside another union
+       using FieldType = decltype(first.template get<TAG>());
+       if constexpr (has_tag_and_get_tag_v<FieldType>) {
+         static constexpr std::size_t tagSize = std::ranges::distance(
+             ndk::enum_range<typename FieldType::Tag>().begin(),
+             ndk::enum_range<typename FieldType::Tag>().end());
+         return aidl_union_op_helper(op, std::make_index_sequence<tagSize>{},
+                                     first.template get<TAG>(),
+                                     rest.template get<TAG>()...);
+       } else {
+         op.template operator()<TAG>(first.template get<TAG>(), rest.template get<TAG>()...);
+         // exit the index sequence
+         return true;
+       }
+     } else {
+       return false;
+     }
+   }()) ||
+   ...);
+}
+
+// check if the class `T` is an AIDL union with `has_tag_and_get_tag_v`
+template <typename Op, typename T, typename... Ts>
+  requires(has_tag_and_get_tag_v<T> && ... && has_tag_and_get_tag_v<Ts>)
+void aidl_union_op(Op&& op, const T& first, const Ts&... rest) {
+  static constexpr std::size_t tagSize =
+      std::ranges::distance(ndk::enum_range<typename T::Tag>().begin(),
+                            ndk::enum_range<typename T::Tag>().end());
+  aidl_union_op_helper(op, std::make_index_sequence<tagSize>{}, first, rest...);
+}
 
 /**
  * Utility functions for clamping values of different types within a specified
- * range of [min, max]. Supported types include primitive types, structs, and
- * vectors.
+ * range of [min, max]. Supported types are evaluated with
+ * `CustomOpElementTypes`.
  *
- * - For **primitive types**, `std::clamp` is used directly, std::string
- *   comparison and clamp is performed lexicographically.
  * - For **structures**, each member is clamped individually and reassembled
  *   after clamping.
  * - For **vectors**, the `min` and `max` ranges (if defined) may have either
@@ -41,6 +93,11 @@ namespace android::audio_utils {
  *   only one element, each target vector element is clamped within that range.
  *   If `min`/`max` match the target's size, each target element is clamped
  *   within the corresponding `min`/`max` elements.
+ * - For **AIDL union** class, `aidl_union_op` is used to find the underlying
+ *   value automatically first, and then do `elementwise_clamp` on the
+ *   underlying value.
+ * - For all other types, `std::clamp` is used directly, std::string
+ *   comparison and clamp is performed lexicographically.
  *
  * The maximum number of members supported in a structure is `kMaxStructMember`
  * as defined in the template_utils.h header.
@@ -51,16 +108,21 @@ namespace android::audio_utils {
  */
 template <typename T>
   requires std::is_class_v<T> && std::is_aggregate_v<T>
+[[nodiscard]]
+std::optional<T> elementwise_clamp(const T& target, const T& min, const T& max);
+
+template <typename T>
+  requires has_tag_and_get_tag_v<T>
+[[nodiscard]]
 std::optional<T> elementwise_clamp(const T& target, const T& min, const T& max);
 
 /**
- * @brief Clamp function for primitive types, including integers, floating-point
- * types, enums, and `std::string`.
+ * @brief Clamp function for all other types, `std::clamp` is used.
  */
 template <typename T>
-  requires PrimitiveType<T>
-std::optional<T> elementwise_clamp(const T& target, const T& min,
-                                   const T& max) {
+  requires(!CustomOpElementTypes<T>)
+[[nodiscard]]
+std::optional<T> elementwise_clamp(const T& target, const T& min, const T& max) {
   if (min > max) {
     return std::nullopt;
   }
@@ -100,8 +162,8 @@ std::optional<T> elementwise_clamp(const T& target, const T& min,
  */
 template <typename T>
   requires is_specialization_v<T, std::vector>
-std::optional<T> elementwise_clamp(const T& target, const T& min,
-                                   const T& max) {
+[[nodiscard]]
+std::optional<T> elementwise_clamp(const T& target, const T& min, const T& max) {
   using ElemType = typename T::value_type;
 
   const size_t min_size = min.size(), max_size = max.size(),
@@ -163,19 +225,35 @@ std::optional<T> elementwise_clamp(const T& target, const T& min,
 /**
  * @brief Clamp function for class and aggregate type (structs).
  *
- * Uses `opAggregate` with clampOp to perform clamping on each member of the
+ * Uses `opAggregate` with elementwise_clamp_op to perform clamping on each member of the
  * aggregate type `T`, the max number of supported members in `T` is
  * `kMaxStructMember`.
  */
 template <typename T>
   requires std::is_class_v<T> && std::is_aggregate_v<T>
-std::optional<T> elementwise_clamp(const T& target, const T& min,
-                                   const T& max) {
-  const auto clampOp = [](const auto& a, const auto& b, const auto& c) {
+[[nodiscard]]
+std::optional<T> elementwise_clamp(const T& target, const T& min, const T& max) {
+  const auto elementwise_clamp_op = [](const auto& a, const auto& b, const auto& c) {
     return elementwise_clamp(a, b, c);
   };
+  return op_aggregate(elementwise_clamp_op, target, min, max);
+}
 
-  return op_aggregate(clampOp, target, min, max);
+template <typename T>
+  requires has_tag_and_get_tag_v<T>
+[[nodiscard]]
+std::optional<T> elementwise_clamp(const T& target, const T& min, const T& max) {
+  std::optional<T> ret = std::nullopt;
+
+  auto elementwise_clamp_op = [&]<typename T::Tag TAG, typename P>(
+                          const P& p1, const P& p2, const P& p3) {
+    auto p = elementwise_clamp(p1, p2, p3);
+    if (!p) return;
+    ret = T::template make<TAG>(*p);
+  };
+
+  aidl_union_op(elementwise_clamp_op, target, min, max);
+  return ret;
 }
 
 /**
@@ -184,15 +262,18 @@ std::optional<T> elementwise_clamp(const T& target, const T& min,
  * the element-wise min of them, while the `elementwise_max` function
  * calculates the element-wise max.
  *
- * - For **primitive types**, `std::min` and `std::max` are used directly to
- * determine the min and max.
  * - For **vectors**, the two input vectors may have either `0`, `1`, or `n`
- * elements. If both input vectors have more than one element, their sizes must
- * match. If either input vector has only one element, it is compared with each
- * element of the other input vector.
+ *   elements. If both input vectors have more than one element, their sizes
+ *   must match. If either input vector has only one element, it is compared
+ *   with each element of the other input vector.
  * - For **structures (aggregate types)**, each element field is compared
- * individually, and the final result is reassembled from the element field
- * comparison result.
+ *   individually, and the final result is reassembled from the element field
+ *   comparison result.
+ * - For **AIDL union** class, `aidl_union_op` is used to find the underlying
+ *   value automatically first, and then do elementwise min/max on the
+ *   underlying value.
+ * - For all other types, `std::min`/`std::max` is used directly, std::string
+ *   comparison and clamp is performed lexicographically.
  *
  * The maximum number of element fields supported in a structure is defined by
  * `android::audio_utils::kMaxStructMember` as defined in the `template_utils.h`
@@ -201,20 +282,31 @@ std::optional<T> elementwise_clamp(const T& target, const T& min,
 
 template <typename T>
   requires std::is_class_v<T> && std::is_aggregate_v<T>
+[[nodiscard]]
+std::optional<T> elementwise_min(const T& a, const T& b);
+
+template <typename T>
+  requires has_tag_and_get_tag_v<T>
+[[nodiscard]]
 std::optional<T> elementwise_min(const T& a, const T& b);
 
 template <typename T>
   requires std::is_class_v<T> && std::is_aggregate_v<T>
+[[nodiscard]]
+std::optional<T> elementwise_max(const T& a, const T& b);
+
+template <typename T>
+  requires has_tag_and_get_tag_v<T>
+[[nodiscard]]
 std::optional<T> elementwise_max(const T& a, const T& b);
 
 /**
- * @brief Determines the min/max for primitive type values,
- * including arithmetic types, enums, and `std::string`.
+ * @brief Determines the min/max for all other type values.
  *
- * @tparam T The primitive type.
+ * @tparam T The target type.
  * @param a The first value.
  * @param b The second value.
- * @return The min/max of the two primitive type inputs.
+ * @return The min/max of the two inputs.
  *
  * Example:
  * int a = 3;
@@ -223,13 +315,15 @@ std::optional<T> elementwise_max(const T& a, const T& b);
  * auto result = elementwise_max(a, b);  // result will be 5
  */
 template <typename T>
-  requires PrimitiveType<T>
+  requires(!CustomOpElementTypes<T>)
+[[nodiscard]]
 std::optional<T> elementwise_min(const T& a, const T& b) {
   return std::min(a, b);
 }
 
 template <typename T>
-  requires PrimitiveType<T>
+  requires(!CustomOpElementTypes<T>)
+[[nodiscard]]
 std::optional<T> elementwise_max(const T& a, const T& b) {
   return std::max(a, b);
 }
@@ -272,6 +366,7 @@ std::optional<T> elementwise_max(const T& a, const T& b) {
  */
 template <typename T>
   requires is_specialization_v<T, std::vector>
+[[nodiscard]]
 std::optional<T> elementwise_min(const T& a, const T& b) {
   T result;
   const size_t a_size = a.size(), b_size = b.size();
@@ -310,6 +405,7 @@ std::optional<T> elementwise_min(const T& a, const T& b) {
 
 template <typename T>
   requires is_specialization_v<T, std::vector>
+[[nodiscard]]
 std::optional<T> elementwise_max(const T& a, const T& b) {
   T result;
   const size_t a_size = a.size(), b_size = b.size();
@@ -362,24 +458,51 @@ std::optional<T> elementwise_max(const T& a, const T& b) {
  */
 template <typename T>
   requires std::is_class_v<T> && std::is_aggregate_v<T>
+[[nodiscard]]
 std::optional<T> elementwise_min(const T& a, const T& b) {
-  const auto elementwise_minOp = [](const auto& a_member,
-                                    const auto& b_member) {
+  const auto elementwise_min_op = [](const auto& a_member, const auto& b_member) {
     return elementwise_min(a_member, b_member);
   };
-
-  return op_aggregate(elementwise_minOp, a, b);
+  return op_aggregate(elementwise_min_op, a, b);
 }
 
 template <typename T>
   requires std::is_class_v<T> && std::is_aggregate_v<T>
+[[nodiscard]]
 std::optional<T> elementwise_max(const T& a, const T& b) {
-  const auto elementwise_maxOp = [](const auto& a_member,
-                                    const auto& b_member) {
+  const auto elementwise_max_op = [](const auto& a_member, const auto& b_member) {
     return elementwise_max(a_member, b_member);
   };
+  return op_aggregate(elementwise_max_op, a, b);
+}
 
-  return op_aggregate(elementwise_maxOp, a, b);
+template <typename T>
+  requires has_tag_and_get_tag_v<T>
+[[nodiscard]]
+std::optional<T> elementwise_min(const T& a, const T& b) {
+  std::optional<T> ret = std::nullopt;
+  auto elementwise_min_op = [&]<typename T::Tag TAG, typename P>(const P& p1, const P& p2) {
+    auto p = elementwise_min(p1, p2);
+    if (!p) return;
+    ret = T::template make<TAG>(*p);
+  };
+  aidl_union_op(elementwise_min_op, a, b);
+  return ret;
+}
+
+// handle the case of a sub union class inside another union
+template <typename T>
+  requires has_tag_and_get_tag_v<T>
+[[nodiscard]]
+std::optional<T> elementwise_max(const T& a, const T& b) {
+  std::optional<T> ret = std::nullopt;
+  auto elementwise_max_op = [&]<typename T::Tag TAG, typename P>(const P& p1, const P& p2) {
+    auto p = elementwise_max(p1, p2);
+    if (!p) return;
+    ret = T::template make<TAG>(*p);
+  };
+  aidl_union_op(elementwise_max_op, a, b);
+  return ret;
 }
 
 }  // namespace android::audio_utils

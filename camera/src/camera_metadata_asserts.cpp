@@ -51,6 +51,7 @@
 #include <aidl/android/hardware/camera/metadata/ControlAutoframingAvailable.h>
 #include <aidl/android/hardware/camera/metadata/ControlAutoframingState.h>
 #include <aidl/android/hardware/camera/metadata/ControlLowLightBoostState.h>
+#include <aidl/android/hardware/camera/metadata/ControlAePriorityMode.h>
 #include <aidl/android/hardware/camera/metadata/DemosaicMode.h>
 #include <aidl/android/hardware/camera/metadata/EdgeMode.h>
 #include <aidl/android/hardware/camera/metadata/FlashMode.h>
@@ -191,6 +192,8 @@ static_assert(static_cast<int>(ANDROID_EXTENSION)
         == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataSection::ANDROID_EXTENSION));
 static_assert(static_cast<int>(ANDROID_JPEGR)
         == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataSection::ANDROID_JPEGR));
+static_assert(static_cast<int>(ANDROID_SHARED_SESSION)
+        == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataSection::ANDROID_SHARED_SESSION));
 static_assert(static_cast<int>(VENDOR_SECTION)
         == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataSection::VENDOR_SECTION));
 
@@ -262,6 +265,8 @@ static_assert(static_cast<int>(ANDROID_EXTENSION_START)
         == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataSectionStart::ANDROID_EXTENSION_START));
 static_assert(static_cast<int>(ANDROID_JPEGR_START)
         == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataSectionStart::ANDROID_JPEGR_START));
+static_assert(static_cast<int>(ANDROID_SHARED_SESSION_START)
+        == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataSectionStart::ANDROID_SHARED_SESSION_START));
 static_assert(static_cast<int>(VENDOR_SECTION_START)
         == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataSectionStart::VENDOR_SECTION_START));
 
@@ -397,6 +402,10 @@ static_assert(static_cast<int>(ANDROID_CONTROL_LOW_LIGHT_BOOST_INFO_LUMINANCE_RA
         == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_CONTROL_LOW_LIGHT_BOOST_INFO_LUMINANCE_RANGE));
 static_assert(static_cast<int>(ANDROID_CONTROL_LOW_LIGHT_BOOST_STATE)
         == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_CONTROL_LOW_LIGHT_BOOST_STATE));
+static_assert(static_cast<int>(ANDROID_CONTROL_AE_PRIORITY_MODE)
+        == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_CONTROL_AE_PRIORITY_MODE));
+static_assert(static_cast<int>(ANDROID_CONTROL_AE_AVAILABLE_PRIORITY_MODES)
+        == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_CONTROL_AE_AVAILABLE_PRIORITY_MODES));
 static_assert(static_cast<int>(ANDROID_DEMOSAIC_MODE)
         == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_DEMOSAIC_MODE));
 static_assert(static_cast<int>(ANDROID_EDGE_MODE)
@@ -1209,6 +1218,13 @@ static_assert(static_cast<int32_t>(ANDROID_CONTROL_LOW_LIGHT_BOOST_STATE_INACTIV
         == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::ControlLowLightBoostState::ANDROID_CONTROL_LOW_LIGHT_BOOST_STATE_INACTIVE));
 static_assert(static_cast<int32_t>(ANDROID_CONTROL_LOW_LIGHT_BOOST_STATE_ACTIVE)
         == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::ControlLowLightBoostState::ANDROID_CONTROL_LOW_LIGHT_BOOST_STATE_ACTIVE));
+
+static_assert(static_cast<int32_t>(ANDROID_CONTROL_AE_PRIORITY_MODE_OFF)
+        == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::ControlAePriorityMode::ANDROID_CONTROL_AE_PRIORITY_MODE_OFF));
+static_assert(static_cast<int32_t>(ANDROID_CONTROL_AE_PRIORITY_MODE_SENSOR_SENSITIVITY_PRIORITY)
+        == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::ControlAePriorityMode::ANDROID_CONTROL_AE_PRIORITY_MODE_SENSOR_SENSITIVITY_PRIORITY));
+static_assert(static_cast<int32_t>(ANDROID_CONTROL_AE_PRIORITY_MODE_SENSOR_EXPOSURE_TIME_PRIORITY)
+        == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::ControlAePriorityMode::ANDROID_CONTROL_AE_PRIORITY_MODE_SENSOR_EXPOSURE_TIME_PRIORITY));
 
 static_assert(static_cast<int32_t>(ANDROID_DEMOSAIC_MODE_FAST)
         == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::DemosaicMode::ANDROID_DEMOSAIC_MODE_FAST));

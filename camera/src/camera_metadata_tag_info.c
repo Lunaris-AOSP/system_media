@@ -66,6 +66,7 @@ const char *camera_metadata_section_names[ANDROID_SECTION_COUNT] = {
     [ANDROID_AUTOMOTIVE_LENS]      = "android.automotive.lens",
     [ANDROID_EXTENSION]            = "android.extension",
     [ANDROID_JPEGR]                = "android.jpegr",
+    [ANDROID_SHARED_SESSION]       = "android.sharedSession",
 };
 
 unsigned int camera_metadata_section_bounds[ANDROID_SECTION_COUNT][2] = {
@@ -138,6 +139,8 @@ unsigned int camera_metadata_section_bounds[ANDROID_SECTION_COUNT][2] = {
                                        ANDROID_EXTENSION_END },
     [ANDROID_JPEGR]                = { ANDROID_JPEGR_START,
                                        ANDROID_JPEGR_END },
+    [ANDROID_SHARED_SESSION]       = { ANDROID_SHARED_SESSION_START,
+                                       ANDROID_SHARED_SESSION_END },
 };
 
 static tag_info_t android_color_correction[ANDROID_COLOR_CORRECTION_END -
@@ -294,6 +297,10 @@ static tag_info_t android_control[ANDROID_CONTROL_END -
     { "lowLightBoostState",            TYPE_BYTE   },
     [ ANDROID_CONTROL_ZOOM_METHOD - ANDROID_CONTROL_START ] =
     { "zoomMethod",                    TYPE_BYTE   },
+    [ ANDROID_CONTROL_AE_PRIORITY_MODE - ANDROID_CONTROL_START ] =
+    { "aePriorityMode",                TYPE_BYTE   },
+    [ ANDROID_CONTROL_AE_AVAILABLE_PRIORITY_MODES - ANDROID_CONTROL_START ] =
+    { "aeAvailablePriorityModes",      TYPE_BYTE   },
 };
 
 static tag_info_t android_demosaic[ANDROID_DEMOSAIC_END -
@@ -1014,6 +1021,14 @@ static tag_info_t android_jpegr[ANDROID_JPEGR_END -
                                         TYPE_INT64  },
 };
 
+static tag_info_t android_shared_session[ANDROID_SHARED_SESSION_END -
+        ANDROID_SHARED_SESSION_START] = {
+    [ ANDROID_SHARED_SESSION_COLOR_SPACE - ANDROID_SHARED_SESSION_START ] =
+    { "colorSpace",                    TYPE_BYTE   },
+    [ ANDROID_SHARED_SESSION_OUTPUT_CONFIGURATIONS - ANDROID_SHARED_SESSION_START ] =
+    { "outputConfigurations",          TYPE_INT64  },
+};
+
 
 tag_info_t *tag_info[ANDROID_SECTION_COUNT] = {
     android_color_correction,
@@ -1050,6 +1065,7 @@ tag_info_t *tag_info[ANDROID_SECTION_COUNT] = {
     android_automotive_lens,
     android_extension,
     android_jpegr,
+    android_shared_session,
 };
 
 static int32_t tag_permission_needed[18] = {
@@ -1978,6 +1994,28 @@ int camera_metadata_enum_snprint(uint32_t tag,
                 default:
                     msg = "error: enum value out of range";
             }
+            break;
+        }
+        case ANDROID_CONTROL_AE_PRIORITY_MODE: {
+            switch (value) {
+                case ANDROID_CONTROL_AE_PRIORITY_MODE_OFF:
+                    msg = "OFF";
+                    ret = 0;
+                    break;
+                case ANDROID_CONTROL_AE_PRIORITY_MODE_SENSOR_SENSITIVITY_PRIORITY:
+                    msg = "SENSOR_SENSITIVITY_PRIORITY";
+                    ret = 0;
+                    break;
+                case ANDROID_CONTROL_AE_PRIORITY_MODE_SENSOR_EXPOSURE_TIME_PRIORITY:
+                    msg = "SENSOR_EXPOSURE_TIME_PRIORITY";
+                    ret = 0;
+                    break;
+                default:
+                    msg = "error: enum value out of range";
+            }
+            break;
+        }
+        case ANDROID_CONTROL_AE_AVAILABLE_PRIORITY_MODES: {
             break;
         }
 
@@ -3674,6 +3712,10 @@ int camera_metadata_enum_snprint(uint32_t tag,
                     msg = "VANILLA_ICE_CREAM";
                     ret = 0;
                     break;
+                case ANDROID_INFO_SESSION_CONFIGURATION_QUERY_VERSION_BAKLAVA:
+                    msg = "BAKLAVA";
+                    ret = 0;
+                    break;
                 default:
                     msg = "error: enum value out of range";
             }
@@ -4181,6 +4223,33 @@ int camera_metadata_enum_snprint(uint32_t tag,
             break;
         }
         case ANDROID_JPEGR_AVAILABLE_JPEG_R_STALL_DURATIONS_MAXIMUM_RESOLUTION: {
+            break;
+        }
+
+        case ANDROID_SHARED_SESSION_COLOR_SPACE: {
+            switch (value) {
+                case ANDROID_SHARED_SESSION_COLOR_SPACE_UNSPECIFIED:
+                    msg = "UNSPECIFIED";
+                    ret = 0;
+                    break;
+                case ANDROID_SHARED_SESSION_COLOR_SPACE_SRGB:
+                    msg = "SRGB";
+                    ret = 0;
+                    break;
+                case ANDROID_SHARED_SESSION_COLOR_SPACE_DISPLAY_P3:
+                    msg = "DISPLAY_P3";
+                    ret = 0;
+                    break;
+                case ANDROID_SHARED_SESSION_COLOR_SPACE_BT2020_HLG:
+                    msg = "BT2020_HLG";
+                    ret = 0;
+                    break;
+                default:
+                    msg = "error: enum value out of range";
+            }
+            break;
+        }
+        case ANDROID_SHARED_SESSION_OUTPUT_CONFIGURATIONS: {
             break;
         }
 
@@ -5253,6 +5322,30 @@ int camera_metadata_enum_value(uint32_t tag,
                     ret = 0;
                     break;
                 }
+            break;
+        }
+        case ANDROID_CONTROL_AE_PRIORITY_MODE: {
+                enumName = "OFF";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_CONTROL_AE_PRIORITY_MODE_OFF;
+                    ret = 0;
+                    break;
+                }
+                enumName = "SENSOR_SENSITIVITY_PRIORITY";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_CONTROL_AE_PRIORITY_MODE_SENSOR_SENSITIVITY_PRIORITY;
+                    ret = 0;
+                    break;
+                }
+                enumName = "SENSOR_EXPOSURE_TIME_PRIORITY";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_CONTROL_AE_PRIORITY_MODE_SENSOR_EXPOSURE_TIME_PRIORITY;
+                    ret = 0;
+                    break;
+                }
+            break;
+        }
+        case ANDROID_CONTROL_AE_AVAILABLE_PRIORITY_MODES: {
             break;
         }
 
@@ -7166,6 +7259,12 @@ int camera_metadata_enum_value(uint32_t tag,
                     ret = 0;
                     break;
                 }
+                enumName = "BAKLAVA";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_INFO_SESSION_CONFIGURATION_QUERY_VERSION_BAKLAVA;
+                    ret = 0;
+                    break;
+                }
             break;
         }
         case ANDROID_INFO_DEVICE_ID: {
@@ -7718,6 +7817,37 @@ int camera_metadata_enum_value(uint32_t tag,
             break;
         }
         case ANDROID_JPEGR_AVAILABLE_JPEG_R_STALL_DURATIONS_MAXIMUM_RESOLUTION: {
+            break;
+        }
+
+        case ANDROID_SHARED_SESSION_COLOR_SPACE: {
+                enumName = "UNSPECIFIED";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_SHARED_SESSION_COLOR_SPACE_UNSPECIFIED;
+                    ret = 0;
+                    break;
+                }
+                enumName = "SRGB";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_SHARED_SESSION_COLOR_SPACE_SRGB;
+                    ret = 0;
+                    break;
+                }
+                enumName = "DISPLAY_P3";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_SHARED_SESSION_COLOR_SPACE_DISPLAY_P3;
+                    ret = 0;
+                    break;
+                }
+                enumName = "BT2020_HLG";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_SHARED_SESSION_COLOR_SPACE_BT2020_HLG;
+                    ret = 0;
+                    break;
+                }
+            break;
+        }
+        case ANDROID_SHARED_SESSION_OUTPUT_CONFIGURATIONS: {
             break;
         }
 

@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-#include <audio_utils/elementwise_op.h>
+#include <string>
+
+#include <audio_utils/template_utils.h>
 #include <gtest/gtest.h>
 #include <log/log.h>
-
-#include <string>
+#include <system/elementwise_op.h>
 
 using android::audio_utils::elementwise_clamp;
 using android::audio_utils::elementwise_max;

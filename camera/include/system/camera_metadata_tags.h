@@ -69,6 +69,7 @@ typedef enum camera_metadata_section {
     ANDROID_AUTOMOTIVE_LENS,
     ANDROID_EXTENSION,
     ANDROID_JPEGR,
+    ANDROID_SHARED_SESSION,
     ANDROID_SECTION_COUNT,
 
     VENDOR_SECTION = 0x8000
@@ -117,6 +118,7 @@ typedef enum camera_metadata_section_start {
     ANDROID_AUTOMOTIVE_LENS_START  = ANDROID_AUTOMOTIVE_LENS   << 16,
     ANDROID_EXTENSION_START        = ANDROID_EXTENSION         << 16,
     ANDROID_JPEGR_START            = ANDROID_JPEGR             << 16,
+    ANDROID_SHARED_SESSION_START   = ANDROID_SHARED_SESSION    << 16,
     VENDOR_SECTION_START           = VENDOR_SECTION            << 16
 } camera_metadata_section_start_t;
 
@@ -208,6 +210,8 @@ typedef enum camera_metadata_tag {
                                                       // float[]      | public       | HIDL v3.10
     ANDROID_CONTROL_LOW_LIGHT_BOOST_STATE,            // enum         | public       | HIDL v3.10
     ANDROID_CONTROL_ZOOM_METHOD,                      // enum         | fwk_public
+    ANDROID_CONTROL_AE_PRIORITY_MODE,                 // enum         | public       | HIDL v3.11
+    ANDROID_CONTROL_AE_AVAILABLE_PRIORITY_MODES,      // byte[]       | public       | HIDL v3.11
     ANDROID_CONTROL_END,
 
     ANDROID_DEMOSAIC_MODE =                           // enum         | system       | HIDL v3.2
@@ -619,6 +623,11 @@ typedef enum camera_metadata_tag {
                                                       // int64[]      | ndk_public   | HIDL v3.9
     ANDROID_JPEGR_END,
 
+    ANDROID_SHARED_SESSION_COLOR_SPACE =              // enum         | fwk_only
+            ANDROID_SHARED_SESSION_START,
+    ANDROID_SHARED_SESSION_OUTPUT_CONFIGURATIONS,     // int64[]      | fwk_only
+    ANDROID_SHARED_SESSION_END,
+
 } camera_metadata_tag_t;
 
 /**
@@ -893,6 +902,13 @@ typedef enum camera_metadata_enum_android_control_zoom_method {
     ANDROID_CONTROL_ZOOM_METHOD_AUTO                                 = 0,
     ANDROID_CONTROL_ZOOM_METHOD_ZOOM_RATIO                           = 1,
 } camera_metadata_enum_android_control_zoom_method_t;
+
+// ANDROID_CONTROL_AE_PRIORITY_MODE
+typedef enum camera_metadata_enum_android_control_ae_priority_mode {
+    ANDROID_CONTROL_AE_PRIORITY_MODE_OFF                            , // HIDL v3.11
+    ANDROID_CONTROL_AE_PRIORITY_MODE_SENSOR_SENSITIVITY_PRIORITY    , // HIDL v3.11
+    ANDROID_CONTROL_AE_PRIORITY_MODE_SENSOR_EXPOSURE_TIME_PRIORITY  , // HIDL v3.11
+} camera_metadata_enum_android_control_ae_priority_mode_t;
 
 
 // ANDROID_DEMOSAIC_MODE
@@ -1351,6 +1367,7 @@ typedef enum camera_metadata_enum_android_info_session_configuration_query_versi
                                                                       = 34,
     ANDROID_INFO_SESSION_CONFIGURATION_QUERY_VERSION_VANILLA_ICE_CREAM
                                                                       = 35,
+    ANDROID_INFO_SESSION_CONFIGURATION_QUERY_VERSION_BAKLAVA         = 36,
 } camera_metadata_enum_android_info_session_configuration_query_version_t;
 
 
@@ -1522,5 +1539,14 @@ typedef enum camera_metadata_enum_android_jpegr_available_jpeg_r_stream_configur
     ANDROID_JPEGR_AVAILABLE_JPEG_R_STREAM_CONFIGURATIONS_MAXIMUM_RESOLUTION_INPUT
                                                                      , // HIDL v3.9
 } camera_metadata_enum_android_jpegr_available_jpeg_r_stream_configurations_maximum_resolution_t;
+
+
+// ANDROID_SHARED_SESSION_COLOR_SPACE
+typedef enum camera_metadata_enum_android_shared_session_color_space {
+    ANDROID_SHARED_SESSION_COLOR_SPACE_UNSPECIFIED                   = -1,
+    ANDROID_SHARED_SESSION_COLOR_SPACE_SRGB                          = 0,
+    ANDROID_SHARED_SESSION_COLOR_SPACE_DISPLAY_P3                    = 7,
+    ANDROID_SHARED_SESSION_COLOR_SPACE_BT2020_HLG                    = 16,
+} camera_metadata_enum_android_shared_session_color_space_t;
 
 

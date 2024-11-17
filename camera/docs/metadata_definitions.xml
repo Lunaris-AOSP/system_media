@@ -166,6 +166,9 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
     </typedef>
     <typedef name="lensIntrinsicsSample">
         <language name="java">android.hardware.camera2.params.LensIntrinsicsSample</language>
+      </typedef>
+    <typedef name="sharedSessionConfiguration">
+        <language name="java">android.hardware.camera2.params.SharedSessionConfiguration</language>
     </typedef>
   </types>
 
@@ -855,7 +858,9 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
             application's selected exposure time, sensor sensitivity,
             and frame duration (android.sensor.exposureTime,
             android.sensor.sensitivity, and
-            android.sensor.frameDuration). If one of the FLASH modes
+            android.sensor.frameDuration). If android.control.aePriorityMode is
+            enabled, the relevant priority CaptureRequest settings will not be overridden.
+            See android.control.aePriorityMode for more details. If one of the FLASH modes
             is selected, the camera device's flash unit controls are
             also overridden.
 
@@ -4130,6 +4135,86 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
         <clone entry="android.control.zoomMethod" kind="controls">
         </clone>
       </dynamic>
+      <controls>
+        <entry name="aePriorityMode" type="byte" visibility="public"
+            optional="true" enum="true" aconfig_flag="ae_priority" hal_version="3.11">
+          <enum>
+            <value>OFF
+              <notes>
+                Disable AE priority mode. This is the default value.
+              </notes>
+            </value>
+            <value>SENSOR_SENSITIVITY_PRIORITY
+              <notes>
+              The camera device's auto-exposure routine is active and
+              prioritizes the application-selected ISO (android.sensor.sensitivity).
+
+              The application has control over android.sensor.sensitivity while
+              the application's values for android.sensor.exposureTime and
+              android.sensor.frameDuration are ignored.
+              </notes>
+            </value>
+            <value>SENSOR_EXPOSURE_TIME_PRIORITY
+              <notes>
+              The camera device's auto-exposure routine is active and
+              prioritizes the application-selected exposure time
+              (android.sensor.exposureTime).
+
+              The application has control over android.sensor.exposureTime while
+              the application's values for android.sensor.sensitivity and
+              android.sensor.frameDuration are ignored.
+              </notes>
+            </value>
+          </enum>
+          <description>
+            Turn on AE priority mode.
+          </description>
+          <details>
+            This control is only effective if android.control.mode is
+            AUTO and android.control.aeMode is set to one of its
+            ON modes, with the exception of ON_LOW_LIGHT_BOOST_BRIGHTNESS_PRIORITY.
+
+            When a priority mode is enabled, the camera device's
+            auto-exposure routine will maintain the application's
+            selected parameters relevant to the priority mode while overriding
+            the remaining exposure parameters
+            (android.sensor.exposureTime, android.sensor.sensitivity, and
+            android.sensor.frameDuration). For example, if
+            SENSOR_SENSITIVITY_PRIORITY mode is enabled, the camera device will
+            maintain the application-selected android.sensor.sensitivity
+            while adjusting android.sensor.exposureTime
+            and android.sensor.frameDuration. The overridden fields for a
+            given capture will be available in its CaptureResult.
+          </details>
+          <hal_details>
+          The total sensitivity applied for SENSOR_SENSITIVITY_PRIORITY should not be
+          adjusted by any HAL applied android.control.postRawSensitivityBoost.
+          </hal_details>
+        </entry>
+      </controls>
+      <dynamic>
+        <clone entry="android.control.aePriorityMode" kind="controls">
+        </clone>
+      </dynamic>
+      <static>
+        <entry name="aeAvailablePriorityModes" type="byte" visibility="public"
+               type_notes="list of enums" container="array" typedef="enumList"
+               aconfig_flag="ae_priority" hal_version="3.11">
+          <array>
+            <size>n</size>
+          </array>
+          <description>
+            List of auto-exposure priority modes for android.control.aePriorityMode
+            that are supported by this camera device.
+          </description>
+          <range>Any value listed in android.control.aePriorityMode</range>
+          <details>
+            This entry lists the valid modes for
+            android.control.aePriorityMode for this camera device.
+            If no AE priority modes are available for a device, this will only list OFF.
+          </details>
+        </entry>
+      </static>
     </section>
     <section name="demosaic">
       <controls>
@@ -9714,7 +9799,9 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
           The final exposure time used will be available in the output capture result.
 
           This control is only effective if android.control.aeMode or android.control.mode is set to
-          OFF; otherwise the auto-exposure algorithm will override this value.
+          OFF; otherwise the auto-exposure algorithm will override this value. However, in the
+          case that android.control.aePriorityMode is set to SENSOR_EXPOSURE_TIME_PRIORITY, this
+          control will be effective and not controlled by the auto-exposure algorithm.
           </details>
           <tag id="V1" />
         </entry>
@@ -9826,7 +9913,9 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
           output capture result.
 
           This control is only effective if android.control.aeMode or android.control.mode is set to
-          OFF; otherwise the auto-exposure algorithm will override this value.
+          OFF; otherwise the auto-exposure algorithm will override this value. However, in the
+          case that android.control.aePriorityMode is set to SENSOR_SENSITIVITY_PRIORITY, this
+          control will be effective and not controlled by the auto-exposure algorithm.
 
           Note that for devices supporting postRawSensitivityBoost, the total sensitivity applied
           to the final processed image is the combination of android.sensor.sensitivity and
@@ -13217,6 +13306,7 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
           <enum>
             <value id="34">UPSIDE_DOWN_CAKE</value>
             <value id="35">VANILLA_ICE_CREAM</value>
+            <value id="36" hal_version="3.11">BAKLAVA</value>
           </enum>
           <description>The version of the session configuration query
           {@link android.hardware.camera2.CameraDevice.CameraDeviceSetup#isSessionConfigurationSupported}
@@ -13281,6 +13371,15 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
           All of the above configurations can be set up with a SessionConfiguration. The list of
           OutputConfiguration contains the stream configurations and DYNAMIC_RANGE_PROFILE, and
           the AE_TARGET_FPS_RANGE and VIDEO_STABILIZATION_MODE are set as session parameters.
+
+          When set to BAKLAVA, the additional stream combinations below are verified
+          by the compliance tests:
+
+          Target 1    |     Size      | Target 2        |     Size     |
+          :----------:|:-------------:|:---------------:|:------------:|
+          PRIV        | S1080P        | PRIV            | S1080P       |
+          PRIV        | S1080P        | PRIV            | S1440P       |
+
           </details>
           <hal_details>
           Preview stabilization must be orthogonal to other features. In other words, if preview
@@ -15153,6 +15252,66 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
           <details>
           Refer to android.jpegr.availableJpegRStallDurations for details.
           </details>
+        </entry>
+      </static>
+    </section>
+    <section name="sharedSession">
+      <static>
+        <entry name="colorSpace" type="byte" visibility="fwk_only" optional="true"
+          enum="true" aconfig_flag="camera_multi_client" hal_version="3.11">
+          <enum>
+            <value id="-1">UNSPECIFIED</value>
+            <value id="0">SRGB</value>
+            <value id="7">DISPLAY_P3</value>
+            <value id="16">BT2020_HLG</value>
+          </enum>
+          <description>Color space used for shared session configuration for all the output targets
+            when camera is opened in shared mode. This should be one of the values specified in
+            availableColorSpaceProfilesMap.
+          </description>
+          <hal_details>
+            Do not set this property directly. Android camera framework will generate this tag if the
+            camera device can be opened in shared mode.
+          </hal_details>
+        </entry>
+        <entry name="outputConfigurations" type="int64" visibility="fwk_only"
+          optional="true" container="array" aconfig_flag="camera_multi_client"
+          hal_version="3.11">
+          <array>
+            <size>n</size>
+          </array>
+          <description>List of shared output configurations that this camera device supports when
+            camera is opened in shared mode. Array contains following entries for each supported
+            shared configuration:
+            1) surface type
+            2) width
+            3) height
+            4) format
+            5) mirrorMode
+            6) useReadoutTimestamp
+            7) timestampBase
+            8) dataspace
+            9) usage
+            10) streamUsecase
+            11) physical camera id len
+            12) physical camera id as UTF-8 null terminated string.
+          </description>
+          <hal_details>
+            Do not set this property directly. Android camera framework will generate this tag if the
+            camera device can be opened in shared mode.
+          </hal_details>
+        </entry>
+        <entry name="configuration" type="byte" visibility="fwk_system_public"
+          synthetic="true" optional="true" typedef="sharedSessionConfiguration"
+          aconfig_flag="camera_multi_client">
+          <description>The available stream configurations that this camera device supports for
+            shared capture session when camera is opened in shared mode. Android camera framework
+            will generate this tag if the camera device can be opened in shared mode.
+          </description>
+          <hal_details>
+            Do not set this property directly (it is synthetic and will not be available at the
+            HAL layer);
+          </hal_details>
         </entry>
       </static>
     </section>

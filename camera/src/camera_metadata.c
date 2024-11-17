@@ -1211,6 +1211,11 @@ static void print_data(int fd, const uint8_t *data_ptr, uint32_t tag, int type,
                                                      sizeof(value_string_tmp))
                         == OK) {
                         dprintf(fd, "%s ", value_string_tmp);
+                    } else if (tag == ANDROID_LOGICAL_MULTI_CAMERA_PHYSICAL_IDS) {
+                        if (value != 0) {
+                            dprintf(fd, "%c ",
+                                    *(data_ptr + index));
+                        }
                     } else {
                         dprintf(fd, "%hhu ",
                                 *(data_ptr + index));

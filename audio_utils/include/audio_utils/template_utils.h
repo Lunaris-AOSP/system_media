@@ -64,6 +64,15 @@ template <typename T, typename... Args>
 constexpr bool is_braces_constructible_v =
     is_braces_constructible<T, Args...>::value;
 
+// Define a concept to check if a class has a member type `Tag` and `getTag()` method
+template <typename T>
+concept has_tag_and_get_tag = requires(T t) {
+    { t.getTag() } -> std::same_as<typename T::Tag>;
+};
+
+template <typename T>
+inline constexpr bool has_tag_and_get_tag_v = has_tag_and_get_tag<T>;
+
 /**
  * Concept to identify primitive types, includes fundamental types, enums, and
  * std::string.
