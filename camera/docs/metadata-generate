@@ -43,7 +43,8 @@ ctstopdir="$ANDROID_BUILD_TOP/cts/tests/camera/"
 outdir="$ANDROID_PRODUCT_OUT/obj/ETC/system-media-camera-docs_intermediates"
 ndk_header_dir="$ANDROID_BUILD_TOP/frameworks/av/camera/ndk/include/camera"
 ndk_impl_dir="$ANDROID_BUILD_TOP/frameworks/av/camera/ndk/impl"
-libcameraservice_aidl_dir="$ANDROID_BUILD_TOP/frameworks/av/services/camera/libcameraservice/aidl"
+libcameraservice_dir="$ANDROID_BUILD_TOP/frameworks/av/services/camera/libcameraservice"
+libcameraservice_aidl_dir="$libcameraservice_dir/aidl"
 device_info_dir="$ANDROID_BUILD_TOP/cts/tools/cts-device-info/"`
         `"src/com/android/cts/deviceinfo"
 out_files=()
@@ -238,6 +239,9 @@ gen_file ndk_camera_metadata_asserts.mako ../src/ndk_camera_metadata_asserts.cpp
 
 #Generate tags with vndk versions for filtering
 gen_file_abs vndk_camera_metadata_tags.mako "$libcameraservice_aidl_dir/VndkVersionMetadataTags.h" yes || exit 1
+
+#Generate framework only tags being filtered out before sending to HAL
+gen_file_abs fwk_only_metadata_tags.mako "$libcameraservice_dir/FwkOnlyMetadataTags.h" yes || exit 1
 
 #Generate Session Characteristics Keys
 gen_file_abs session_characteristics_tags.mako "$libcameraservice_aidl_dir/SessionCharacteristicsTags.h" yes || exit 1
