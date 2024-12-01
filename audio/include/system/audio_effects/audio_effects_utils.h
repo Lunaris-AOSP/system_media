@@ -255,6 +255,26 @@ class EffectParamWriter : public EffectParamReader {
   size_t mValueWOffset = 0;
 };
 
+inline std::string ToString(const audio_uuid_t& uuid) {
+    char str[64];
+    snprintf(str, sizeof(str), "%08x-%04x-%04x-%04x-%02x%02x%02x%02x%02x%02x",
+             uuid.timeLow, uuid.timeMid, uuid.timeHiAndVersion, uuid.clockSeq,
+             uuid.node[0], uuid.node[1], uuid.node[2], uuid.node[3],
+             uuid.node[4], uuid.node[5]);
+    return str;
+}
+
+inline bool operator==(const audio_uuid_t& lhs, const audio_uuid_t& rhs) {
+  return lhs.timeLow == rhs.timeLow && lhs.timeMid == rhs.timeMid &&
+         lhs.timeHiAndVersion == rhs.timeHiAndVersion &&
+         lhs.clockSeq == rhs.clockSeq &&
+         std::memcmp(lhs.node, rhs.node, sizeof(lhs.node)) == 0;
+}
+
+inline bool operator!=(const audio_uuid_t& lhs, const audio_uuid_t& rhs) {
+    return !(lhs == rhs);
+}
+
 }  // namespace utils
 }  // namespace effect
 }  // namespace android

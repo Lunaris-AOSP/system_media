@@ -19,7 +19,6 @@
 #include <string>
 #include <vector>
 
-
 namespace android::audio_utils::stringutils {
 
 // C++ String Utilities
@@ -116,6 +115,19 @@ inline std::string toLowerSnakeCase(const std::string& name) {
 
 inline std::string toUpperSnakeCase(const std::string& name) {
     return changeNameFormat(name, NameFormat::kFormatUpperSnakeCase);
+}
+
+/**
+ * Appends a suffix string, with replacement of a character.
+ *
+ * \param s string to append suffix to.
+ * \param suffix string suffix.
+ * \param from target character to replace in suffix.
+ * \param to character to replace with.
+ */
+inline void appendWithReplacement(std::string& s, const std::string& suffix, char from, char to) {
+    std::transform(suffix.begin(), suffix.end(), std::back_inserter(s),
+                   [from, to](char in) { return in == from ? to : in; });
 }
 
 } // android::audio_utils::stringutils

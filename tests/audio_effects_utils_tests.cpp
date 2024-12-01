@@ -29,6 +29,9 @@ using namespace android;
 using android::effect::utils::EffectParamReader;
 using android::effect::utils::EffectParamWrapper;
 using android::effect::utils::EffectParamWriter;
+using android::effect::utils::operator==;
+using android::effect::utils::operator!=;
+using android::effect::utils::ToString;
 
 TEST(EffectParamWrapperTest, setAndGetMatches) {
     effect_param_t param = {.psize = 2, .vsize = 0x10};
@@ -99,11 +102,11 @@ TEST(EffectParamWrapperTest, getPaddedParameterSize) {
 }
 
 TEST(EffectParamWrapperTest, getPVSize) {
-    effect_param_t vsize1 = {.vsize = 1, .psize = 0xff};
+    effect_param_t vsize1 = {.psize = 0xff, .vsize = 1};
     const auto wrapper1 = EffectParamWrapper(vsize1);
     EXPECT_EQ(vsize1.vsize, wrapper1.getValueSize());
 
-    effect_param_t vsize2 = {.vsize = 0xff, .psize = 0xbe};
+    effect_param_t vsize2 = {.psize = 0xbe, .vsize = 0xff};
     const auto wrapper2 = EffectParamWrapper(vsize2);
     EXPECT_EQ(vsize2.vsize, wrapper2.getValueSize());
 
@@ -421,4 +424,57 @@ TEST(EffectParamWriterTest, overwriteWithLargerSize) {
     newwriter.finishValueWrite();
 
     EXPECT_NE(OK, writer.overwrite(newwriter.getEffectParam()));
+}
+
+TEST(AudioEffectsUtilsTest, EqualityOperator) {
+    audio_uuid_t uuid1 = {0x12345678, 0x1234, 0x5678, 0x90AB, {0xDE, 0xAD, 0xBE, 0xEF, 0x00, 0x01}};
+    audio_uuid_t uuid2 = {0x12345678, 0x1234, 0x5678, 0x90AB, {0xDE, 0xAD, 0xBE, 0xEF, 0x00, 0x01}};
+
+    EXPECT_TRUE(uuid1 == uuid2);
+    EXPECT_FALSE(uuid1 != uuid2);
+}
+
+TEST(AudioEffectsUtilsTest, InequalityOperator) {
+    audio_uuid_t uuid1 = {0x12345678, 0x1234, 0x5678, 0x90AB, {0xDE, 0xAD, 0xBE, 0xEF, 0x00, 0x01}};
+    audio_uuid_t uuid2 = {0x87654321, 0x4321, 0x8765, 0xBA09, {0x01, 0x00, 0xEF, 0xBE, 0xAD, 0xDE}};
+
+    EXPECT_TRUE(uuid1 != uuid2);
+    EXPECT_FALSE(uuid1 == uuid2);
+}
+
+TEST(AudioEffectsUtilsTest, EqualityWithModifiedNode) {
+    audio_uuid_t uuid1 = {0x12345678, 0x1234, 0x5678, 0x90AB, {0xDE, 0xAD, 0xBE, 0xEF, 0x00, 0x01}};
+    audio_uuid_t uuid2 = uuid1;
+    uuid2.node[5] = 0x02;  // Modify one byte in the `node` array
+
+    EXPECT_FALSE(uuid1 == uuid2);
+    EXPECT_TRUE(uuid1 != uuid2);
+}
+
+TEST(AudioEffectsUtilsTest, ToString) {
+    audio_uuid_t uuid = {0x12345678, 0x1234, 0x5678, 0x90AB, {0xDE, 0xAD, 0xBE, 0xEF, 0x00, 0x01}};
+    std::string expected = "12345678-1234-5678-90ab-deadbeef0001";
+
+    EXPECT_EQ(ToString(uuid), expected);
+}
+
+TEST(AudioEffectsUtilsTest, ToStringUpperCase) {
+    audio_uuid_t uuid = {0x87654321, 0x4321, 0x8765, 0xBA09, {0x01, 0x00, 0xEF, 0xBE, 0xAD, 0xDE}};
+    std::string expected = "87654321-4321-8765-ba09-0100efbeadde";
+
+    EXPECT_EQ(ToString(uuid), expected);
+}
+
+TEST(AudioEffectsUtilsTest, ToStringAllZeros) {
+    audio_uuid_t uuid = {0, 0, 0, 0, {0, 0, 0, 0, 0, 0}};
+    std::string expected = "00000000-0000-0000-0000-000000000000";
+
+    EXPECT_EQ(ToString(uuid), expected);
+}
+
+TEST(AudioEffectsUtilsTest, ToStringBoundaryValues) {
+    audio_uuid_t uuid = {0xFFFFFFFF, 0xFFFF, 0xFFFF, 0xFFFF, {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF}};
+    std::string expected = "ffffffff-ffff-ffff-ffff-ffffffffffff";
+
+    EXPECT_EQ(ToString(uuid), expected);
 }

@@ -154,3 +154,21 @@ TEST(audio_utils_string, PreserveDigitSequence) {
     EXPECT_EQ("camelCase10_100",
             android::audio_utils::stringutils::toLowerCamelCase("camel_case10_100"));
 }
+
+TEST(audio_utils_string, appendWithReplacement_empty) {
+    std::string s("");
+    android::audio_utils::stringutils::appendWithReplacement(s, "", '|', '+');
+    EXPECT_EQ("", s);
+}
+
+TEST(audio_utils_string, appendWithReplacement_basic) {
+    std::string s("hello");
+    android::audio_utils::stringutils::appendWithReplacement(s, "+||", '|', '+');
+    EXPECT_EQ("hello+++", s);
+}
+
+TEST(audio_utils_string, appendWithReplacement_copy) {
+    std::string s("hello");
+    android::audio_utils::stringutils::appendWithReplacement(s, " world", '|', '+');
+    EXPECT_EQ("hello world", s);
+}

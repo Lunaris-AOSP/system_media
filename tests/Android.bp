@@ -59,7 +59,7 @@ cc_test {
 }
 
 cc_test {
-    name: "EffectParamWrapper_tests",
+    name: "audio_effects_utils_tests",
 
     shared_libs: [
         "libbase",
@@ -70,7 +70,7 @@ cc_test {
     header_libs: ["libmedia_headers"],
 
     srcs: [
-        "EffectParamWrapper_tests.cpp",
+        "audio_effects_utils_tests.cpp",
     ],
 
     cflags: [
