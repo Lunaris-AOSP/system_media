@@ -1962,6 +1962,25 @@ static inline bool audio_is_valid_format(audio_format_t format)
     case AUDIO_FORMAT_DTS_HD_MA:
     case AUDIO_FORMAT_DTS_UHD_P2:
         return true;
+    case AUDIO_FORMAT_IAMF:
+        switch (format) {
+        case AUDIO_FORMAT_IAMF_SIMPLE_OPUS:
+        case AUDIO_FORMAT_IAMF_SIMPLE_AAC:
+        case AUDIO_FORMAT_IAMF_SIMPLE_PCM:
+        case AUDIO_FORMAT_IAMF_SIMPLE_FLAC:
+        case AUDIO_FORMAT_IAMF_BASE_OPUS:
+        case AUDIO_FORMAT_IAMF_BASE_AAC:
+        case AUDIO_FORMAT_IAMF_BASE_PCM:
+        case AUDIO_FORMAT_IAMF_BASE_FLAC:
+        case AUDIO_FORMAT_IAMF_BASE_ENHANCED_OPUS:
+        case AUDIO_FORMAT_IAMF_BASE_ENHANCED_AAC:
+        case AUDIO_FORMAT_IAMF_BASE_ENHANCED_PCM:
+        case AUDIO_FORMAT_IAMF_BASE_ENHANCED_FLAC:
+                return true;
+        default:
+                return false;
+        }
+        /* not reached */
     default:
         return false;
     }
@@ -2324,6 +2343,13 @@ inline const char* audio_channel_mask_to_string(audio_channel_mask_t channel_mas
     } else {
         return audio_channel_index_mask_to_string(channel_mask);
     }
+}
+
+inline CONSTEXPR bool audio_output_is_mixed_output_flags(audio_output_flags_t flags) {
+    return (flags & (AUDIO_OUTPUT_FLAG_DIRECT | AUDIO_OUTPUT_FLAG_COMPRESS_OFFLOAD |
+            AUDIO_OUTPUT_FLAG_HW_AV_SYNC | AUDIO_OUTPUT_FLAG_IEC958_NONAUDIO |
+            AUDIO_OUTPUT_FLAG_DIRECT_PCM | AUDIO_OUTPUT_FLAG_GAPLESS_OFFLOAD |
+            AUDIO_OUTPUT_FLAG_BIT_PERFECT)) == 0;
 }
 
 __END_DECLS

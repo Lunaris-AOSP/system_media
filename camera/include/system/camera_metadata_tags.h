@@ -70,6 +70,7 @@ typedef enum camera_metadata_section {
     ANDROID_EXTENSION,
     ANDROID_JPEGR,
     ANDROID_SHARED_SESSION,
+    ANDROID_DESKTOP_EFFECTS,
     ANDROID_SECTION_COUNT,
 
     VENDOR_SECTION = 0x8000
@@ -119,6 +120,7 @@ typedef enum camera_metadata_section_start {
     ANDROID_EXTENSION_START        = ANDROID_EXTENSION         << 16,
     ANDROID_JPEGR_START            = ANDROID_JPEGR             << 16,
     ANDROID_SHARED_SESSION_START   = ANDROID_SHARED_SESSION    << 16,
+    ANDROID_DESKTOP_EFFECTS_START  = ANDROID_DESKTOP_EFFECTS   << 16,
     VENDOR_SECTION_START           = VENDOR_SECTION            << 16
 } camera_metadata_section_start_t;
 
@@ -627,6 +629,15 @@ typedef enum camera_metadata_tag {
             ANDROID_SHARED_SESSION_START,
     ANDROID_SHARED_SESSION_OUTPUT_CONFIGURATIONS,     // int64[]      | fwk_only
     ANDROID_SHARED_SESSION_END,
+
+    ANDROID_DESKTOP_EFFECTS_CAPABILITIES =            // enum[]       | system       | HIDL v3.2
+            ANDROID_DESKTOP_EFFECTS_START,
+    ANDROID_DESKTOP_EFFECTS_BACKGROUND_BLUR_MODES,    // byte[]       | system       | HIDL v3.2
+    ANDROID_DESKTOP_EFFECTS_BACKGROUND_BLUR_MODE,     // enum         | system       | HIDL v3.2
+    ANDROID_DESKTOP_EFFECTS_FACE_RETOUCH_MODE,        // enum         | system       | HIDL v3.2
+    ANDROID_DESKTOP_EFFECTS_FACE_RETOUCH_STRENGTH,    // byte         | system       | HIDL v3.2
+    ANDROID_DESKTOP_EFFECTS_PORTRAIT_RELIGHT_MODE,    // enum         | system       | HIDL v3.2
+    ANDROID_DESKTOP_EFFECTS_END,
 
 } camera_metadata_tag_t;
 
@@ -1548,5 +1559,32 @@ typedef enum camera_metadata_enum_android_shared_session_color_space {
     ANDROID_SHARED_SESSION_COLOR_SPACE_DISPLAY_P3                    = 7,
     ANDROID_SHARED_SESSION_COLOR_SPACE_BT2020_HLG                    = 16,
 } camera_metadata_enum_android_shared_session_color_space_t;
+
+
+// ANDROID_DESKTOP_EFFECTS_CAPABILITIES
+typedef enum camera_metadata_enum_android_desktop_effects_capabilities {
+    ANDROID_DESKTOP_EFFECTS_CAPABILITIES_BACKGROUND_BLUR            , // HIDL v3.2
+    ANDROID_DESKTOP_EFFECTS_CAPABILITIES_FACE_RETOUCH               , // HIDL v3.2
+    ANDROID_DESKTOP_EFFECTS_CAPABILITIES_PORTRAIT_RELIGHT           , // HIDL v3.2
+} camera_metadata_enum_android_desktop_effects_capabilities_t;
+
+// ANDROID_DESKTOP_EFFECTS_BACKGROUND_BLUR_MODE
+typedef enum camera_metadata_enum_android_desktop_effects_background_blur_mode {
+    ANDROID_DESKTOP_EFFECTS_BACKGROUND_BLUR_MODE_OFF                , // HIDL v3.2
+    ANDROID_DESKTOP_EFFECTS_BACKGROUND_BLUR_MODE_LIGHT              , // HIDL v3.2
+    ANDROID_DESKTOP_EFFECTS_BACKGROUND_BLUR_MODE_FULL               , // HIDL v3.2
+} camera_metadata_enum_android_desktop_effects_background_blur_mode_t;
+
+// ANDROID_DESKTOP_EFFECTS_FACE_RETOUCH_MODE
+typedef enum camera_metadata_enum_android_desktop_effects_face_retouch_mode {
+    ANDROID_DESKTOP_EFFECTS_FACE_RETOUCH_MODE_OFF                   , // HIDL v3.2
+    ANDROID_DESKTOP_EFFECTS_FACE_RETOUCH_MODE_ON                    , // HIDL v3.2
+} camera_metadata_enum_android_desktop_effects_face_retouch_mode_t;
+
+// ANDROID_DESKTOP_EFFECTS_PORTRAIT_RELIGHT_MODE
+typedef enum camera_metadata_enum_android_desktop_effects_portrait_relight_mode {
+    ANDROID_DESKTOP_EFFECTS_PORTRAIT_RELIGHT_MODE_OFF               , // HIDL v3.2
+    ANDROID_DESKTOP_EFFECTS_PORTRAIT_RELIGHT_MODE_ON                , // HIDL v3.2
+} camera_metadata_enum_android_desktop_effects_portrait_relight_mode_t;
 
 

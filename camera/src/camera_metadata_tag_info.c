@@ -67,6 +67,7 @@ const char *camera_metadata_section_names[ANDROID_SECTION_COUNT] = {
     [ANDROID_EXTENSION]            = "android.extension",
     [ANDROID_JPEGR]                = "android.jpegr",
     [ANDROID_SHARED_SESSION]       = "android.sharedSession",
+    [ANDROID_DESKTOP_EFFECTS]      = "android.desktopEffects",
 };
 
 unsigned int camera_metadata_section_bounds[ANDROID_SECTION_COUNT][2] = {
@@ -141,6 +142,8 @@ unsigned int camera_metadata_section_bounds[ANDROID_SECTION_COUNT][2] = {
                                        ANDROID_JPEGR_END },
     [ANDROID_SHARED_SESSION]       = { ANDROID_SHARED_SESSION_START,
                                        ANDROID_SHARED_SESSION_END },
+    [ANDROID_DESKTOP_EFFECTS]      = { ANDROID_DESKTOP_EFFECTS_START,
+                                       ANDROID_DESKTOP_EFFECTS_END },
 };
 
 static tag_info_t android_color_correction[ANDROID_COLOR_CORRECTION_END -
@@ -1029,6 +1032,22 @@ static tag_info_t android_shared_session[ANDROID_SHARED_SESSION_END -
     { "outputConfigurations",          TYPE_INT64  },
 };
 
+static tag_info_t android_desktop_effects[ANDROID_DESKTOP_EFFECTS_END -
+        ANDROID_DESKTOP_EFFECTS_START] = {
+    [ ANDROID_DESKTOP_EFFECTS_CAPABILITIES - ANDROID_DESKTOP_EFFECTS_START ] =
+    { "capabilities",                  TYPE_BYTE   },
+    [ ANDROID_DESKTOP_EFFECTS_BACKGROUND_BLUR_MODES - ANDROID_DESKTOP_EFFECTS_START ] =
+    { "backgroundBlurModes",           TYPE_BYTE   },
+    [ ANDROID_DESKTOP_EFFECTS_BACKGROUND_BLUR_MODE - ANDROID_DESKTOP_EFFECTS_START ] =
+    { "backgroundBlurMode",            TYPE_BYTE   },
+    [ ANDROID_DESKTOP_EFFECTS_FACE_RETOUCH_MODE - ANDROID_DESKTOP_EFFECTS_START ] =
+    { "faceRetouchMode",               TYPE_BYTE   },
+    [ ANDROID_DESKTOP_EFFECTS_FACE_RETOUCH_STRENGTH - ANDROID_DESKTOP_EFFECTS_START ] =
+    { "faceRetouchStrength",           TYPE_BYTE   },
+    [ ANDROID_DESKTOP_EFFECTS_PORTRAIT_RELIGHT_MODE - ANDROID_DESKTOP_EFFECTS_START ] =
+    { "portraitRelightMode",           TYPE_BYTE   },
+};
+
 
 tag_info_t *tag_info[ANDROID_SECTION_COUNT] = {
     android_color_correction,
@@ -1066,6 +1085,7 @@ tag_info_t *tag_info[ANDROID_SECTION_COUNT] = {
     android_extension,
     android_jpegr,
     android_shared_session,
+    android_desktop_effects,
 };
 
 static int32_t tag_permission_needed[18] = {
@@ -4250,6 +4270,81 @@ int camera_metadata_enum_snprint(uint32_t tag,
             break;
         }
         case ANDROID_SHARED_SESSION_OUTPUT_CONFIGURATIONS: {
+            break;
+        }
+
+        case ANDROID_DESKTOP_EFFECTS_CAPABILITIES: {
+            switch (value) {
+                case ANDROID_DESKTOP_EFFECTS_CAPABILITIES_BACKGROUND_BLUR:
+                    msg = "BACKGROUND_BLUR";
+                    ret = 0;
+                    break;
+                case ANDROID_DESKTOP_EFFECTS_CAPABILITIES_FACE_RETOUCH:
+                    msg = "FACE_RETOUCH";
+                    ret = 0;
+                    break;
+                case ANDROID_DESKTOP_EFFECTS_CAPABILITIES_PORTRAIT_RELIGHT:
+                    msg = "PORTRAIT_RELIGHT";
+                    ret = 0;
+                    break;
+                default:
+                    msg = "error: enum value out of range";
+            }
+            break;
+        }
+        case ANDROID_DESKTOP_EFFECTS_BACKGROUND_BLUR_MODES: {
+            break;
+        }
+        case ANDROID_DESKTOP_EFFECTS_BACKGROUND_BLUR_MODE: {
+            switch (value) {
+                case ANDROID_DESKTOP_EFFECTS_BACKGROUND_BLUR_MODE_OFF:
+                    msg = "OFF";
+                    ret = 0;
+                    break;
+                case ANDROID_DESKTOP_EFFECTS_BACKGROUND_BLUR_MODE_LIGHT:
+                    msg = "LIGHT";
+                    ret = 0;
+                    break;
+                case ANDROID_DESKTOP_EFFECTS_BACKGROUND_BLUR_MODE_FULL:
+                    msg = "FULL";
+                    ret = 0;
+                    break;
+                default:
+                    msg = "error: enum value out of range";
+            }
+            break;
+        }
+        case ANDROID_DESKTOP_EFFECTS_FACE_RETOUCH_MODE: {
+            switch (value) {
+                case ANDROID_DESKTOP_EFFECTS_FACE_RETOUCH_MODE_OFF:
+                    msg = "OFF";
+                    ret = 0;
+                    break;
+                case ANDROID_DESKTOP_EFFECTS_FACE_RETOUCH_MODE_ON:
+                    msg = "ON";
+                    ret = 0;
+                    break;
+                default:
+                    msg = "error: enum value out of range";
+            }
+            break;
+        }
+        case ANDROID_DESKTOP_EFFECTS_FACE_RETOUCH_STRENGTH: {
+            break;
+        }
+        case ANDROID_DESKTOP_EFFECTS_PORTRAIT_RELIGHT_MODE: {
+            switch (value) {
+                case ANDROID_DESKTOP_EFFECTS_PORTRAIT_RELIGHT_MODE_OFF:
+                    msg = "OFF";
+                    ret = 0;
+                    break;
+                case ANDROID_DESKTOP_EFFECTS_PORTRAIT_RELIGHT_MODE_ON:
+                    msg = "ON";
+                    ret = 0;
+                    break;
+                default:
+                    msg = "error: enum value out of range";
+            }
             break;
         }
 
@@ -7848,6 +7943,85 @@ int camera_metadata_enum_value(uint32_t tag,
             break;
         }
         case ANDROID_SHARED_SESSION_OUTPUT_CONFIGURATIONS: {
+            break;
+        }
+
+        case ANDROID_DESKTOP_EFFECTS_CAPABILITIES: {
+                enumName = "BACKGROUND_BLUR";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_DESKTOP_EFFECTS_CAPABILITIES_BACKGROUND_BLUR;
+                    ret = 0;
+                    break;
+                }
+                enumName = "FACE_RETOUCH";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_DESKTOP_EFFECTS_CAPABILITIES_FACE_RETOUCH;
+                    ret = 0;
+                    break;
+                }
+                enumName = "PORTRAIT_RELIGHT";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_DESKTOP_EFFECTS_CAPABILITIES_PORTRAIT_RELIGHT;
+                    ret = 0;
+                    break;
+                }
+            break;
+        }
+        case ANDROID_DESKTOP_EFFECTS_BACKGROUND_BLUR_MODES: {
+            break;
+        }
+        case ANDROID_DESKTOP_EFFECTS_BACKGROUND_BLUR_MODE: {
+                enumName = "OFF";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_DESKTOP_EFFECTS_BACKGROUND_BLUR_MODE_OFF;
+                    ret = 0;
+                    break;
+                }
+                enumName = "LIGHT";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_DESKTOP_EFFECTS_BACKGROUND_BLUR_MODE_LIGHT;
+                    ret = 0;
+                    break;
+                }
+                enumName = "FULL";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_DESKTOP_EFFECTS_BACKGROUND_BLUR_MODE_FULL;
+                    ret = 0;
+                    break;
+                }
+            break;
+        }
+        case ANDROID_DESKTOP_EFFECTS_FACE_RETOUCH_MODE: {
+                enumName = "OFF";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_DESKTOP_EFFECTS_FACE_RETOUCH_MODE_OFF;
+                    ret = 0;
+                    break;
+                }
+                enumName = "ON";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_DESKTOP_EFFECTS_FACE_RETOUCH_MODE_ON;
+                    ret = 0;
+                    break;
+                }
+            break;
+        }
+        case ANDROID_DESKTOP_EFFECTS_FACE_RETOUCH_STRENGTH: {
+            break;
+        }
+        case ANDROID_DESKTOP_EFFECTS_PORTRAIT_RELIGHT_MODE: {
+                enumName = "OFF";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_DESKTOP_EFFECTS_PORTRAIT_RELIGHT_MODE_OFF;
+                    ret = 0;
+                    break;
+                }
+                enumName = "ON";
+                if (strncmp(name, enumName, size) == 0) {
+                    *value = ANDROID_DESKTOP_EFFECTS_PORTRAIT_RELIGHT_MODE_ON;
+                    ret = 0;
+                    break;
+                }
             break;
         }
 

@@ -34,6 +34,15 @@ namespace aidl::android::hardware::audio::effect {
 static constexpr int32_t kReopenSupportedVersion = 2;
 
 /**
+ * The first AIDL version that introduced the android.hardware.audio.effect.State.DRAINING state.
+ */
+static constexpr int32_t kDrainSupportedVersion = 3;
+/**
+ * The first AIDL version that support effect destroy at any state.
+ */
+static constexpr int32_t kDestroyAnyStateSupportedVersion = 3;
+
+/**
  * EventFlag to indicate that the client has written data to the FMQ, align with
  * EffectHalAidl.
  *

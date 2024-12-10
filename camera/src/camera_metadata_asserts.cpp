@@ -121,6 +121,10 @@
 #include <aidl/android/hardware/camera/metadata/ExtensionNightModeIndicator.h>
 #include <aidl/android/hardware/camera/metadata/JpegrAvailableJpegRStreamConfigurations.h>
 #include <aidl/android/hardware/camera/metadata/JpegrAvailableJpegRStreamConfigurationsMaximumResolution.h>
+#include <aidl/android/hardware/camera/metadata/DesktopEffectsCapabilities.h>
+#include <aidl/android/hardware/camera/metadata/DesktopEffectsBackgroundBlurMode.h>
+#include <aidl/android/hardware/camera/metadata/DesktopEffectsFaceRetouchMode.h>
+#include <aidl/android/hardware/camera/metadata/DesktopEffectsPortraitRelightMode.h>
 
 #include <system/camera_metadata_tags.h>
 
@@ -194,6 +198,8 @@ static_assert(static_cast<int>(ANDROID_JPEGR)
         == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataSection::ANDROID_JPEGR));
 static_assert(static_cast<int>(ANDROID_SHARED_SESSION)
         == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataSection::ANDROID_SHARED_SESSION));
+static_assert(static_cast<int>(ANDROID_DESKTOP_EFFECTS)
+        == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataSection::ANDROID_DESKTOP_EFFECTS));
 static_assert(static_cast<int>(VENDOR_SECTION)
         == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataSection::VENDOR_SECTION));
 
@@ -267,6 +273,8 @@ static_assert(static_cast<int>(ANDROID_JPEGR_START)
         == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataSectionStart::ANDROID_JPEGR_START));
 static_assert(static_cast<int>(ANDROID_SHARED_SESSION_START)
         == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataSectionStart::ANDROID_SHARED_SESSION_START));
+static_assert(static_cast<int>(ANDROID_DESKTOP_EFFECTS_START)
+        == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataSectionStart::ANDROID_DESKTOP_EFFECTS_START));
 static_assert(static_cast<int>(VENDOR_SECTION_START)
         == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataSectionStart::VENDOR_SECTION_START));
 
@@ -926,6 +934,18 @@ static_assert(static_cast<int>(ANDROID_JPEGR_AVAILABLE_JPEG_R_MIN_FRAME_DURATION
         == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_JPEGR_AVAILABLE_JPEG_R_MIN_FRAME_DURATIONS_MAXIMUM_RESOLUTION));
 static_assert(static_cast<int>(ANDROID_JPEGR_AVAILABLE_JPEG_R_STALL_DURATIONS_MAXIMUM_RESOLUTION)
         == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_JPEGR_AVAILABLE_JPEG_R_STALL_DURATIONS_MAXIMUM_RESOLUTION));
+static_assert(static_cast<int>(ANDROID_DESKTOP_EFFECTS_CAPABILITIES)
+        == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_DESKTOP_EFFECTS_CAPABILITIES));
+static_assert(static_cast<int>(ANDROID_DESKTOP_EFFECTS_BACKGROUND_BLUR_MODES)
+        == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_DESKTOP_EFFECTS_BACKGROUND_BLUR_MODES));
+static_assert(static_cast<int>(ANDROID_DESKTOP_EFFECTS_BACKGROUND_BLUR_MODE)
+        == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_DESKTOP_EFFECTS_BACKGROUND_BLUR_MODE));
+static_assert(static_cast<int>(ANDROID_DESKTOP_EFFECTS_FACE_RETOUCH_MODE)
+        == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_DESKTOP_EFFECTS_FACE_RETOUCH_MODE));
+static_assert(static_cast<int>(ANDROID_DESKTOP_EFFECTS_FACE_RETOUCH_STRENGTH)
+        == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_DESKTOP_EFFECTS_FACE_RETOUCH_STRENGTH));
+static_assert(static_cast<int>(ANDROID_DESKTOP_EFFECTS_PORTRAIT_RELIGHT_MODE)
+        == static_cast<int>(::aidl::android::hardware::camera::metadata::CameraMetadataTag::ANDROID_DESKTOP_EFFECTS_PORTRAIT_RELIGHT_MODE));
 
 static_assert(static_cast<int32_t>(ANDROID_COLOR_CORRECTION_MODE_TRANSFORM_MATRIX)
         == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::ColorCorrectionMode::ANDROID_COLOR_CORRECTION_MODE_TRANSFORM_MATRIX));
@@ -1828,3 +1848,27 @@ static_assert(static_cast<int32_t>(ANDROID_JPEGR_AVAILABLE_JPEG_R_STREAM_CONFIGU
         == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::JpegrAvailableJpegRStreamConfigurationsMaximumResolution::ANDROID_JPEGR_AVAILABLE_JPEG_R_STREAM_CONFIGURATIONS_MAXIMUM_RESOLUTION_OUTPUT));
 static_assert(static_cast<int32_t>(ANDROID_JPEGR_AVAILABLE_JPEG_R_STREAM_CONFIGURATIONS_MAXIMUM_RESOLUTION_INPUT)
         == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::JpegrAvailableJpegRStreamConfigurationsMaximumResolution::ANDROID_JPEGR_AVAILABLE_JPEG_R_STREAM_CONFIGURATIONS_MAXIMUM_RESOLUTION_INPUT));
+
+static_assert(static_cast<int32_t>(ANDROID_DESKTOP_EFFECTS_CAPABILITIES_BACKGROUND_BLUR)
+        == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::DesktopEffectsCapabilities::ANDROID_DESKTOP_EFFECTS_CAPABILITIES_BACKGROUND_BLUR));
+static_assert(static_cast<int32_t>(ANDROID_DESKTOP_EFFECTS_CAPABILITIES_FACE_RETOUCH)
+        == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::DesktopEffectsCapabilities::ANDROID_DESKTOP_EFFECTS_CAPABILITIES_FACE_RETOUCH));
+static_assert(static_cast<int32_t>(ANDROID_DESKTOP_EFFECTS_CAPABILITIES_PORTRAIT_RELIGHT)
+        == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::DesktopEffectsCapabilities::ANDROID_DESKTOP_EFFECTS_CAPABILITIES_PORTRAIT_RELIGHT));
+
+static_assert(static_cast<int32_t>(ANDROID_DESKTOP_EFFECTS_BACKGROUND_BLUR_MODE_OFF)
+        == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::DesktopEffectsBackgroundBlurMode::ANDROID_DESKTOP_EFFECTS_BACKGROUND_BLUR_MODE_OFF));
+static_assert(static_cast<int32_t>(ANDROID_DESKTOP_EFFECTS_BACKGROUND_BLUR_MODE_LIGHT)
+        == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::DesktopEffectsBackgroundBlurMode::ANDROID_DESKTOP_EFFECTS_BACKGROUND_BLUR_MODE_LIGHT));
+static_assert(static_cast<int32_t>(ANDROID_DESKTOP_EFFECTS_BACKGROUND_BLUR_MODE_FULL)
+        == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::DesktopEffectsBackgroundBlurMode::ANDROID_DESKTOP_EFFECTS_BACKGROUND_BLUR_MODE_FULL));
+
+static_assert(static_cast<int32_t>(ANDROID_DESKTOP_EFFECTS_FACE_RETOUCH_MODE_OFF)
+        == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::DesktopEffectsFaceRetouchMode::ANDROID_DESKTOP_EFFECTS_FACE_RETOUCH_MODE_OFF));
+static_assert(static_cast<int32_t>(ANDROID_DESKTOP_EFFECTS_FACE_RETOUCH_MODE_ON)
+        == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::DesktopEffectsFaceRetouchMode::ANDROID_DESKTOP_EFFECTS_FACE_RETOUCH_MODE_ON));
+
+static_assert(static_cast<int32_t>(ANDROID_DESKTOP_EFFECTS_PORTRAIT_RELIGHT_MODE_OFF)
+        == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::DesktopEffectsPortraitRelightMode::ANDROID_DESKTOP_EFFECTS_PORTRAIT_RELIGHT_MODE_OFF));
+static_assert(static_cast<int32_t>(ANDROID_DESKTOP_EFFECTS_PORTRAIT_RELIGHT_MODE_ON)
+        == static_cast<int32_t>(::aidl::android::hardware::camera::metadata::DesktopEffectsPortraitRelightMode::ANDROID_DESKTOP_EFFECTS_PORTRAIT_RELIGHT_MODE_ON));

@@ -15315,5 +15315,117 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
         </entry>
       </static>
     </section>
+    <section name="desktopEffects">
+      <static>
+        <entry name="capabilities" type="byte" visibility="system" optional="true"
+            enum="true" type_notes="list of enums" container="array" typedef="enumList"
+            aconfig_flag="desktop_effects">
+          <array>
+            <size>n</size>
+          </array>
+          <enum>
+            <value>BACKGROUND_BLUR
+              <notes>
+                Background blur can be activated via android.desktopEffects.backgroundBlurMode
+              </notes>
+            </value>
+            <value>FACE_RETOUCH
+              <notes>
+                Face retouch can be activated via android.desktopEffects.faceRetouchMode
+              </notes>
+            </value>
+            <value>PORTRAIT_RELIGHT
+              <notes>
+                Portrait relight can be activated via android.desktopEffects.portraitRelightMode
+              </notes>
+            </value>
+          </enum>
+          <description>
+            List of special effects supported by the camera device.
+          </description>
+          <details>
+            Available features supported by the camera device for large screen video conferencing.
+          </details>
+        </entry>
+        <entry name="backgroundBlurModes" type="byte" visibility="system" optional="true"
+            type_notes="list of enums (android.desktopEffects.backgroundBlurMode)" container="array"
+            typedef="enumList" aconfig_flag="desktop_effects">
+          <array>
+            <size>n</size>
+          </array>
+          <description>
+            List of background blur modes supported by the camera device. The key will only exist
+            if BACKGROUND_BLUR is listed by android.desktopEffects.capabilities.
+          </description>
+          <range>Any value listed in android.desktopEffects.backgroundBlurMode</range>
+          <details>
+            Lists the valid modes for android.desktopEffects.backgroundBlurMode.
+          </details>
+        </entry>
+      </static>
+      <controls>
+        <entry name="backgroundBlurMode" type="byte" visibility="system"
+            optional="true" enum="true" aconfig_flag="desktop_effects">
+          <enum>
+            <value>OFF
+              <notes>
+                Don't use background blur
+              </notes>
+            </value>
+            <value>LIGHT
+              <notes>
+                Blur the background with light blur strength
+              </notes>
+            </value>
+            <value>FULL
+              <notes>
+                Blur the background with full blur strength
+              </notes>
+            </value>
+          </enum>
+          <description>Control how the background should be blurred. Supported modes are listed in
+            android.desktopEffects.backgroundBlurModes by the camera device.</description>
+        </entry>
+        <entry name="faceRetouchMode" type="byte" visibility="system"
+            optional="true" enum="true" typedef="boolean" aconfig_flag="desktop_effects">
+          <enum>
+            <value>OFF
+              <notes>
+                Turn off face retouch
+              </notes>
+            </value>
+            <value>ON
+              <notes>
+                Turn on face retouch. A strength can be set by android.desktopEffects.faceRetouchStrength
+              </notes>
+            </value>
+          </enum>
+          <description>Whether to enable face retouch effect.</description>
+        </entry>
+        <entry name="faceRetouchStrength" type="byte" visibility="system"
+            optional="true" aconfig_flag="desktop_effects">
+          <description>Control the strength of face retouch applied to the frames. If
+            android.desktopEffects.faceRetouchMode in ON without a faceRetouchStrength,
+            a default will be set by the camera device.</description>
+          <units>1-100; 100 is maximum strength.</units>
+        </entry>
+        <entry name="portraitRelightMode" type="byte" visibility="system"
+            optional="true" enum="true" typedef="boolean" aconfig_flag="desktop_effects">
+          <enum>
+            <value>OFF
+              <notes>
+                Do not use portrait relight
+              </notes>
+            </value>
+            <value>ON
+              <notes>
+                Use portrait relight
+              </notes>
+            </value>
+          </enum>
+          <description>Whether to enable portrait relighting effect.</description>
+        </entry>
+      </controls>
+    </section>
   </namespace>
 </metadata>

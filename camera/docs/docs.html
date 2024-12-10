@@ -1535,6 +1535,33 @@
         </li>
       </ul> <!-- toc_section -->
     </li>
+    <li>
+      <span class="toc_section_header"><a href="#section_desktopEffects">desktopEffects</a></span>
+      <ul class="toc_section">
+        <li>
+          <span class="toc_kind_header">static</span>
+          <ul class="toc_section">
+            <li
+            ><a href="#static_android.desktopEffects.capabilities">android.desktopEffects.capabilities</a></li>
+            <li
+            ><a href="#static_android.desktopEffects.backgroundBlurModes">android.desktopEffects.backgroundBlurModes</a></li>
+          </ul>
+        </li>
+        <li>
+          <span class="toc_kind_header">controls</span>
+          <ul class="toc_section">
+            <li
+            ><a href="#controls_android.desktopEffects.backgroundBlurMode">android.desktopEffects.backgroundBlurMode</a></li>
+            <li
+            ><a href="#controls_android.desktopEffects.faceRetouchMode">android.desktopEffects.faceRetouchMode</a></li>
+            <li
+            ><a href="#controls_android.desktopEffects.faceRetouchStrength">android.desktopEffects.faceRetouchStrength</a></li>
+            <li
+            ><a href="#controls_android.desktopEffects.portraitRelightMode">android.desktopEffects.portraitRelightMode</a></li>
+          </ul>
+        </li>
+      </ul> <!-- toc_section -->
+    </li>
   </ul>
 
 
@@ -42977,6 +43004,393 @@ will generate this tag if the camera device can be opened in shared mode.<wbr/><
 HAL layer);</p>
             </td>
           </tr>
+
+          <tr class="entry_spacer"><td class="entry_spacer" colspan="7"></td></tr>
+           <!-- end of entry -->
+        
+        
+
+      <!-- end of kind -->
+      </tbody>
+
+  <!-- end of section -->
+  <tr><td colspan="7" id="section_desktopEffects" class="section">desktopEffects</td></tr>
+
+
+      <tr><td colspan="7" class="kind">static</td></tr>
+
+      <thead class="entries_header">
+        <tr>
+          <th class="th_name">Property Name</th>
+          <th class="th_type">Type</th>
+          <th class="th_description">Description</th>
+          <th class="th_units">Units</th>
+          <th class="th_range">Range</th>
+          <th class="th_hal_version">Initial HIDL HAL version</th>
+          <th class="th_tags">Tags</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        
+
+        
+
+        
+
+        
+
+                
+          <tr class="entry" id="static_android.desktopEffects.capabilities">
+            <td class="entry_name
+             " rowspan="3">
+              android.<wbr/>desktop<wbr/>Effects.<wbr/>capabilities
+            </td>
+            <td class="entry_type">
+                <span class="entry_type_name entry_type_name_enum">byte</span>
+                <span class="entry_type_container">x</span>
+
+                <span class="entry_type_array">
+                  n
+                </span>
+              <span class="entry_type_visibility"> [system as enumList]</span>
+
+
+
+
+                <div class="entry_type_notes">list of enums</div>
+
+                <ul class="entry_type_enum">
+                  <li>
+                    <span class="entry_type_enum_name">BACKGROUND_BLUR (v3.2)</span>
+                    <span class="entry_type_enum_notes"><p>Background blur can be activated via <a href="#controls_android.desktopEffects.backgroundBlurMode">android.<wbr/>desktop<wbr/>Effects.<wbr/>background<wbr/>Blur<wbr/>Mode</a></p></span>
+                  </li>
+                  <li>
+                    <span class="entry_type_enum_name">FACE_RETOUCH (v3.2)</span>
+                    <span class="entry_type_enum_notes"><p>Face retouch can be activated via <a href="#controls_android.desktopEffects.faceRetouchMode">android.<wbr/>desktop<wbr/>Effects.<wbr/>face<wbr/>Retouch<wbr/>Mode</a></p></span>
+                  </li>
+                  <li>
+                    <span class="entry_type_enum_name">PORTRAIT_RELIGHT (v3.2)</span>
+                    <span class="entry_type_enum_notes"><p>Portrait relight can be activated via <a href="#controls_android.desktopEffects.portraitRelightMode">android.<wbr/>desktop<wbr/>Effects.<wbr/>portrait<wbr/>Relight<wbr/>Mode</a></p></span>
+                  </li>
+                </ul>
+
+            </td> <!-- entry_type -->
+
+            <td class="entry_description">
+              <p>List of special effects supported by the camera device.<wbr/></p>
+            </td>
+
+            <td class="entry_units">
+            </td>
+
+            <td class="entry_range">
+            </td>
+
+            <td class="entry_hal_version">
+              <p>3.<wbr/>2</p>
+            </td>
+
+            <td class="entry_tags">
+            </td>
+
+          </tr>
+          <tr class="entries_header">
+            <th class="th_details" colspan="6">Details</th>
+          </tr>
+          <tr class="entry_cont">
+            <td class="entry_details" colspan="6">
+              <p>Available features supported by the camera device for large screen video conferencing.<wbr/></p>
+            </td>
+          </tr>
+
+
+          <tr class="entry_spacer"><td class="entry_spacer" colspan="7"></td></tr>
+           <!-- end of entry -->
+        
+                
+          <tr class="entry" id="static_android.desktopEffects.backgroundBlurModes">
+            <td class="entry_name
+             " rowspan="3">
+              android.<wbr/>desktop<wbr/>Effects.<wbr/>background<wbr/>Blur<wbr/>Modes
+            </td>
+            <td class="entry_type">
+                <span class="entry_type_name">byte</span>
+                <span class="entry_type_container">x</span>
+
+                <span class="entry_type_array">
+                  n
+                </span>
+              <span class="entry_type_visibility"> [system as enumList]</span>
+
+
+
+
+                <div class="entry_type_notes">list of enums (android.<wbr/>desktop<wbr/>Effects.<wbr/>background<wbr/>Blur<wbr/>Mode)</div>
+
+
+            </td> <!-- entry_type -->
+
+            <td class="entry_description">
+              <p>List of background blur modes supported by the camera device.<wbr/> The key will only exist
+if BACKGROUND_<wbr/>BLUR is listed by <a href="#static_android.desktopEffects.capabilities">android.<wbr/>desktop<wbr/>Effects.<wbr/>capabilities</a>.<wbr/></p>
+            </td>
+
+            <td class="entry_units">
+            </td>
+
+            <td class="entry_range">
+              <p>Any value listed in <a href="#controls_android.desktopEffects.backgroundBlurMode">android.<wbr/>desktop<wbr/>Effects.<wbr/>background<wbr/>Blur<wbr/>Mode</a></p>
+            </td>
+
+            <td class="entry_hal_version">
+              <p>3.<wbr/>2</p>
+            </td>
+
+            <td class="entry_tags">
+            </td>
+
+          </tr>
+          <tr class="entries_header">
+            <th class="th_details" colspan="6">Details</th>
+          </tr>
+          <tr class="entry_cont">
+            <td class="entry_details" colspan="6">
+              <p>Lists the valid modes for <a href="#controls_android.desktopEffects.backgroundBlurMode">android.<wbr/>desktop<wbr/>Effects.<wbr/>background<wbr/>Blur<wbr/>Mode</a>.<wbr/></p>
+            </td>
+          </tr>
+
+
+          <tr class="entry_spacer"><td class="entry_spacer" colspan="7"></td></tr>
+           <!-- end of entry -->
+        
+        
+
+      <!-- end of kind -->
+      </tbody>
+      <tr><td colspan="7" class="kind">controls</td></tr>
+
+      <thead class="entries_header">
+        <tr>
+          <th class="th_name">Property Name</th>
+          <th class="th_type">Type</th>
+          <th class="th_description">Description</th>
+          <th class="th_units">Units</th>
+          <th class="th_range">Range</th>
+          <th class="th_hal_version">Initial HIDL HAL version</th>
+          <th class="th_tags">Tags</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        
+
+        
+
+        
+
+        
+
+                
+          <tr class="entry" id="controls_android.desktopEffects.backgroundBlurMode">
+            <td class="entry_name
+             " rowspan="1">
+              android.<wbr/>desktop<wbr/>Effects.<wbr/>background<wbr/>Blur<wbr/>Mode
+            </td>
+            <td class="entry_type">
+                <span class="entry_type_name entry_type_name_enum">byte</span>
+
+              <span class="entry_type_visibility"> [system]</span>
+
+
+
+
+
+                <ul class="entry_type_enum">
+                  <li>
+                    <span class="entry_type_enum_name">OFF (v3.2)</span>
+                    <span class="entry_type_enum_notes"><p>Don't use background blur</p></span>
+                  </li>
+                  <li>
+                    <span class="entry_type_enum_name">LIGHT (v3.2)</span>
+                    <span class="entry_type_enum_notes"><p>Blur the background with light blur strength</p></span>
+                  </li>
+                  <li>
+                    <span class="entry_type_enum_name">FULL (v3.2)</span>
+                    <span class="entry_type_enum_notes"><p>Blur the background with full blur strength</p></span>
+                  </li>
+                </ul>
+
+            </td> <!-- entry_type -->
+
+            <td class="entry_description">
+              <p>Control how the background should be blurred.<wbr/> Supported modes are listed in
+<a href="#static_android.desktopEffects.backgroundBlurModes">android.<wbr/>desktop<wbr/>Effects.<wbr/>background<wbr/>Blur<wbr/>Modes</a> by the camera device.<wbr/></p>
+            </td>
+
+            <td class="entry_units">
+            </td>
+
+            <td class="entry_range">
+            </td>
+
+            <td class="entry_hal_version">
+              <p>3.<wbr/>2</p>
+            </td>
+
+            <td class="entry_tags">
+            </td>
+
+          </tr>
+
+
+          <tr class="entry_spacer"><td class="entry_spacer" colspan="7"></td></tr>
+           <!-- end of entry -->
+        
+                
+          <tr class="entry" id="controls_android.desktopEffects.faceRetouchMode">
+            <td class="entry_name
+             " rowspan="1">
+              android.<wbr/>desktop<wbr/>Effects.<wbr/>face<wbr/>Retouch<wbr/>Mode
+            </td>
+            <td class="entry_type">
+                <span class="entry_type_name entry_type_name_enum">byte</span>
+
+              <span class="entry_type_visibility"> [system as boolean]</span>
+
+
+
+
+
+                <ul class="entry_type_enum">
+                  <li>
+                    <span class="entry_type_enum_name">OFF (v3.2)</span>
+                    <span class="entry_type_enum_notes"><p>Turn off face retouch</p></span>
+                  </li>
+                  <li>
+                    <span class="entry_type_enum_name">ON (v3.2)</span>
+                    <span class="entry_type_enum_notes"><p>Turn on face retouch.<wbr/> A strength can be set by <a href="#controls_android.desktopEffects.faceRetouchStrength">android.<wbr/>desktop<wbr/>Effects.<wbr/>face<wbr/>Retouch<wbr/>Strength</a></p></span>
+                  </li>
+                </ul>
+
+            </td> <!-- entry_type -->
+
+            <td class="entry_description">
+              <p>Whether to enable face retouch effect.<wbr/></p>
+            </td>
+
+            <td class="entry_units">
+            </td>
+
+            <td class="entry_range">
+            </td>
+
+            <td class="entry_hal_version">
+              <p>3.<wbr/>2</p>
+            </td>
+
+            <td class="entry_tags">
+            </td>
+
+          </tr>
+
+
+          <tr class="entry_spacer"><td class="entry_spacer" colspan="7"></td></tr>
+           <!-- end of entry -->
+        
+                
+          <tr class="entry" id="controls_android.desktopEffects.faceRetouchStrength">
+            <td class="entry_name
+             " rowspan="1">
+              android.<wbr/>desktop<wbr/>Effects.<wbr/>face<wbr/>Retouch<wbr/>Strength
+            </td>
+            <td class="entry_type">
+                <span class="entry_type_name">byte</span>
+
+              <span class="entry_type_visibility"> [system]</span>
+
+
+
+
+
+
+            </td> <!-- entry_type -->
+
+            <td class="entry_description">
+              <p>Control the strength of face retouch applied to the frames.<wbr/> If
+<a href="#controls_android.desktopEffects.faceRetouchMode">android.<wbr/>desktop<wbr/>Effects.<wbr/>face<wbr/>Retouch<wbr/>Mode</a> in ON without a faceRetouchStrength,<wbr/>
+a default will be set by the camera device.<wbr/></p>
+            </td>
+
+            <td class="entry_units">
+              1-100; 100 is maximum strength.<wbr/>
+            </td>
+
+            <td class="entry_range">
+            </td>
+
+            <td class="entry_hal_version">
+              <p>3.<wbr/>2</p>
+            </td>
+
+            <td class="entry_tags">
+            </td>
+
+          </tr>
+
+
+          <tr class="entry_spacer"><td class="entry_spacer" colspan="7"></td></tr>
+           <!-- end of entry -->
+        
+                
+          <tr class="entry" id="controls_android.desktopEffects.portraitRelightMode">
+            <td class="entry_name
+             " rowspan="1">
+              android.<wbr/>desktop<wbr/>Effects.<wbr/>portrait<wbr/>Relight<wbr/>Mode
+            </td>
+            <td class="entry_type">
+                <span class="entry_type_name entry_type_name_enum">byte</span>
+
+              <span class="entry_type_visibility"> [system as boolean]</span>
+
+
+
+
+
+                <ul class="entry_type_enum">
+                  <li>
+                    <span class="entry_type_enum_name">OFF (v3.2)</span>
+                    <span class="entry_type_enum_notes"><p>Do not use portrait relight</p></span>
+                  </li>
+                  <li>
+                    <span class="entry_type_enum_name">ON (v3.2)</span>
+                    <span class="entry_type_enum_notes"><p>Use portrait relight</p></span>
+                  </li>
+                </ul>
+
+            </td> <!-- entry_type -->
+
+            <td class="entry_description">
+              <p>Whether to enable portrait relighting effect.<wbr/></p>
+            </td>
+
+            <td class="entry_units">
+            </td>
+
+            <td class="entry_range">
+            </td>
+
+            <td class="entry_hal_version">
+              <p>3.<wbr/>2</p>
+            </td>
+
+            <td class="entry_tags">
+            </td>
+
+          </tr>
+
 
           <tr class="entry_spacer"><td class="entry_spacer" colspan="7"></td></tr>
            <!-- end of entry -->
