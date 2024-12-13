@@ -1417,7 +1417,8 @@ def remove_hal_non_visible(entries):
   Yields:
     An iterable of Entry nodes
   """
-  return (e for e in entries if not (e.synthetic or is_not_hal_visible(e)))
+  return (e for e in entries if not (e.synthetic or e.visibility == 'extension_passthrough' or
+                                     is_not_hal_visible(e)))
 
 def remove_ndk_non_visible(entries):
   """

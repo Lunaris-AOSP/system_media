@@ -210,7 +210,7 @@
                     <enumeration value="fwk_java_public" /> <!-- public to java. Not included in NDK. Not included in hal interfaces. -->
                     <enumeration value="fwk_system_public" /> <!-- system API in java. Not included in NDK. Not included in hal interfaces -->
                     <enumeration value="fwk_public" /> <!-- public to both java and NDK. Not included in hal interfaces. -->
-                    <enumeration value="fwk_ndk_public" /> <!-- public to NDK. Not included in java or hal interfaces. -->
+                    <enumeration value="extension_passthrough" /> <!-- public to java. Not included in the NDK. Not fwk filtered and Hal passthrough -->
                 </restriction>
             </simpleType>
         </attribute>
@@ -329,6 +329,7 @@
                     <enumeration value="extension" /> <!-- java as @hide. Included as a public enum in the extensions. -->
                     <enumeration value="test" /> <!-- java as @TestApi. Not included in NDK -->
                     <enumeration value="public" /> <!-- public to both java and NDK -->
+                    <enumeration value="extension_passthrough" /> <!-- public to java not included in NDK -->
                 </restriction>
             </simpleType>
         </attribute>

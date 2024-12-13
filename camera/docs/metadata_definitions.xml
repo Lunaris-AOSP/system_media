@@ -15015,7 +15015,7 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
     </section>
     <section name="extension">
       <controls>
-        <entry name="strength" type="int32" visibility="fwk_java_public" hal_version="3.9">
+        <entry name="strength" type="int32" visibility="extension_passthrough" hal_version="3.9">
           <description>Strength of the extension post-processing effect
           </description>
           <range>0 - 100</range>

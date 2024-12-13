@@ -605,7 +605,7 @@ typedef enum camera_metadata_tag {
             ANDROID_AUTOMOTIVE_LENS_START,
     ANDROID_AUTOMOTIVE_LENS_END,
 
-    ANDROID_EXTENSION_STRENGTH =                      // int32        | fwk_java_public
+    ANDROID_EXTENSION_STRENGTH =                      // int32        | extension_passthrough | HIDL v3.9
             ANDROID_EXTENSION_START,
     ANDROID_EXTENSION_CURRENT_TYPE,                   // int32        | fwk_java_public
     ANDROID_EXTENSION_NIGHT_MODE_INDICATOR,           // enum         | public       | HIDL v3.11

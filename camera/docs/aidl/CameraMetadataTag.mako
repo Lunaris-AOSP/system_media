@@ -62,7 +62,7 @@ enum CameraMetadataTag {
 <% curIdx = sec_idx << 16 %>\
     % endif
     % if entry.visibility in ('fwk_only', 'fwk_java_public', 'fwk_public', 'fwk_system_public',\
-          'fwk_ndk_public'):
+          'fwk_ndk_public','extension_passthrough'):
 <% gap = True %>\
 <% curIdx += 1 %>\
 <% continue %>\
