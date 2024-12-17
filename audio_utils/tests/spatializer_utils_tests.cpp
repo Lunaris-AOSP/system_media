@@ -33,7 +33,7 @@ TEST(spatializer_utils_tests, basic)
     ASSERT_TRUE(audio_is_channel_mask_spatialized(AUDIO_CHANNEL_OUT_7POINT1POINT2));
     ASSERT_TRUE(audio_is_channel_mask_spatialized(AUDIO_CHANNEL_OUT_7POINT1POINT4));
     ASSERT_TRUE(audio_is_channel_mask_spatialized(AUDIO_CHANNEL_OUT_9POINT1POINT4));
+    ASSERT_TRUE(audio_is_channel_mask_spatialized(AUDIO_CHANNEL_OUT_13POINT0));
     ASSERT_TRUE(audio_is_channel_mask_spatialized(AUDIO_CHANNEL_OUT_9POINT1POINT6));
-    ASSERT_TRUE(audio_is_channel_mask_spatialized(AUDIO_CHANNEL_OUT_13POINT_360RA));
     ASSERT_TRUE(audio_is_channel_mask_spatialized(AUDIO_CHANNEL_OUT_22POINT2));
 }
