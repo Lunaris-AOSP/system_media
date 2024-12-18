@@ -367,7 +367,7 @@ static inline CONSTEXPR bool audio_channel_mask_contains_stereo(audio_channel_ma
  * AUDIO_CHANNEL_OUT_7POINT1POINT4
  * AUDIO_CHANNEL_OUT_9POINT1POINT4
  * AUDIO_CHANNEL_OUT_9POINT1POINT6
- * AUDIO_CHANNEL_OUT_13POINT0
+ * AUDIO_CHANNEL_OUT_13POINT_360RA
  * AUDIO_CHANNEL_OUT_22POINT2
  */
 static inline CONSTEXPR bool audio_is_channel_mask_spatialized(audio_channel_mask_t channelMask) {
