@@ -1027,7 +1027,7 @@ static tag_info_t android_jpegr[ANDROID_JPEGR_END -
 static tag_info_t android_shared_session[ANDROID_SHARED_SESSION_END -
         ANDROID_SHARED_SESSION_START] = {
     [ ANDROID_SHARED_SESSION_COLOR_SPACE - ANDROID_SHARED_SESSION_START ] =
-    { "colorSpace",                    TYPE_BYTE   },
+    { "colorSpace",                    TYPE_INT32  },
     [ ANDROID_SHARED_SESSION_OUTPUT_CONFIGURATIONS - ANDROID_SHARED_SESSION_START ] =
     { "outputConfigurations",          TYPE_INT64  },
 };

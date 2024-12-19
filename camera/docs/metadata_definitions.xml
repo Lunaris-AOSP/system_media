@@ -15257,7 +15257,7 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
     </section>
     <section name="sharedSession">
       <static>
-        <entry name="colorSpace" type="byte" visibility="fwk_only" optional="true"
+        <entry name="colorSpace" type="int32" visibility="fwk_only" optional="true"
           enum="true" aconfig_flag="camera_multi_client" hal_version="3.11">
           <enum>
             <value id="-1">UNSPECIFIED</value>
