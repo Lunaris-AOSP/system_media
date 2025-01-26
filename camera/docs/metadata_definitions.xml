@@ -13368,17 +13368,21 @@ xsi:schemaLocation="http://schemas.android.com/service/camera/metadata/ metadata
 
           * DYNAMIC_RANGE_PROFILE: {STANDARD, HLG10}
 
-          All of the above configurations can be set up with a SessionConfiguration. The list of
-          OutputConfiguration contains the stream configurations and DYNAMIC_RANGE_PROFILE, and
-          the AE_TARGET_FPS_RANGE and VIDEO_STABILIZATION_MODE are set as session parameters.
-
           When set to BAKLAVA, the additional stream combinations below are verified
           by the compliance tests:
 
-          Target 1    |     Size      | Target 2        |     Size     |
-          :----------:|:-------------:|:---------------:|:------------:|
-          PRIV        | S1080P        | PRIV            | S1080P       |
-          PRIV        | S1080P        | PRIV            | S1440P       |
+          Target 1    |     Size      | Target 2        |     Size     | Target 3   |    Size     |
+          :----------:|:-------------:|:---------------:|:------------:|:----------:|:-----------:|
+          PRIV        | S1080P        | PRIV            | S1080P       |            |             |
+          PRIV        | S1080P        | PRIV            | S1440P       |            |             |
+          PRIV        | S1080P        | YUV             | S1080P       | S1080P     | PRIV        |
+
+          * VIDEO_STABILIZATION_MODE: {OFF, ON} for the newly added stream combinations given the
+          presence of dedicated video stream
+
+          All of the above configurations can be set up with a SessionConfiguration. The list of
+          OutputConfiguration contains the stream configurations and DYNAMIC_RANGE_PROFILE, and
+          the AE_TARGET_FPS_RANGE and VIDEO_STABILIZATION_MODE are set as session parameters.
 
           </details>
           <hal_details>
