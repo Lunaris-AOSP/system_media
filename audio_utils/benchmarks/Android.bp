@@ -46,6 +46,18 @@ cc_benchmark {
 }
 
 cc_benchmark {
+    name: "audio_vectorization_benchmark",
+    host_supported: true,
+
+    srcs: ["audio_vectorization_benchmark.cpp"],
+    cflags: [
+        "-Wall",
+        "-Werror",
+        "-frelaxed-template-template-args", // needed for Android 14 and earlier
+    ],
+}
+
+cc_benchmark {
     name: "biquad_filter_benchmark",
     host_supported: true,
 

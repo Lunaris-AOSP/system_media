@@ -307,6 +307,13 @@ int proxy_get_capture_position(const alsa_device_proxy * proxy,
     return ret;
 }
 
+int proxy_stop(alsa_device_proxy * proxy)
+{
+    int ret = -ENOSYS;
+    if (proxy->pcm != NULL) ret = pcm_stop(proxy->pcm);
+    return ret;
+}
+
 /*
  * I/O
  */

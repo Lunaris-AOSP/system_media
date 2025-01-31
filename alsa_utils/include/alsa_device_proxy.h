@@ -44,6 +44,7 @@ int proxy_get_presentation_position(const alsa_device_proxy * proxy,
         uint64_t *frames, struct timespec *timestamp);
 int proxy_get_capture_position(const alsa_device_proxy * proxy,
         int64_t *frames, int64_t *time);
+int proxy_stop(alsa_device_proxy * proxy);
 
 /* Attributes */
 unsigned proxy_get_sample_rate(const alsa_device_proxy * proxy);
