@@ -25,203 +25,203 @@ Pixel 6 Pro Android 14
 ------------------------------------------------------------------------------
 Benchmark                                    Time             CPU   Iterations
 ------------------------------------------------------------------------------
-BM_VectorTestLoopFloat/1                  1199 ns         1195 ns       527528
-BM_VectorTestLoopFloat/2                  2201 ns         2194 ns       319117
-BM_VectorTestLoopFloat/3                  3226 ns         3215 ns       217631
-BM_VectorTestLoopFloat/4                  4295 ns         4280 ns       163563
-BM_VectorTestLoopFloat/5                  5392 ns         5375 ns       130251
-BM_VectorTestLoopFloat/6                  6446 ns         6424 ns       109544
-BM_VectorTestLoopFloat/7                  7571 ns         7545 ns        93144
-BM_VectorTestLoopFloat/8                  8715 ns         8685 ns        81006
-BM_VectorTestLoopFloat/9                  9868 ns         9834 ns        72006
-BM_VectorTestLoopFloat/10                10992 ns        10954 ns        63695
-BM_VectorTestLoopFloat/11                12186 ns        12145 ns        57963
-BM_VectorTestLoopFloat/12                13329 ns        13282 ns        52824
-BM_VectorTestLoopFloat/13                14467 ns        14417 ns        49040
-BM_VectorTestLoopFloat/14                15699 ns        15645 ns        44942
-BM_VectorTestLoopFloat/15                16820 ns        16762 ns        42023
-BM_VectorTestLoopFloat/16                18007 ns        17946 ns        38813
-BM_VectorTestLoopFloat/17                19243 ns        19177 ns        36480
-BM_VectorTestLoopFloat/18                20470 ns        20398 ns        34367
-BM_VectorTestLoopFloat/19                21599 ns        21523 ns        32726
-BM_VectorTestLoopFloat/20                22830 ns        22750 ns        30758
-BM_VectorTestLoopFloat/21                24006 ns        23921 ns        29306
-BM_VectorTestLoopFloat/22                25181 ns        25091 ns        27997
-BM_VectorTestLoopFloat/23                26458 ns        26362 ns        26585
-BM_VectorTestLoopFloat/24                27729 ns        27630 ns        25197
-BM_VectorTestLoopFloat/25                28706 ns        28604 ns        24326
-BM_VectorTestLoopFloat/26                30003 ns        29895 ns        23408
-BM_VectorTestLoopFloat/27                31374 ns        31259 ns        22552
-BM_VectorTestLoopFloat/28                32364 ns        32251 ns        21548
-BM_VectorTestLoopFloat/29                33556 ns        33438 ns        20977
-BM_VectorTestLoopFloat/30                34976 ns        34847 ns        20169
-BM_VectorTestLoopFloat/31                35903 ns        35771 ns        19584
-BM_VectorTestLoopFloat/32                37303 ns        37156 ns        18962
-BM_VectorTestConstArraySizeFloat/1         178 ns          177 ns      3986625
-BM_VectorTestConstArraySizeFloat/2         632 ns          630 ns      1119563
-BM_VectorTestConstArraySizeFloat/3        2067 ns         2060 ns       335407
-BM_VectorTestConstArraySizeFloat/4        3704 ns         3692 ns       188037
-BM_VectorTestConstArraySizeFloat/5        1796 ns         1789 ns       394081
-BM_VectorTestConstArraySizeFloat/6        1905 ns         1898 ns       364662
-BM_VectorTestConstArraySizeFloat/7        2722 ns         2712 ns       257824
-BM_VectorTestConstArraySizeFloat/8        2018 ns         2011 ns       348922
-BM_VectorTestConstArraySizeFloat/9        2981 ns         2970 ns       235582
-BM_VectorTestConstArraySizeFloat/10       3087 ns         3076 ns       227236
-BM_VectorTestConstArraySizeFloat/11       3972 ns         3959 ns       177225
-BM_VectorTestConstArraySizeFloat/12       3045 ns         3034 ns       231600
-BM_VectorTestConstArraySizeFloat/13       4386 ns         4370 ns       160592
-BM_VectorTestConstArraySizeFloat/14       4203 ns         4188 ns       167829
-BM_VectorTestConstArraySizeFloat/15       5230 ns         5212 ns       136365
-BM_VectorTestConstArraySizeFloat/16       3999 ns         3985 ns       175834
-BM_VectorTestConstArraySizeFloat/17       5563 ns         5543 ns       126600
-BM_VectorTestConstArraySizeFloat/18       5262 ns         5243 ns       137721
-BM_VectorTestConstArraySizeFloat/19       6341 ns         6319 ns       110219
-BM_VectorTestConstArraySizeFloat/20       5029 ns         5011 ns       100000
-BM_VectorTestConstArraySizeFloat/21       6510 ns         6491 ns       106033
-BM_VectorTestConstArraySizeFloat/22       6428 ns         6409 ns       107897
-BM_VectorTestConstArraySizeFloat/23       7544 ns         7521 ns        93162
-BM_VectorTestConstArraySizeFloat/24       5878 ns         5861 ns       120695
-BM_VectorTestConstArraySizeFloat/25       7983 ns         7956 ns        89747
-BM_VectorTestConstArraySizeFloat/26       7554 ns         7530 ns        94650
-BM_VectorTestConstArraySizeFloat/27       8810 ns         8782 ns        79411
-BM_VectorTestConstArraySizeFloat/28       7020 ns         6993 ns       101845
-BM_VectorTestConstArraySizeFloat/29       9208 ns         9168 ns        76725
-BM_VectorTestConstArraySizeFloat/30       8756 ns         8717 ns        81178
-BM_VectorTestConstArraySizeFloat/31      10075 ns        10021 ns        70355
-BM_VectorTestConstArraySizeFloat/32       8014 ns         7975 ns        88308
-BM_VectorTestForcedIntrinsics/1            187 ns          187 ns      3693366
-BM_VectorTestForcedIntrinsics/2           1164 ns         1160 ns       590960
-BM_VectorTestForcedIntrinsics/3           1637 ns         1631 ns       429460
-BM_VectorTestForcedIntrinsics/4           1199 ns         1195 ns       588012
-BM_VectorTestForcedIntrinsics/5           1874 ns         1867 ns       375261
-BM_VectorTestForcedIntrinsics/6           1961 ns         1954 ns       355218
-BM_VectorTestForcedIntrinsics/7           2756 ns         2746 ns       254439
-BM_VectorTestForcedIntrinsics/8           2062 ns         2054 ns       342008
-BM_VectorTestForcedIntrinsics/9           3154 ns         3142 ns       222200
-BM_VectorTestForcedIntrinsics/10          3113 ns         3102 ns       225867
-BM_VectorTestForcedIntrinsics/11          3986 ns         3972 ns       176529
-BM_VectorTestForcedIntrinsics/12          3089 ns         3078 ns       227638
-BM_VectorTestForcedIntrinsics/13          4434 ns         4418 ns       159927
-BM_VectorTestForcedIntrinsics/14          4222 ns         4207 ns       166875
-BM_VectorTestForcedIntrinsics/15          5165 ns         5146 ns       100000
-BM_VectorTestForcedIntrinsics/16          4040 ns         4025 ns       170974
-BM_VectorTestForcedIntrinsics/17          5581 ns         5561 ns       120296
-BM_VectorTestForcedIntrinsics/18          5324 ns         5304 ns       126241
-BM_VectorTestForcedIntrinsics/19          6398 ns         6375 ns       112255
-BM_VectorTestForcedIntrinsics/20          5053 ns         5034 ns       100000
-BM_VectorTestForcedIntrinsics/21          6826 ns         6801 ns       104789
-BM_VectorTestForcedIntrinsics/22          6473 ns         6450 ns       108229
-BM_VectorTestForcedIntrinsics/23          7596 ns         7569 ns        94341
-BM_VectorTestForcedIntrinsics/24          6017 ns         5995 ns       117525
-BM_VectorTestForcedIntrinsics/25          7955 ns         7927 ns        88942
-BM_VectorTestForcedIntrinsics/26          7634 ns         7607 ns        93720
-BM_VectorTestForcedIntrinsics/27          8809 ns         8778 ns        80646
-BM_VectorTestForcedIntrinsics/28          7065 ns         7042 ns       100188
-BM_VectorTestForcedIntrinsics/29          8922 ns         8888 ns        79557
-BM_VectorTestForcedIntrinsics/30          8885 ns         8852 ns        81284
-BM_VectorTestForcedIntrinsics/31          9986 ns         9943 ns        71552
-BM_VectorTestForcedIntrinsics/32          8039 ns         8006 ns        88152
+BM_VectorTestLoopFloat/1                  1216 ns         1212 ns       580560
+BM_VectorTestLoopFloat/2                  2272 ns         2264 ns       309745
+BM_VectorTestLoopFloat/3                  3366 ns         3354 ns       209391
+BM_VectorTestLoopFloat/4                  4495 ns         4478 ns       157291
+BM_VectorTestLoopFloat/5                  5660 ns         5627 ns       124649
+BM_VectorTestLoopFloat/6                  6776 ns         6750 ns       104102
+BM_VectorTestLoopFloat/7                  7942 ns         7916 ns        89257
+BM_VectorTestLoopFloat/8                  9120 ns         9086 ns        77234
+BM_VectorTestLoopFloat/9                 10252 ns        10212 ns        69253
+BM_VectorTestLoopFloat/10                11475 ns        11432 ns        61646
+BM_VectorTestLoopFloat/11                12704 ns        12658 ns        55493
+BM_VectorTestLoopFloat/12                13864 ns        13812 ns        50944
+BM_VectorTestLoopFloat/13                15024 ns        14967 ns        47169
+BM_VectorTestLoopFloat/14                16340 ns        16282 ns        43531
+BM_VectorTestLoopFloat/15                17422 ns        17356 ns        40328
+BM_VectorTestLoopFloat/16                18680 ns        18609 ns        37820
+BM_VectorTestLoopFloat/17                19892 ns        19819 ns        35348
+BM_VectorTestLoopFloat/18                21099 ns        21015 ns        33253
+BM_VectorTestLoopFloat/19                22238 ns        22154 ns        31681
+BM_VectorTestLoopFloat/20                23551 ns        23433 ns        29829
+BM_VectorTestLoopFloat/21                24707 ns        24612 ns        28525
+BM_VectorTestLoopFloat/22                26041 ns        25916 ns        27004
+BM_VectorTestLoopFloat/23                27236 ns        27122 ns        25123
+BM_VectorTestLoopFloat/24                28535 ns        28409 ns        24505
+BM_VectorTestLoopFloat/25                29715 ns        29542 ns        23744
+BM_VectorTestLoopFloat/26                31163 ns        31002 ns        22640
+BM_VectorTestLoopFloat/27                32259 ns        32065 ns        21859
+BM_VectorTestLoopFloat/28                33580 ns        33391 ns        20702
+BM_VectorTestLoopFloat/29                34891 ns        34699 ns        20281
+BM_VectorTestLoopFloat/30                36242 ns        36007 ns        19400
+BM_VectorTestLoopFloat/31                37423 ns        37154 ns        18875
+BM_VectorTestLoopFloat/32                38858 ns        38608 ns        17699
+BM_VectorTestConstArraySizeFloat/1         185 ns          184 ns      3771794
+BM_VectorTestConstArraySizeFloat/2         663 ns          660 ns      1068518
+BM_VectorTestConstArraySizeFloat/3        2159 ns         2152 ns       318170
+BM_VectorTestConstArraySizeFloat/4        3919 ns         3905 ns       179267
+BM_VectorTestConstArraySizeFloat/5        1861 ns         1854 ns       374407
+BM_VectorTestConstArraySizeFloat/6        1964 ns         1956 ns       362563
+BM_VectorTestConstArraySizeFloat/7        2789 ns         2779 ns       252684
+BM_VectorTestConstArraySizeFloat/8        2070 ns         2062 ns       342189
+BM_VectorTestConstArraySizeFloat/9        3191 ns         3179 ns       220216
+BM_VectorTestConstArraySizeFloat/10       3128 ns         3117 ns       225340
+BM_VectorTestConstArraySizeFloat/11       4049 ns         4025 ns       174288
+BM_VectorTestConstArraySizeFloat/12       3124 ns         3106 ns       225711
+BM_VectorTestConstArraySizeFloat/13       4440 ns         4424 ns       158540
+BM_VectorTestConstArraySizeFloat/14       4276 ns         4256 ns       164144
+BM_VectorTestConstArraySizeFloat/15       5325 ns         5306 ns       132282
+BM_VectorTestConstArraySizeFloat/16       4091 ns         4072 ns       172111
+BM_VectorTestConstArraySizeFloat/17       5711 ns         5682 ns       122226
+BM_VectorTestConstArraySizeFloat/18       5373 ns         5349 ns       129827
+BM_VectorTestConstArraySizeFloat/19       6500 ns         6474 ns       108150
+BM_VectorTestConstArraySizeFloat/20       5131 ns         5109 ns       136649
+BM_VectorTestConstArraySizeFloat/21       6896 ns         6867 ns        99598
+BM_VectorTestConstArraySizeFloat/22       6579 ns         6529 ns       108221
+BM_VectorTestConstArraySizeFloat/23       7752 ns         7705 ns        91673
+BM_VectorTestConstArraySizeFloat/24       6129 ns         6102 ns       114269
+BM_VectorTestConstArraySizeFloat/25       8151 ns         8120 ns        85643
+BM_VectorTestConstArraySizeFloat/26       7512 ns         7474 ns        94708
+BM_VectorTestConstArraySizeFloat/27       9100 ns         9047 ns        79200
+BM_VectorTestConstArraySizeFloat/28       7191 ns         7149 ns        97121
+BM_VectorTestConstArraySizeFloat/29       9417 ns         9362 ns        74720
+BM_VectorTestConstArraySizeFloat/30       8952 ns         8893 ns        80378
+BM_VectorTestConstArraySizeFloat/31      10342 ns        10284 ns        66481
+BM_VectorTestConstArraySizeFloat/32       8189 ns         8132 ns        85186
+BM_VectorTestForcedIntrinsics/1            189 ns          189 ns      3629410
+BM_VectorTestForcedIntrinsics/2           1192 ns         1188 ns       572025
+BM_VectorTestForcedIntrinsics/3           1701 ns         1695 ns       412319
+BM_VectorTestForcedIntrinsics/4           1234 ns         1229 ns       563105
+BM_VectorTestForcedIntrinsics/5           1936 ns         1929 ns       367124
+BM_VectorTestForcedIntrinsics/6           2002 ns         1994 ns       350985
+BM_VectorTestForcedIntrinsics/7           2826 ns         2814 ns       247821
+BM_VectorTestForcedIntrinsics/8           2106 ns         2098 ns       332577
+BM_VectorTestForcedIntrinsics/9           3240 ns         3229 ns       216567
+BM_VectorTestForcedIntrinsics/10          3176 ns         3164 ns       219614
+BM_VectorTestForcedIntrinsics/11          4086 ns         4065 ns       173103
+BM_VectorTestForcedIntrinsics/12          3095 ns         3083 ns       226427
+BM_VectorTestForcedIntrinsics/13          4459 ns         4441 ns       157019
+BM_VectorTestForcedIntrinsics/14          4298 ns         4281 ns       162819
+BM_VectorTestForcedIntrinsics/15          5232 ns         5211 ns       130653
+BM_VectorTestForcedIntrinsics/16          4166 ns         4150 ns       168336
+BM_VectorTestForcedIntrinsics/17          5713 ns         5687 ns       122828
+BM_VectorTestForcedIntrinsics/18          5424 ns         5403 ns       131831
+BM_VectorTestForcedIntrinsics/19          6517 ns         6487 ns       107246
+BM_VectorTestForcedIntrinsics/20          5208 ns         5179 ns       135608
+BM_VectorTestForcedIntrinsics/21          6927 ns         6882 ns       101059
+BM_VectorTestForcedIntrinsics/22          6593 ns         6542 ns       108036
+BM_VectorTestForcedIntrinsics/23          7789 ns         7745 ns        90793
+BM_VectorTestForcedIntrinsics/24          6241 ns         6200 ns       113967
+BM_VectorTestForcedIntrinsics/25          8178 ns         8130 ns        84883
+BM_VectorTestForcedIntrinsics/26          7768 ns         7724 ns        91931
+BM_VectorTestForcedIntrinsics/27          9017 ns         8954 ns        78657
+BM_VectorTestForcedIntrinsics/28          7250 ns         7206 ns        98287
+BM_VectorTestForcedIntrinsics/29          9419 ns         9365 ns        74588
+BM_VectorTestForcedIntrinsics/30          8943 ns         8885 ns        77512
+BM_VectorTestForcedIntrinsics/31         10217 ns        10159 ns        69207
+BM_VectorTestForcedIntrinsics/32          8271 ns         8221 ns        86206
 
 Pixel 6 Pro (1/29/2025)
 ------------------------------------------------------------------------------
 Benchmark                                    Time             CPU   Iterations
 ------------------------------------------------------------------------------
-BM_VectorTestLoopFloat/1                  1502 ns         1497 ns       459325
-BM_VectorTestLoopFloat/2                  2388 ns         2380 ns       294160
-BM_VectorTestLoopFloat/3                  3396 ns         3384 ns       208241
-BM_VectorTestLoopFloat/4                  4514 ns         4498 ns       156121
-BM_VectorTestLoopFloat/5                  5655 ns         5635 ns       124000
-BM_VectorTestLoopFloat/6                  6800 ns         6776 ns       102712
-BM_VectorTestLoopFloat/7                  7940 ns         7913 ns        88857
-BM_VectorTestLoopFloat/8                  9058 ns         9028 ns        77529
-BM_VectorTestLoopFloat/9                 10134 ns        10099 ns        69007
-BM_VectorTestLoopFloat/10                11333 ns        11294 ns        62029
-BM_VectorTestLoopFloat/11                12591 ns        12547 ns        56158
-BM_VectorTestLoopFloat/12                13722 ns        13675 ns        51178
-BM_VectorTestLoopFloat/13                14841 ns        14789 ns        47634
-BM_VectorTestLoopFloat/14                16006 ns        15949 ns        44030
-BM_VectorTestLoopFloat/15                17215 ns        17153 ns        41298
-BM_VectorTestLoopFloat/16                18856 ns        18788 ns        35997
-BM_VectorTestLoopFloat/17                20116 ns        20053 ns        35029
-BM_VectorTestLoopFloat/18                21270 ns        21164 ns        32944
-BM_VectorTestLoopFloat/19                22445 ns        22367 ns        31383
-BM_VectorTestLoopFloat/20                23789 ns        23710 ns        29843
-BM_VectorTestLoopFloat/21                25588 ns        25512 ns        27590
-BM_VectorTestLoopFloat/22                26861 ns        26775 ns        25990
-BM_VectorTestLoopFloat/23                27747 ns        27657 ns        25161
-BM_VectorTestLoopFloat/24                29162 ns        29065 ns        24219
-BM_VectorTestLoopFloat/25                30699 ns        30601 ns        22785
-BM_VectorTestLoopFloat/26                31996 ns        31895 ns        21649
-BM_VectorTestLoopFloat/27                33028 ns        32912 ns        21183
-BM_VectorTestLoopFloat/28                34514 ns        34397 ns        20432
-BM_VectorTestLoopFloat/29                35519 ns        35399 ns        19882
-BM_VectorTestLoopFloat/30                36609 ns        36461 ns        19010
-BM_VectorTestLoopFloat/31                37636 ns        37489 ns        18647
-BM_VectorTestLoopFloat/32                39001 ns        38856 ns        18033
-BM_VectorTestConstArraySizeFloat/1        1157 ns         1153 ns       600452
-BM_VectorTestConstArraySizeFloat/2        1577 ns         1572 ns       440151
-BM_VectorTestConstArraySizeFloat/3        2191 ns         2183 ns       321242
-BM_VectorTestConstArraySizeFloat/4        3114 ns         3104 ns       223419
-BM_VectorTestConstArraySizeFloat/5        3747 ns         3734 ns       187164
-BM_VectorTestConstArraySizeFloat/6        4727 ns         4710 ns       148569
-BM_VectorTestConstArraySizeFloat/7        5364 ns         5346 ns       131033
-BM_VectorTestConstArraySizeFloat/8        6152 ns         6130 ns       113657
-BM_VectorTestConstArraySizeFloat/9        7119 ns         7094 ns        99311
-BM_VectorTestConstArraySizeFloat/10       7684 ns         7658 ns        91576
-BM_VectorTestConstArraySizeFloat/11       8500 ns         8471 ns        82382
-BM_VectorTestConstArraySizeFloat/12       9238 ns         9208 ns        75741
-BM_VectorTestConstArraySizeFloat/13       9991 ns         9956 ns        70762
-BM_VectorTestConstArraySizeFloat/14      10734 ns        10697 ns        65570
-BM_VectorTestConstArraySizeFloat/15      11559 ns        11520 ns        60706
-BM_VectorTestConstArraySizeFloat/16      12265 ns        12224 ns        57061
-BM_VectorTestConstArraySizeFloat/17      13131 ns        13087 ns        53368
-BM_VectorTestConstArraySizeFloat/18      13829 ns        13780 ns        50118
-BM_VectorTestConstArraySizeFloat/19      15628 ns        15575 ns        44809
-BM_VectorTestConstArraySizeFloat/20      17416 ns        17356 ns        40377
-BM_VectorTestConstArraySizeFloat/21      20812 ns        20740 ns        33750
-BM_VectorTestConstArraySizeFloat/22      23752 ns        23670 ns        29564
-BM_VectorTestConstArraySizeFloat/23      25015 ns        24928 ns        27897
-BM_VectorTestConstArraySizeFloat/24      27675 ns        27580 ns        25290
-BM_VectorTestConstArraySizeFloat/25      28924 ns        28822 ns        24389
-BM_VectorTestConstArraySizeFloat/26      29192 ns        29089 ns        24013
-BM_VectorTestConstArraySizeFloat/27      31591 ns        31466 ns        22179
-BM_VectorTestConstArraySizeFloat/28      33425 ns        33269 ns        21025
-BM_VectorTestConstArraySizeFloat/29      34175 ns        34046 ns        20647
-BM_VectorTestConstArraySizeFloat/30      36181 ns        36038 ns        19575
-BM_VectorTestConstArraySizeFloat/31      37082 ns        36920 ns        18803
-BM_VectorTestConstArraySizeFloat/32      36747 ns        36553 ns        19246
-BM_VectorTestForcedIntrinsics/1           1170 ns         1166 ns       591357
-BM_VectorTestForcedIntrinsics/2           1186 ns         1182 ns       598724
-BM_VectorTestForcedIntrinsics/3           1685 ns         1679 ns       420630
-BM_VectorTestForcedIntrinsics/4           1235 ns         1230 ns       572354
-BM_VectorTestForcedIntrinsics/5           1880 ns         1873 ns       370863
-BM_VectorTestForcedIntrinsics/6           1970 ns         1963 ns       360011
-BM_VectorTestForcedIntrinsics/7           2781 ns         2771 ns       252813
-BM_VectorTestForcedIntrinsics/8           2067 ns         2059 ns       342035
-BM_VectorTestForcedIntrinsics/9           3212 ns         3200 ns       218060
-BM_VectorTestForcedIntrinsics/10          3194 ns         3183 ns       220057
-BM_VectorTestForcedIntrinsics/11          4074 ns         4060 ns       172551
-BM_VectorTestForcedIntrinsics/12          3161 ns         3150 ns       220341
-BM_VectorTestForcedIntrinsics/13          4460 ns         4443 ns       157565
-BM_VectorTestForcedIntrinsics/14          4321 ns         4305 ns       162640
-BM_VectorTestForcedIntrinsics/15          5091 ns         5072 ns       100000
-BM_VectorTestForcedIntrinsics/16          4149 ns         4134 ns       169154
-BM_VectorTestForcedIntrinsics/17          5723 ns         5702 ns       122228
-BM_VectorTestForcedIntrinsics/18          5430 ns         5411 ns       129557
-BM_VectorTestForcedIntrinsics/19          6516 ns         6492 ns       108324
-BM_VectorTestForcedIntrinsics/20          5219 ns         5201 ns       139971
-BM_VectorTestForcedIntrinsics/21          6929 ns         6905 ns       101141
-BM_VectorTestForcedIntrinsics/22          6445 ns         6426 ns       109573
-BM_VectorTestForcedIntrinsics/23          7772 ns         7747 ns        90492
-BM_VectorTestForcedIntrinsics/24          6119 ns         6099 ns       115904
-BM_VectorTestForcedIntrinsics/25          8135 ns         8111 ns        80751
-BM_VectorTestForcedIntrinsics/26          7698 ns         7674 ns        86225
-BM_VectorTestForcedIntrinsics/27          9014 ns         8982 ns        77138
-BM_VectorTestForcedIntrinsics/28          7267 ns         7242 ns        96210
-BM_VectorTestForcedIntrinsics/29          9368 ns         9336 ns        74626
-BM_VectorTestForcedIntrinsics/30          9016 ns         8980 ns        78822
-BM_VectorTestForcedIntrinsics/31         10224 ns        10185 ns        69073
-BM_VectorTestForcedIntrinsics/32          8325 ns         8287 ns        84343
+BM_VectorTestLoopFloat/1                  1522 ns         1514 ns       459906
+BM_VectorTestLoopFloat/2                  2391 ns         2383 ns       293707
+BM_VectorTestLoopFloat/3                  3437 ns         3426 ns       205663
+BM_VectorTestLoopFloat/4                  4482 ns         4468 ns       157406
+BM_VectorTestLoopFloat/5                  5665 ns         5645 ns       125564
+BM_VectorTestLoopFloat/6                  6784 ns         6762 ns       105112
+BM_VectorTestLoopFloat/7                  7930 ns         7902 ns        89104
+BM_VectorTestLoopFloat/8                  9043 ns         9011 ns        77654
+BM_VectorTestLoopFloat/9                 10178 ns        10145 ns        68967
+BM_VectorTestLoopFloat/10                11338 ns        11296 ns        61958
+BM_VectorTestLoopFloat/11                12500 ns        12456 ns        56104
+BM_VectorTestLoopFloat/12                13686 ns        13634 ns        51361
+BM_VectorTestLoopFloat/13                14794 ns        14744 ns        47477
+BM_VectorTestLoopFloat/14                16040 ns        15979 ns        43158
+BM_VectorTestLoopFloat/15                17098 ns        17036 ns        40926
+BM_VectorTestLoopFloat/16                18413 ns        18343 ns        37962
+BM_VectorTestLoopFloat/17                19462 ns        19382 ns        36093
+BM_VectorTestLoopFloat/18                20788 ns        20704 ns        33897
+BM_VectorTestLoopFloat/19                22168 ns        21967 ns        31994
+BM_VectorTestLoopFloat/20                23420 ns        23322 ns        30136
+BM_VectorTestLoopFloat/21                24424 ns        24316 ns        28773
+BM_VectorTestLoopFloat/22                25789 ns        25686 ns        27195
+BM_VectorTestLoopFloat/23                26980 ns        26870 ns        25939
+BM_VectorTestLoopFloat/24                28349 ns        28238 ns        24906
+BM_VectorTestLoopFloat/25                29486 ns        29355 ns        23815
+BM_VectorTestLoopFloat/26                30686 ns        30554 ns        22853
+BM_VectorTestLoopFloat/27                31781 ns        31630 ns        22034
+BM_VectorTestLoopFloat/28                33161 ns        33008 ns        21133
+BM_VectorTestLoopFloat/29                34482 ns        34329 ns        20290
+BM_VectorTestLoopFloat/30                35676 ns        35531 ns        19434
+BM_VectorTestLoopFloat/31                37037 ns        36835 ns        19033
+BM_VectorTestLoopFloat/32                38379 ns        38178 ns        18409
+BM_VectorTestConstArraySizeFloat/1        1138 ns         1134 ns       605601
+BM_VectorTestConstArraySizeFloat/2        1551 ns         1546 ns       451139
+BM_VectorTestConstArraySizeFloat/3        2157 ns         2149 ns       326085
+BM_VectorTestConstArraySizeFloat/4        3082 ns         3070 ns       228235
+BM_VectorTestConstArraySizeFloat/5        3694 ns         3668 ns       191253
+BM_VectorTestConstArraySizeFloat/6        4708 ns         4691 ns       149290
+BM_VectorTestConstArraySizeFloat/7        5255 ns         5236 ns       133227
+BM_VectorTestConstArraySizeFloat/8        6239 ns         6217 ns       115033
+BM_VectorTestConstArraySizeFloat/9        7087 ns         7058 ns        99388
+BM_VectorTestConstArraySizeFloat/10       7640 ns         7613 ns        91195
+BM_VectorTestConstArraySizeFloat/11       8471 ns         8438 ns        83724
+BM_VectorTestConstArraySizeFloat/12       9132 ns         9101 ns        77836
+BM_VectorTestConstArraySizeFloat/13       9963 ns         9928 ns        71043
+BM_VectorTestConstArraySizeFloat/14      10601 ns        10565 ns        67362
+BM_VectorTestConstArraySizeFloat/15      11428 ns        11384 ns        61646
+BM_VectorTestConstArraySizeFloat/16      12061 ns        12017 ns        58708
+BM_VectorTestConstArraySizeFloat/17      13094 ns        13043 ns        53478
+BM_VectorTestConstArraySizeFloat/18      13624 ns        13553 ns        52138
+BM_VectorTestConstArraySizeFloat/19      15633 ns        15541 ns        45464
+BM_VectorTestConstArraySizeFloat/20      17379 ns        17299 ns        40665
+BM_VectorTestConstArraySizeFloat/21      20772 ns        20675 ns        34104
+BM_VectorTestConstArraySizeFloat/22      23613 ns        23485 ns        29856
+BM_VectorTestConstArraySizeFloat/23      24967 ns        24800 ns        28081
+BM_VectorTestConstArraySizeFloat/24      27395 ns        27278 ns        25481
+BM_VectorTestConstArraySizeFloat/25      28858 ns        28701 ns        24520
+BM_VectorTestConstArraySizeFloat/26      29251 ns        29068 ns        24195
+BM_VectorTestConstArraySizeFloat/27      31487 ns        31293 ns        22507
+BM_VectorTestConstArraySizeFloat/28      33355 ns        33137 ns        20929
+BM_VectorTestConstArraySizeFloat/29      34385 ns        34229 ns        20417
+BM_VectorTestConstArraySizeFloat/30      36031 ns        35811 ns        19543
+BM_VectorTestConstArraySizeFloat/31      37079 ns        36905 ns        19051
+BM_VectorTestConstArraySizeFloat/32      36857 ns        36715 ns        19077
+BM_VectorTestForcedIntrinsics/1           1163 ns         1159 ns       598027
+BM_VectorTestForcedIntrinsics/2           1175 ns         1170 ns       599275
+BM_VectorTestForcedIntrinsics/3           1680 ns         1673 ns       419149
+BM_VectorTestForcedIntrinsics/4           1210 ns         1205 ns       581791
+BM_VectorTestForcedIntrinsics/5           1874 ns         1867 ns       374320
+BM_VectorTestForcedIntrinsics/6           1954 ns         1946 ns       364700
+BM_VectorTestForcedIntrinsics/7           2763 ns         2753 ns       253086
+BM_VectorTestForcedIntrinsics/8           2057 ns         2049 ns       347318
+BM_VectorTestForcedIntrinsics/9           3186 ns         3175 ns       218684
+BM_VectorTestForcedIntrinsics/10          3112 ns         3101 ns       225780
+BM_VectorTestForcedIntrinsics/11          4044 ns         4023 ns       175125
+BM_VectorTestForcedIntrinsics/12          3088 ns         3077 ns       229106
+BM_VectorTestForcedIntrinsics/13          4405 ns         4388 ns       159480
+BM_VectorTestForcedIntrinsics/14          4248 ns         4232 ns       164753
+BM_VectorTestForcedIntrinsics/15          5018 ns         4983 ns       140497
+BM_VectorTestForcedIntrinsics/16          4131 ns         4095 ns       172113
+BM_VectorTestForcedIntrinsics/17          5714 ns         5679 ns       123282
+BM_VectorTestForcedIntrinsics/18          5387 ns         5358 ns       132204
+BM_VectorTestForcedIntrinsics/19          6515 ns         6481 ns       110209
+BM_VectorTestForcedIntrinsics/20          5108 ns         5081 ns       100000
+BM_VectorTestForcedIntrinsics/21          6913 ns         6876 ns       101935
+BM_VectorTestForcedIntrinsics/22          6564 ns         6517 ns       108434
+BM_VectorTestForcedIntrinsics/23          7763 ns         7718 ns        92602
+BM_VectorTestForcedIntrinsics/24          6184 ns         6132 ns       115958
+BM_VectorTestForcedIntrinsics/25          8152 ns         8099 ns        87568
+BM_VectorTestForcedIntrinsics/26          7720 ns         7674 ns        93561
+BM_VectorTestForcedIntrinsics/27          8977 ns         8919 ns        78819
+BM_VectorTestForcedIntrinsics/28          7206 ns         7153 ns        99046
+BM_VectorTestForcedIntrinsics/29          9373 ns         9310 ns        74948
+BM_VectorTestForcedIntrinsics/30          8888 ns         8830 ns        79500
+BM_VectorTestForcedIntrinsics/31         10233 ns        10163 ns        70094
+BM_VectorTestForcedIntrinsics/32          8209 ns         8139 ns        84943
 
 */
 
@@ -414,40 +414,44 @@ static void TestArgs(benchmark::internal::Benchmark* b) {
     }
 }
 
+// Macro test operator
+
+#define OPERATOR(N) \
+    *reinterpret_cast<V<F, N>*>(out) = vmul( \
+    *reinterpret_cast<const V<F, N>*>(in1), \
+    *reinterpret_cast<const V<F, N>*>(in2)); \
+    out += N; \
+    in1 += N; \
+    in2 += N;
+
 // Macro to instantiate switch case statements.
 
 #define INSTANTIATE(N) \
     case N: \
     mFunc = [](F* out, const F* in1, const F* in2, size_t count) { \
-        constexpr size_t vsize = sizeof(V<F, N>); \
-        static_assert(vsize == N * sizeof(F)); \
-        static_assert(alignof(V<F, N>) <= (vsize & -vsize)); \
+        static_assert(sizeof(V<F, N>) == N * sizeof(F)); \
         for (size_t i = 0; i < count; ++i) { \
-            *reinterpret_cast<V<F, N>*>(out) = vmul( \
-                    *reinterpret_cast<const V<F, N>*>(in1), \
-                    *reinterpret_cast<const V<F, N>*>(in2)); \
-            out += N; \
-            in1 += N; \
-            in2 += N; \
-            } \
-        }; \
+            OPERATOR(N); \
+        } \
+    }; \
     break;
 
-template <template <typename, int> class V, typename F>
+template <typename Traits>
 class Processor {
 public:
-    Processor(int channelCount, bool loop = false)
+    // shorthand aliases
+    using F = typename Traits::data_t;
+    template <typename T, int N>
+    using V = typename Traits::template container_t<T, N>;
+
+    Processor(int channelCount)
         : mChannelCount(channelCount) {
-        if (loop) {
+
+        if constexpr (Traits::loop_) {
             mFunc = [channelCount](F* out, const F* in1, const F* in2, size_t count) {
                 for (size_t i = 0; i < count; ++i) {
                     for (size_t j = 0; j < channelCount; ++j) {
-                        *reinterpret_cast<V<F, 1>*>(out) = vmul(
-                        *reinterpret_cast<const V<F, 1>*>(in1),
-                        *reinterpret_cast<const V<F, 1>*>(in2));
-                        ++out;
-                        ++in1;
-                        ++in2;
+                        OPERATOR(1);
                     }
                 }
             };
@@ -497,8 +501,9 @@ public:
     /* const */ std::function<void(F*, const F*, const F*, size_t)> mFunc;
 };
 
-template <template <typename, int> class V, typename F>
-static void BM_VectorTest(benchmark::State& state, bool loop) {
+template <typename Traits>
+static void BM_VectorTest(benchmark::State& state) {
+    using F = typename Traits::data_t;
     const size_t channelCount = state.range(0);
 
     std::vector<F> input1(kDataSize * channelCount);
@@ -516,7 +521,7 @@ static void BM_VectorTest(benchmark::State& state, bool loop) {
         in = dis(gen);
     }
 
-    Processor<V, float> processor(channelCount, loop);
+    Processor<Traits> processor(channelCount);
 
     // Run the test
     while (state.KeepRunning()) {
@@ -529,19 +534,41 @@ static void BM_VectorTest(benchmark::State& state, bool loop) {
     state.SetComplexityN(channelCount);
 }
 
+// Clang has an issue with -frelaxed-template-template-args where
+// it may not follow the C++17 guidelines.  Use a traits struct to
+// pass in parameters.
+
 // Test using two loops.
+struct LoopFloatTraits {
+    template <typename F, int N>
+    using container_t = internal_array_t<F, N>;
+    using data_t = float;
+    static constexpr bool loop_ = true;
+};
 static void BM_VectorTestLoopFloat(benchmark::State& state) {
-    BM_VectorTest<internal_array_t, float>(state, true /* loop */);
+    BM_VectorTest<LoopFloatTraits>(state);
 }
 
 // Test using two loops, the inner loop is constexpr size.
+struct ConstArraySizeFloatTraits {
+    template <typename F, int N>
+    using container_t = internal_array_t<F, N>;
+    using data_t = float;
+    static constexpr bool loop_ = false;
+};
 static void BM_VectorTestConstArraySizeFloat(benchmark::State& state) {
-    BM_VectorTest<internal_array_t, float>(state, false) /* loop */;
+    BM_VectorTest<ConstArraySizeFloatTraits>(state);
 }
 
 // Test using intrinsics, if available.
+struct ForcedIntrinsicsTraits {
+    template <typename F, int N>
+    using container_t = vector_hw_t<F, N>;
+    using data_t = float;
+    static constexpr bool loop_ = false;
+};
 static void BM_VectorTestForcedIntrinsics(benchmark::State& state) {
-    BM_VectorTest<vector_hw_t, float>(state, false /* loop */);
+    BM_VectorTest<ForcedIntrinsicsTraits>(state);
 }
 
 BENCHMARK(BM_VectorTestLoopFloat)->Apply(TestArgs);

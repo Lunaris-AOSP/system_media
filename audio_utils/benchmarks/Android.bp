@@ -53,7 +53,6 @@ cc_benchmark {
     cflags: [
         "-Wall",
         "-Werror",
-        "-frelaxed-template-template-args", // needed for Android 14 and earlier
     ],
 }
 
