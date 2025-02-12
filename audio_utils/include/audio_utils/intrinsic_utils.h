@@ -19,6 +19,7 @@
 
 #include <array>  // std::size
 #include <type_traits>
+#include "template_utils.h"
 
 /*
   The intrinsics utility library contain helper functions for wide width DSP support.
@@ -44,14 +45,6 @@ namespace android::audio_utils::intrinsics {
 template <typename T>
 inline constexpr bool dependent_false_v = false;
 
-// Type of array embedded in a struct that is usable in the Neon template functions below.
-// This type must satisfy std::is_array_v<>.
-template<typename T, size_t N>
-struct internal_array_t {
-    T v[N];
-    static constexpr size_t size() { return N; }
-};
-
 // Detect if the value is directly addressable as an array.
 // This is more advanced than std::is_array and works with neon intrinsics.
 template<typename T>
@@ -59,9 +52,825 @@ concept is_array_like = requires(T a) {
     a[0];  // can index first element
 };
 
+/**
+ * Applies a functional or a constant to an intrinsic struct.
+ *
+ * The vapply method has no return value, but can modify an input intrinsic struct
+ * through element-wise application of a functional.
+ * Compare the behavior with veval which returns a struct result.
+ *
+ * Using vector terminology:
+ *   if f is a constant: v[i] = f;
+ *   if f is a void method that takes an element value: f(v[i]);
+ *   if f returns an element value but takes no arg: v[i] = f();
+ *   if f returns an element value but takes an element value: v[i] = f(v[i]);
+ */
+template <typename V, typename F>
+constexpr void vapply(const F& f, V& v) {
+    if constexpr (std::is_same_v<V, float> || std::is_same_v<V, double>) {
+        using E = std::decay_t<decltype(v)>;
+        if constexpr (std::is_invocable_r_v<void, F, E>) {
+            f(v);
+        } else if constexpr (std::is_invocable_r_v<E, F, E>) {
+            v = f(v);
+        } else if constexpr (std::is_invocable_r_v<E, F>) {
+            v = f();
+        } else /* constexpr */ {
+            v = f;
+        }
+    } else if constexpr (is_array_like<V>) {
+        // this vector access within a neon object prevents constexpr.
+        using E = std::decay_t<decltype(v[0])>;
+#pragma unroll
+        for (size_t i = 0; i < sizeof(v) / sizeof(v[0]); ++i) {
+            if constexpr (std::is_invocable_r_v<void, F, E>) {
+                f(v[i]);
+            } else if constexpr (std::is_invocable_r_v<E, F, E>) {
+                v[i] = f(v[i]);
+            } else if constexpr (std::is_invocable_r_v<E, F>) {
+                v[i] = f();
+            } else /* constexpr */ {
+                v[i] = f;
+            }
+        }
+    } else /* constexpr */ {
+        auto& [vv] = v;
+        // for constexpr purposes, non-const references can't bind to array elements.
+        using VT = decltype(vv);
+        // automatically generated from tests/generate_constexpr_constructible.cpp
+        if constexpr (is_braces_constructible<VT,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type
+                >()) {
+            auto& [v1, v2, v3, v4, v5, v6, v7, v8,
+                    v9, v10, v11, v12, v13, v14, v15, v16,
+                    v17, v18, v19, v20, v21, v22, v23, v24,
+                    v25, v26, v27, v28, v29, v30, v31, v32] = vv;
+            vapply(f, v1);
+            vapply(f, v2);
+            vapply(f, v3);
+            vapply(f, v4);
+            vapply(f, v5);
+            vapply(f, v6);
+            vapply(f, v7);
+            vapply(f, v8);
+            vapply(f, v9);
+            vapply(f, v10);
+            vapply(f, v11);
+            vapply(f, v12);
+            vapply(f, v13);
+            vapply(f, v14);
+            vapply(f, v15);
+            vapply(f, v16);
+            vapply(f, v17);
+            vapply(f, v18);
+            vapply(f, v19);
+            vapply(f, v20);
+            vapply(f, v21);
+            vapply(f, v22);
+            vapply(f, v23);
+            vapply(f, v24);
+            vapply(f, v25);
+            vapply(f, v26);
+            vapply(f, v27);
+            vapply(f, v28);
+            vapply(f, v29);
+            vapply(f, v30);
+            vapply(f, v31);
+            vapply(f, v32);
+        } else if constexpr (is_braces_constructible<VT,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type>()) {
+            auto& [v1, v2, v3, v4, v5, v6, v7, v8,
+                    v9, v10, v11, v12, v13, v14, v15, v16,
+                    v17, v18, v19, v20, v21, v22, v23, v24,
+                    v25, v26, v27, v28, v29, v30, v31] = vv;
+            vapply(f, v1);
+            vapply(f, v2);
+            vapply(f, v3);
+            vapply(f, v4);
+            vapply(f, v5);
+            vapply(f, v6);
+            vapply(f, v7);
+            vapply(f, v8);
+            vapply(f, v9);
+            vapply(f, v10);
+            vapply(f, v11);
+            vapply(f, v12);
+            vapply(f, v13);
+            vapply(f, v14);
+            vapply(f, v15);
+            vapply(f, v16);
+            vapply(f, v17);
+            vapply(f, v18);
+            vapply(f, v19);
+            vapply(f, v20);
+            vapply(f, v21);
+            vapply(f, v22);
+            vapply(f, v23);
+            vapply(f, v24);
+            vapply(f, v25);
+            vapply(f, v26);
+            vapply(f, v27);
+            vapply(f, v28);
+            vapply(f, v29);
+            vapply(f, v30);
+            vapply(f, v31);
+        } else if constexpr (is_braces_constructible<VT,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type, any_type, any_type>()) {
+            auto& [v1, v2, v3, v4, v5, v6, v7, v8,
+                    v9, v10, v11, v12, v13, v14, v15, v16,
+                    v17, v18, v19, v20, v21, v22, v23, v24,
+                    v25, v26, v27, v28, v29, v30] = vv;
+            vapply(f, v1);
+            vapply(f, v2);
+            vapply(f, v3);
+            vapply(f, v4);
+            vapply(f, v5);
+            vapply(f, v6);
+            vapply(f, v7);
+            vapply(f, v8);
+            vapply(f, v9);
+            vapply(f, v10);
+            vapply(f, v11);
+            vapply(f, v12);
+            vapply(f, v13);
+            vapply(f, v14);
+            vapply(f, v15);
+            vapply(f, v16);
+            vapply(f, v17);
+            vapply(f, v18);
+            vapply(f, v19);
+            vapply(f, v20);
+            vapply(f, v21);
+            vapply(f, v22);
+            vapply(f, v23);
+            vapply(f, v24);
+            vapply(f, v25);
+            vapply(f, v26);
+            vapply(f, v27);
+            vapply(f, v28);
+            vapply(f, v29);
+            vapply(f, v30);
+        } else if constexpr (is_braces_constructible<VT,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type, any_type>()) {
+            auto& [v1, v2, v3, v4, v5, v6, v7, v8,
+                    v9, v10, v11, v12, v13, v14, v15, v16,
+                    v17, v18, v19, v20, v21, v22, v23, v24,
+                    v25, v26, v27, v28, v29] = vv;
+            vapply(f, v1);
+            vapply(f, v2);
+            vapply(f, v3);
+            vapply(f, v4);
+            vapply(f, v5);
+            vapply(f, v6);
+            vapply(f, v7);
+            vapply(f, v8);
+            vapply(f, v9);
+            vapply(f, v10);
+            vapply(f, v11);
+            vapply(f, v12);
+            vapply(f, v13);
+            vapply(f, v14);
+            vapply(f, v15);
+            vapply(f, v16);
+            vapply(f, v17);
+            vapply(f, v18);
+            vapply(f, v19);
+            vapply(f, v20);
+            vapply(f, v21);
+            vapply(f, v22);
+            vapply(f, v23);
+            vapply(f, v24);
+            vapply(f, v25);
+            vapply(f, v26);
+            vapply(f, v27);
+            vapply(f, v28);
+            vapply(f, v29);
+        } else if constexpr (is_braces_constructible<VT,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type>()) {
+            auto& [v1, v2, v3, v4, v5, v6, v7, v8,
+                    v9, v10, v11, v12, v13, v14, v15, v16,
+                    v17, v18, v19, v20, v21, v22, v23, v24,
+                    v25, v26, v27, v28] = vv;
+            vapply(f, v1);
+            vapply(f, v2);
+            vapply(f, v3);
+            vapply(f, v4);
+            vapply(f, v5);
+            vapply(f, v6);
+            vapply(f, v7);
+            vapply(f, v8);
+            vapply(f, v9);
+            vapply(f, v10);
+            vapply(f, v11);
+            vapply(f, v12);
+            vapply(f, v13);
+            vapply(f, v14);
+            vapply(f, v15);
+            vapply(f, v16);
+            vapply(f, v17);
+            vapply(f, v18);
+            vapply(f, v19);
+            vapply(f, v20);
+            vapply(f, v21);
+            vapply(f, v22);
+            vapply(f, v23);
+            vapply(f, v24);
+            vapply(f, v25);
+            vapply(f, v26);
+            vapply(f, v27);
+            vapply(f, v28);
+        } else if constexpr (is_braces_constructible<VT,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type>()) {
+            auto& [v1, v2, v3, v4, v5, v6, v7, v8,
+                    v9, v10, v11, v12, v13, v14, v15, v16,
+                    v17, v18, v19, v20, v21, v22, v23, v24,
+                    v25, v26, v27] = vv;
+            vapply(f, v1);
+            vapply(f, v2);
+            vapply(f, v3);
+            vapply(f, v4);
+            vapply(f, v5);
+            vapply(f, v6);
+            vapply(f, v7);
+            vapply(f, v8);
+            vapply(f, v9);
+            vapply(f, v10);
+            vapply(f, v11);
+            vapply(f, v12);
+            vapply(f, v13);
+            vapply(f, v14);
+            vapply(f, v15);
+            vapply(f, v16);
+            vapply(f, v17);
+            vapply(f, v18);
+            vapply(f, v19);
+            vapply(f, v20);
+            vapply(f, v21);
+            vapply(f, v22);
+            vapply(f, v23);
+            vapply(f, v24);
+            vapply(f, v25);
+            vapply(f, v26);
+            vapply(f, v27);
+        } else if constexpr (is_braces_constructible<VT,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type>()) {
+            auto& [v1, v2, v3, v4, v5, v6, v7, v8,
+                    v9, v10, v11, v12, v13, v14, v15, v16,
+                    v17, v18, v19, v20, v21, v22, v23, v24,
+                    v25, v26] = vv;
+            vapply(f, v1);
+            vapply(f, v2);
+            vapply(f, v3);
+            vapply(f, v4);
+            vapply(f, v5);
+            vapply(f, v6);
+            vapply(f, v7);
+            vapply(f, v8);
+            vapply(f, v9);
+            vapply(f, v10);
+            vapply(f, v11);
+            vapply(f, v12);
+            vapply(f, v13);
+            vapply(f, v14);
+            vapply(f, v15);
+            vapply(f, v16);
+            vapply(f, v17);
+            vapply(f, v18);
+            vapply(f, v19);
+            vapply(f, v20);
+            vapply(f, v21);
+            vapply(f, v22);
+            vapply(f, v23);
+            vapply(f, v24);
+            vapply(f, v25);
+            vapply(f, v26);
+        } else if constexpr (is_braces_constructible<VT,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type>()) {
+            auto& [v1, v2, v3, v4, v5, v6, v7, v8,
+                    v9, v10, v11, v12, v13, v14, v15, v16,
+                    v17, v18, v19, v20, v21, v22, v23, v24,
+                    v25] = vv;
+            vapply(f, v1);
+            vapply(f, v2);
+            vapply(f, v3);
+            vapply(f, v4);
+            vapply(f, v5);
+            vapply(f, v6);
+            vapply(f, v7);
+            vapply(f, v8);
+            vapply(f, v9);
+            vapply(f, v10);
+            vapply(f, v11);
+            vapply(f, v12);
+            vapply(f, v13);
+            vapply(f, v14);
+            vapply(f, v15);
+            vapply(f, v16);
+            vapply(f, v17);
+            vapply(f, v18);
+            vapply(f, v19);
+            vapply(f, v20);
+            vapply(f, v21);
+            vapply(f, v22);
+            vapply(f, v23);
+            vapply(f, v24);
+            vapply(f, v25);
+        } else if constexpr (is_braces_constructible<VT,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type
+                >()) {
+            auto& [v1, v2, v3, v4, v5, v6, v7, v8,
+                    v9, v10, v11, v12, v13, v14, v15, v16,
+                    v17, v18, v19, v20, v21, v22, v23, v24] = vv;
+            vapply(f, v1);
+            vapply(f, v2);
+            vapply(f, v3);
+            vapply(f, v4);
+            vapply(f, v5);
+            vapply(f, v6);
+            vapply(f, v7);
+            vapply(f, v8);
+            vapply(f, v9);
+            vapply(f, v10);
+            vapply(f, v11);
+            vapply(f, v12);
+            vapply(f, v13);
+            vapply(f, v14);
+            vapply(f, v15);
+            vapply(f, v16);
+            vapply(f, v17);
+            vapply(f, v18);
+            vapply(f, v19);
+            vapply(f, v20);
+            vapply(f, v21);
+            vapply(f, v22);
+            vapply(f, v23);
+            vapply(f, v24);
+        } else if constexpr (is_braces_constructible<VT,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type>()) {
+            auto& [v1, v2, v3, v4, v5, v6, v7, v8,
+                    v9, v10, v11, v12, v13, v14, v15, v16,
+                    v17, v18, v19, v20, v21, v22, v23] = vv;
+            vapply(f, v1);
+            vapply(f, v2);
+            vapply(f, v3);
+            vapply(f, v4);
+            vapply(f, v5);
+            vapply(f, v6);
+            vapply(f, v7);
+            vapply(f, v8);
+            vapply(f, v9);
+            vapply(f, v10);
+            vapply(f, v11);
+            vapply(f, v12);
+            vapply(f, v13);
+            vapply(f, v14);
+            vapply(f, v15);
+            vapply(f, v16);
+            vapply(f, v17);
+            vapply(f, v18);
+            vapply(f, v19);
+            vapply(f, v20);
+            vapply(f, v21);
+            vapply(f, v22);
+            vapply(f, v23);
+        } else if constexpr (is_braces_constructible<VT,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type, any_type, any_type>()) {
+            auto& [v1, v2, v3, v4, v5, v6, v7, v8,
+                    v9, v10, v11, v12, v13, v14, v15, v16,
+                    v17, v18, v19, v20, v21, v22] = vv;
+            vapply(f, v1);
+            vapply(f, v2);
+            vapply(f, v3);
+            vapply(f, v4);
+            vapply(f, v5);
+            vapply(f, v6);
+            vapply(f, v7);
+            vapply(f, v8);
+            vapply(f, v9);
+            vapply(f, v10);
+            vapply(f, v11);
+            vapply(f, v12);
+            vapply(f, v13);
+            vapply(f, v14);
+            vapply(f, v15);
+            vapply(f, v16);
+            vapply(f, v17);
+            vapply(f, v18);
+            vapply(f, v19);
+            vapply(f, v20);
+            vapply(f, v21);
+            vapply(f, v22);
+        } else if constexpr (is_braces_constructible<VT,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type, any_type>()) {
+            auto& [v1, v2, v3, v4, v5, v6, v7, v8,
+                    v9, v10, v11, v12, v13, v14, v15, v16,
+                    v17, v18, v19, v20, v21] = vv;
+            vapply(f, v1);
+            vapply(f, v2);
+            vapply(f, v3);
+            vapply(f, v4);
+            vapply(f, v5);
+            vapply(f, v6);
+            vapply(f, v7);
+            vapply(f, v8);
+            vapply(f, v9);
+            vapply(f, v10);
+            vapply(f, v11);
+            vapply(f, v12);
+            vapply(f, v13);
+            vapply(f, v14);
+            vapply(f, v15);
+            vapply(f, v16);
+            vapply(f, v17);
+            vapply(f, v18);
+            vapply(f, v19);
+            vapply(f, v20);
+            vapply(f, v21);
+        } else if constexpr (is_braces_constructible<VT,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type>()) {
+            auto& [v1, v2, v3, v4, v5, v6, v7, v8,
+                    v9, v10, v11, v12, v13, v14, v15, v16,
+                    v17, v18, v19, v20] = vv;
+            vapply(f, v1);
+            vapply(f, v2);
+            vapply(f, v3);
+            vapply(f, v4);
+            vapply(f, v5);
+            vapply(f, v6);
+            vapply(f, v7);
+            vapply(f, v8);
+            vapply(f, v9);
+            vapply(f, v10);
+            vapply(f, v11);
+            vapply(f, v12);
+            vapply(f, v13);
+            vapply(f, v14);
+            vapply(f, v15);
+            vapply(f, v16);
+            vapply(f, v17);
+            vapply(f, v18);
+            vapply(f, v19);
+            vapply(f, v20);
+        } else if constexpr (is_braces_constructible<VT,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type>()) {
+            auto& [v1, v2, v3, v4, v5, v6, v7, v8,
+                    v9, v10, v11, v12, v13, v14, v15, v16,
+                    v17, v18, v19] = vv;
+            vapply(f, v1);
+            vapply(f, v2);
+            vapply(f, v3);
+            vapply(f, v4);
+            vapply(f, v5);
+            vapply(f, v6);
+            vapply(f, v7);
+            vapply(f, v8);
+            vapply(f, v9);
+            vapply(f, v10);
+            vapply(f, v11);
+            vapply(f, v12);
+            vapply(f, v13);
+            vapply(f, v14);
+            vapply(f, v15);
+            vapply(f, v16);
+            vapply(f, v17);
+            vapply(f, v18);
+            vapply(f, v19);
+        } else if constexpr (is_braces_constructible<VT,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type>()) {
+            auto& [v1, v2, v3, v4, v5, v6, v7, v8,
+                    v9, v10, v11, v12, v13, v14, v15, v16,
+                    v17, v18] = vv;
+            vapply(f, v1);
+            vapply(f, v2);
+            vapply(f, v3);
+            vapply(f, v4);
+            vapply(f, v5);
+            vapply(f, v6);
+            vapply(f, v7);
+            vapply(f, v8);
+            vapply(f, v9);
+            vapply(f, v10);
+            vapply(f, v11);
+            vapply(f, v12);
+            vapply(f, v13);
+            vapply(f, v14);
+            vapply(f, v15);
+            vapply(f, v16);
+            vapply(f, v17);
+            vapply(f, v18);
+        } else if constexpr (is_braces_constructible<VT,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type>()) {
+            auto& [v1, v2, v3, v4, v5, v6, v7, v8,
+                    v9, v10, v11, v12, v13, v14, v15, v16,
+                    v17] = vv;
+            vapply(f, v1);
+            vapply(f, v2);
+            vapply(f, v3);
+            vapply(f, v4);
+            vapply(f, v5);
+            vapply(f, v6);
+            vapply(f, v7);
+            vapply(f, v8);
+            vapply(f, v9);
+            vapply(f, v10);
+            vapply(f, v11);
+            vapply(f, v12);
+            vapply(f, v13);
+            vapply(f, v14);
+            vapply(f, v15);
+            vapply(f, v16);
+            vapply(f, v17);
+        } else if constexpr (is_braces_constructible<VT,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type
+                >()) {
+            auto& [v1, v2, v3, v4, v5, v6, v7, v8,
+                    v9, v10, v11, v12, v13, v14, v15, v16] = vv;
+            vapply(f, v1);
+            vapply(f, v2);
+            vapply(f, v3);
+            vapply(f, v4);
+            vapply(f, v5);
+            vapply(f, v6);
+            vapply(f, v7);
+            vapply(f, v8);
+            vapply(f, v9);
+            vapply(f, v10);
+            vapply(f, v11);
+            vapply(f, v12);
+            vapply(f, v13);
+            vapply(f, v14);
+            vapply(f, v15);
+            vapply(f, v16);
+        } else if constexpr (is_braces_constructible<VT,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type>()) {
+            auto& [v1, v2, v3, v4, v5, v6, v7, v8,
+                    v9, v10, v11, v12, v13, v14, v15] = vv;
+            vapply(f, v1);
+            vapply(f, v2);
+            vapply(f, v3);
+            vapply(f, v4);
+            vapply(f, v5);
+            vapply(f, v6);
+            vapply(f, v7);
+            vapply(f, v8);
+            vapply(f, v9);
+            vapply(f, v10);
+            vapply(f, v11);
+            vapply(f, v12);
+            vapply(f, v13);
+            vapply(f, v14);
+            vapply(f, v15);
+        } else if constexpr (is_braces_constructible<VT,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type, any_type, any_type>()) {
+            auto& [v1, v2, v3, v4, v5, v6, v7, v8,
+                    v9, v10, v11, v12, v13, v14] = vv;
+            vapply(f, v1);
+            vapply(f, v2);
+            vapply(f, v3);
+            vapply(f, v4);
+            vapply(f, v5);
+            vapply(f, v6);
+            vapply(f, v7);
+            vapply(f, v8);
+            vapply(f, v9);
+            vapply(f, v10);
+            vapply(f, v11);
+            vapply(f, v12);
+            vapply(f, v13);
+            vapply(f, v14);
+        } else if constexpr (is_braces_constructible<VT,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type, any_type>()) {
+            auto& [v1, v2, v3, v4, v5, v6, v7, v8,
+                    v9, v10, v11, v12, v13] = vv;
+            vapply(f, v1);
+            vapply(f, v2);
+            vapply(f, v3);
+            vapply(f, v4);
+            vapply(f, v5);
+            vapply(f, v6);
+            vapply(f, v7);
+            vapply(f, v8);
+            vapply(f, v9);
+            vapply(f, v10);
+            vapply(f, v11);
+            vapply(f, v12);
+            vapply(f, v13);
+        } else if constexpr (is_braces_constructible<VT,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type, any_type>()) {
+            auto& [v1, v2, v3, v4, v5, v6, v7, v8,
+                    v9, v10, v11, v12] = vv;
+            vapply(f, v1);
+            vapply(f, v2);
+            vapply(f, v3);
+            vapply(f, v4);
+            vapply(f, v5);
+            vapply(f, v6);
+            vapply(f, v7);
+            vapply(f, v8);
+            vapply(f, v9);
+            vapply(f, v10);
+            vapply(f, v11);
+            vapply(f, v12);
+        } else if constexpr (is_braces_constructible<VT,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type, any_type>()) {
+            auto& [v1, v2, v3, v4, v5, v6, v7, v8,
+                    v9, v10, v11] = vv;
+            vapply(f, v1);
+            vapply(f, v2);
+            vapply(f, v3);
+            vapply(f, v4);
+            vapply(f, v5);
+            vapply(f, v6);
+            vapply(f, v7);
+            vapply(f, v8);
+            vapply(f, v9);
+            vapply(f, v10);
+            vapply(f, v11);
+        } else if constexpr (is_braces_constructible<VT,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type, any_type>()) {
+            auto& [v1, v2, v3, v4, v5, v6, v7, v8,
+                    v9, v10] = vv;
+            vapply(f, v1);
+            vapply(f, v2);
+            vapply(f, v3);
+            vapply(f, v4);
+            vapply(f, v5);
+            vapply(f, v6);
+            vapply(f, v7);
+            vapply(f, v8);
+            vapply(f, v9);
+            vapply(f, v10);
+        } else if constexpr (is_braces_constructible<VT,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type,
+                any_type>()) {
+            auto& [v1, v2, v3, v4, v5, v6, v7, v8,
+                    v9] = vv;
+            vapply(f, v1);
+            vapply(f, v2);
+            vapply(f, v3);
+            vapply(f, v4);
+            vapply(f, v5);
+            vapply(f, v6);
+            vapply(f, v7);
+            vapply(f, v8);
+            vapply(f, v9);
+        } else if constexpr (is_braces_constructible<VT,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type, any_type
+                >()) {
+            auto& [v1, v2, v3, v4, v5, v6, v7, v8] = vv;
+            vapply(f, v1);
+            vapply(f, v2);
+            vapply(f, v3);
+            vapply(f, v4);
+            vapply(f, v5);
+            vapply(f, v6);
+            vapply(f, v7);
+            vapply(f, v8);
+        } else if constexpr (is_braces_constructible<VT,
+                any_type, any_type, any_type, any_type, any_type, any_type, any_type>()) {
+            auto& [v1, v2, v3, v4, v5, v6, v7] = vv;
+            vapply(f, v1);
+            vapply(f, v2);
+            vapply(f, v3);
+            vapply(f, v4);
+            vapply(f, v5);
+            vapply(f, v6);
+            vapply(f, v7);
+        } else if constexpr (is_braces_constructible<VT,
+                any_type, any_type, any_type, any_type, any_type, any_type>()) {
+            auto& [v1, v2, v3, v4, v5, v6] = vv;
+            vapply(f, v1);
+            vapply(f, v2);
+            vapply(f, v3);
+            vapply(f, v4);
+            vapply(f, v5);
+            vapply(f, v6);
+        } else if constexpr (is_braces_constructible<VT,
+                any_type, any_type, any_type, any_type, any_type>()) {
+            auto& [v1, v2, v3, v4, v5] = vv;
+            vapply(f, v1);
+            vapply(f, v2);
+            vapply(f, v3);
+            vapply(f, v4);
+            vapply(f, v5);
+        } else if constexpr (is_braces_constructible<VT,
+                any_type, any_type, any_type, any_type>()) {
+            auto& [v1, v2, v3, v4] = vv;
+            vapply(f, v1);
+            vapply(f, v2);
+            vapply(f, v3);
+            vapply(f, v4);
+        } else if constexpr (is_braces_constructible<VT,
+                any_type, any_type, any_type>()) {
+            auto& [v1, v2, v3] = vv;
+            vapply(f, v1);
+            vapply(f, v2);
+            vapply(f, v3);
+        } else if constexpr (is_braces_constructible<VT,
+                any_type, any_type>()) {
+            auto& [v1, v2] = vv;
+            vapply(f, v1);
+            vapply(f, v2);
+        } else if constexpr (is_braces_constructible<VT,
+                any_type>()) {
+            auto& [v1] = vv;
+            vapply(f, v1);
+        } else {
+            static_assert(false, "Currently supports up to 32 members only.");
+        }
+    }
+}
+
+// Type of array embedded in a struct that is usable in the Neon template functions below.
+// This type must satisfy std::is_array_v<>.
+template<typename T, size_t N>
+struct internal_array_t {
+    T v[N];
+    static constexpr size_t size() { return N; }
+    constexpr bool operator==(const internal_array_t<T, N> other) const {
+        for (size_t i = 0; i < N; ++i) {
+            if (v[i] != other.v[i]) return false;
+        }
+        return true;
+    }
+    constexpr internal_array_t<T, N>& operator=(T value) {
+        for (size_t i = 0; i < N; ++i) {
+            v[i] = value;
+        }
+        return *this;
+    }
+    constexpr internal_array_t() = default;
+    // explicit: disallow internal_array_t<float, 3> x  = 10.f;
+    constexpr explicit internal_array_t(T value) {
+        *this = value;
+    }
+    // allow internal_array_t<float, 3> x  = { 10.f };
+    constexpr internal_array_t(std::initializer_list<T> value) {
+        size_t i = 0;
+        auto vptr = value.begin();
+        for (; i < std::min(N, value.size()); ++i) {
+            v[i] = *vptr++;
+        }
+        for (; i < N; ++i) {
+            v[i] = {};
+        }
+    }
+};
+
+// assert our structs are trivially copyable so we can use memcpy freely.
+static_assert(std::is_trivially_copyable_v<internal_array_t<float, 31>>);
+static_assert(std::is_trivially_copyable_v<internal_array_t<double, 31>>);
+
 // Vector convert between type T to type S.
 template <typename S, typename T>
-inline S vconvert(const T& in) {
+constexpr inline S vconvert(const T& in) {
     S out;
 
     if constexpr (is_array_like<S>) {
@@ -123,6 +932,138 @@ inline S vconvert(const T& in) {
   using alternative_9_t = struct { struct { float32x4x2_t a; float b; } s; };
   using alternative_15_t = struct { struct { float32x4x2_t a; struct { float v[7]; } b; } s; };
 */
+
+/**
+ * Returns the first element of the intrinsic struct.
+ */
+template <typename T>
+constexpr auto first_element_of(const T& t) {
+    if constexpr (std::is_same_v<T, float> || std::is_same_v<T, double>) {
+        return t;
+    } else if constexpr (is_array_like<T>) {
+        return first_element_of(t[0]);
+    } else /* constexpr */ {
+        const auto& [tval] = t;  // single-member struct
+        if constexpr (std::is_array_v<decltype(tval)>) {
+            return first_element_of(tval[0]);
+        } else /* constexpr */ {
+             const auto& [p1, p2] = tval;
+             return first_element_of(p1);
+        }
+    }
+}
+
+/**
+ * Evaluate f(v1 [, v2 [, v3]]) and return an intrinsic struct result.
+ *
+ * The veval method returns the vector result by element-wise
+ * evaulating a functional f to one or more intrinsic struct inputs.
+ * Compare this method with the single argument vapply,
+ * which can modify a single struct argument in-place.
+ */
+template <typename F, typename V>
+constexpr V veval(const F& f, const V& v1) {
+    if constexpr (std::is_same_v<V, float> || std::is_same_v<V, double>) {
+        return f(v1);
+    } else if constexpr (is_array_like<V>) {
+        V out;
+#pragma unroll
+        // neon intrinsics need sizeof.
+        for (size_t i = 0; i < sizeof(v1) / sizeof(v1[0]); ++i) {
+            out[i] = f(v1[i]);
+        }
+        return out;
+    } else /* constexpr */ {
+        V ret;
+        auto& [retval] = ret;  // single-member struct
+        const auto& [v1val] = v1;
+        if constexpr (std::is_array_v<decltype(v1val)>) {
+#pragma unroll
+            for (size_t i = 0; i < std::size(v1val); ++i) {
+                retval[i] = veval(f, v1val[i]);
+            }
+            return ret;
+        } else /* constexpr */ {
+             auto& [r1, r2] = retval;
+             const auto& [p1, p2] = v1val;
+             r1 = veval(f, p1);
+             r2 = veval(f, p2);
+             return ret;
+        }
+    }
+}
+
+template <typename F, typename V>
+constexpr V veval(const F& f, const V& v1, const V& v2) {
+    if constexpr (std::is_same_v<V, float> || std::is_same_v<V, double>) {
+        return f(v1, v2);
+    } else if constexpr (is_array_like<V>) {
+        V out;
+#pragma unroll
+        // neon intrinsics need sizeof.
+        for (size_t i = 0; i < sizeof(v1) / sizeof(v1[0]); ++i) {
+            out[i] = f(v1[i], v2[i]);
+        }
+        return out;
+    } else /* constexpr */ {
+        V ret;
+        auto& [retval] = ret;  // single-member struct
+        const auto& [v1val] = v1;
+        const auto& [v2val] = v2;
+        if constexpr (std::is_array_v<decltype(v1val)>) {
+#pragma unroll
+            for (size_t i = 0; i < std::size(v1val); ++i) {
+                retval[i] = veval(f, v1val[i], v2val[i]);
+            }
+            return ret;
+        } else /* constexpr */ {
+             auto& [r1, r2] = retval;
+             const auto& [p11, p12] = v1val;
+             const auto& [p21, p22] = v2val;
+             r1 = veval(f, p11, p21);
+             r2 = veval(f, p12, p22);
+             return ret;
+        }
+    }
+}
+
+template <typename F, typename V>
+constexpr V veval(const F& f, const V& v1, const V& v2, const V& v3) {
+    if constexpr (std::is_same_v<V, float> || std::is_same_v<V, double>) {
+        return f(v1, v2, v3);
+    } else if constexpr (is_array_like<V>) {
+        V out;
+#pragma unroll
+        // neon intrinsics need sizeof.
+        for (size_t i = 0; i < sizeof(v1) / sizeof(v1[0]); ++i) {
+            out[i] = f(v1[i], v2[i], v3[i]);
+        }
+        return out;
+    } else /* constexpr */ {
+        V ret;
+        auto& [retval] = ret;  // single-member struct
+        const auto& [v1val] = v1;
+        const auto& [v2val] = v2;
+        const auto& [v3val] = v3;
+        if constexpr (std::is_array_v<decltype(v1val)>) {
+#pragma unroll
+            for (size_t i = 0; i < std::size(v1val); ++i) {
+                retval[i] = veval(f, v1val[i], v2val[i], v3val[i]);
+            }
+            return ret;
+        } else /* constexpr */ {
+             auto& [r1, r2] = retval;
+             const auto& [p11, p12] = v1val;
+             const auto& [p21, p22] = v2val;
+             const auto& [p31, p32] = v3val;
+             r1 = veval(f, p11, p21, p31);
+             r2 = veval(f, p12, p22, p32);
+             return ret;
+        }
+    }
+}
+
+// --------------------------------------------------------------------
 
 // add a + b
 template<typename T>
