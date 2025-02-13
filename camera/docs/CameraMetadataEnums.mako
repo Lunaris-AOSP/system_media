@@ -71,7 +71,7 @@ ${value.sdk_notes | javadoc(metadata)}\
 ## We only support 1 level of inner namespace, i.e. android.a.b and android.a.b.c works, but not android.a.b.c.d
 ## If we need to support more, we should use a recursive function here instead.. but the indentation gets trickier.
         % for entry in filter_visibility(inner_namespace.entries, ('hidden','public', 'ndk_public', \
-        'java_public', 'fwk_pubic', 'fwk_only', 'extension')):
+        'java_public', 'fwk_public', 'fwk_only', 'extension')):
           % if entry.enum \
               and not (entry.typedef and entry.typedef.languages.get('java')) \
               and not entry.is_clone():
