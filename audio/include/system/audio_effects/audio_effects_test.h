@@ -80,6 +80,29 @@ inline status_t effect_command_with_status(effect_handle_t handle, uint32_t comm
 }
 
 /**
+ * Invoke an effect command with param data and status reply.
+ */
+template <typename P>
+requires (std::is_trivially_copyable_v<P>)
+status_t effect_command_with_status(effect_handle_t handle, uint32_t command, const P& p) {
+    int32_t reply = 0;
+    uint32_t replySize = sizeof(reply);
+
+    // We use a copy of p in this method to guarantee that p is never changed.
+    P copyP;
+    memcpy(&copyP, &p, sizeof(p));  // memcpy ensures hidden padding is identical.
+
+    const int32_t status = (*handle)->command(
+            handle, command, sizeof(copyP), &copyP, &replySize, &reply);
+
+    // Could also check if copyP has been modified after calling the (*handle)->command function.
+    // The command interface method permits it by void* parameter, but effects shouldn't do so.
+
+    if (status) return status;
+    return reply;
+}
+
+/**
  * Return the padding size of a parameter type.
  */
 template <typename P>
@@ -95,7 +118,7 @@ inline constexpr size_t effect_value_size_v =  (sizeof(Vs) + ...);
  * Invoke an effect command with a parameter and a sequence of values, with status reply.
  */
 template <typename P, typename... Vs>
-requires (std::is_trivially_copyable_v<P>)
+requires (std::is_trivially_copyable_v<P> && sizeof...(Vs) > 0)
 status_t effect_command_with_status(
         effect_handle_t handle, uint32_t command, const P& p, const Vs&... vs) {
     constexpr size_t psize = sizeof(p);
@@ -194,6 +217,70 @@ template <typename P, typename... Vs>
 requires (std::is_trivially_copyable_v<P>)
 status_t effect_set_param(effect_handle_t handle, const P& p, const Vs&... vs) {
     return effect_command_with_status(handle, EFFECT_CMD_SET_PARAM, p, vs...);
+}
+
+/**
+ * Sets the effect configuration
+ */
+//==================================================================================================
+// command: EFFECT_CMD_SET_CONFIG
+//--------------------------------------------------------------------------------------------------
+// description:
+//  Apply new audio parameters configurations for input and output buffers
+//--------------------------------------------------------------------------------------------------
+// command format:
+//  size: sizeof(effect_config_t)
+//  data: effect_config_t
+//--------------------------------------------------------------------------------------------------
+// reply format:
+//  size: sizeof(int)
+//  data: status
+status_t effect_set_config(effect_handle_t handle, const effect_config_t& config) {
+    return effect_command_with_status(handle, EFFECT_CMD_SET_CONFIG, config);
+}
+
+/**
+ * Sets the effect configuration for a pass-through insert effect.
+ */
+status_t effect_set_config(effect_handle_t handle,
+        uint32_t sample_rate, audio_channel_mask_t channel_mask, bool accumulate = false) {
+    const effect_config_t config = {
+            .inputCfg = {
+                    .buffer = {
+                            .frameCount = 0,
+                            .raw = nullptr,
+                    },
+                    .samplingRate = sample_rate,
+                    .channels = channel_mask,
+                    .bufferProvider = {
+                            .getBuffer = nullptr,
+                            .releaseBuffer = nullptr,
+                            .cookie = nullptr,
+                    },
+                    .format = AUDIO_FORMAT_PCM_FLOAT,
+                    .accessMode = EFFECT_BUFFER_ACCESS_READ,
+                    .mask = EFFECT_CONFIG_ALL,
+            },
+            .outputCfg = {
+                    .buffer = {
+                            .frameCount = 0,
+                            .raw = nullptr,
+                    },
+                    .samplingRate = sample_rate,
+                    .channels = channel_mask,
+                    .bufferProvider = {
+                            .getBuffer = nullptr,
+                            .releaseBuffer = nullptr,
+                            .cookie = nullptr,
+                    },
+                    .format = AUDIO_FORMAT_PCM_FLOAT,
+                    .accessMode = static_cast<uint8_t>(
+                            accumulate ? EFFECT_BUFFER_ACCESS_ACCUMULATE
+                            : EFFECT_BUFFER_ACCESS_WRITE),
+                    .mask = EFFECT_CONFIG_ALL,
+            },
+    };
+    return effect_set_config(handle, config);
 }
 
 /**
